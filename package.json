@@ -1,24 +1,30 @@
 {
-  "name": "console-ui",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@bitsongjs/client": "2.1.0-beta.13",
-    "@bitsongjs/utils": "2.1.0-beta.11",
-    "bignumber.js": "^9.1.0",
-    "long": "^5.2.0",
-    "vue": "^3.2.37"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^3.1.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.1.0",
-    "vue-tsc": "^0.40.4"
-  }
+	"name": "console-ui",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vue-tsc --noEmit && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@bitsongjs/client": "2.1.0-beta.13",
+		"@bitsongjs/utils": "2.1.0-beta.11",
+		"@quasar/extras": "^1.15.3",
+		"bignumber.js": "^9.1.0",
+		"long": "^5.2.0",
+		"path": "^0.12.7",
+		"quasar": "~2.7.7",
+		"vue": "^3.2.37",
+		"vue-router": "4"
+	},
+	"devDependencies": {
+		"@quasar/vite-plugin": "~1.1.0",
+		"@vitejs/plugin-vue": "^3.1.0",
+		"sass": "1.32.12",
+		"typescript": "^4.6.4",
+		"vite": "^3.1.0",
+		"vue-tsc": "^0.40.4"
+	}
 }
