@@ -11,6 +11,8 @@
   "dependencies": {
     "@bitsongjs/client": "2.1.0-beta.13",
     "@bitsongjs/utils": "2.1.0-beta.11",
+    "bignumber.js": "^9.1.0",
+    "long": "^5.2.0",
     "vue": "^3.2.37"
   },
   "devDependencies": {

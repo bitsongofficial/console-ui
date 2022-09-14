@@ -4,6 +4,8 @@ specifiers:
   '@bitsongjs/client': 2.1.0-beta.13
   '@bitsongjs/utils': 2.1.0-beta.11
   '@vitejs/plugin-vue': ^3.1.0
+  bignumber.js: ^9.1.0
+  long: ^5.2.0
   typescript: ^4.6.4
   vite: ^3.1.0
   vue: ^3.2.37
@@ -12,6 +14,8 @@ specifiers:
 dependencies:
   '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.1.0-beta.13
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0-beta.11
+  bignumber.js: registry.npmjs.org/bignumber.js/9.1.0
+  long: registry.npmjs.org/long/5.2.0
   vue: registry.npmjs.org/vue/3.2.39
 
 devDependencies:
@@ -1168,6 +1172,12 @@ packages:
     resolution: {integrity: sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/long/-/long-4.0.0.tgz}
     name: long
     version: 4.0.0
+    dev: false
+
+  registry.npmjs.org/long/5.2.0:
+    resolution: {integrity: sha512-9RTUNjK60eJbx3uz+TEGF7fUr29ZDxR5QzXcyDpeSfeH28S9ycINflOgOlppit5U+4kNTe83KQnMEerw7GmE8w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/long/-/long-5.2.0.tgz}
+    name: long
+    version: 5.2.0
     dev: false
 
   registry.npmjs.org/lru-cache/6.0.0:
