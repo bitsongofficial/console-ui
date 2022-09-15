@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, reactive } from "vue"
 import { btsgStakingCoin } from "@/configs"
-import { SnapshotSearch } from "@/models"
+import { SnapshotSearch, TableColumn } from "@/models"
 import { DelegationResponse } from "@bitsongjs/client/dist/codec/cosmos/staking/v1beta1/staking"
 import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { fromBaseToDisplay } from "@/utils"
 import { BigNumber } from "bignumber.js"
-import useSnapshot from "@/store/snapshot"
 import { exportFile, useQuasar } from "quasar"
+import useSnapshot from "@/store/snapshot"
 
 const snapshotStore = useSnapshot()
 const quasar = useQuasar()
@@ -17,7 +17,7 @@ const snapshotForm = reactive<SnapshotSearch>({
 	tokens: 2000,
 })
 
-const columns = [
+const columns: TableColumn[] = [
 	{
 		name: "address",
 		required: true,
