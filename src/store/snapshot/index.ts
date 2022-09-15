@@ -132,7 +132,7 @@ const useSnapshot = defineStore("snapshot", {
 	getters: {
 		validatorOptions: ({ validators }) =>
 			validators.map((validator) => ({
-				label: validator.description?.moniker,
+				label: validator.description?.moniker ?? "Not Found",
 				value: validator.operatorAddress,
 			})),
 	},
