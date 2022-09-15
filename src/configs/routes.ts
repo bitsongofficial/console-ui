@@ -7,6 +7,14 @@ export const routes: RouteRecordRaw[] = [
 		children: [
 			{
 				path: "",
+				redirect: "/snapshot",
+			},
+			{
+				path: "snapshot",
+				component: () => import("@/pages/Snapshot.vue"),
+			},
+			{
+				path: "merkledrop",
 				component: () => import("@/pages/Merkledrop.vue"),
 			},
 		],

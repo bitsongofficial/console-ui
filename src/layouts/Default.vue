@@ -32,21 +32,23 @@ const link = ref("homepage")
 				<q-item
 					clickable
 					v-ripple
-					:active="link === 'homepage'"
-					@click="link = 'homepage'"
+					:active="link === 'snapshot'"
+					@click="link = 'snapshot'"
+					to="/"
 				>
 					<q-item-section avatar>
-						<q-icon name="home" />
+						<q-icon name="photo_camera" />
 					</q-item-section>
 
-					<q-item-section>Homepage</q-item-section>
+					<q-item-section>Snapshot</q-item-section>
 				</q-item>
 
 				<q-item
 					clickable
 					v-ripple
-					:active="link === 'outbox'"
-					@click="link = 'outbox'"
+					:active="link === 'merkledrop'"
+					@click="link = 'merkledrop'"
+					to="/merkledrop"
 				>
 					<q-item-section avatar>
 						<q-icon name="account_tree" />
