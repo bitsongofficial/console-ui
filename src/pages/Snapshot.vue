@@ -15,6 +15,7 @@ const quasar = useQuasar()
 const validatorSearchTxt = ref("")
 
 const snapshotForm = reactive<SnapshotSearch>({
+	height: undefined,
 	validators: [],
 	tokens: 2000,
 })
@@ -71,6 +72,12 @@ const onSubmit = () => {
 	snapshotStore.loadDelegators(snapshotForm)
 }
 
+const onReset = () => {
+	snapshotForm.height = undefined
+	snapshotForm.validators = []
+	snapshotForm.tokens = 2000
+}
+
 const loadValidators = async (
 	value: string,
 	update: (callback: () => void) => void
@@ -117,7 +124,21 @@ const exportJsonTable = () => {
 		</div>
 
 		<div class="col-auto">
-			<q-form @submit.prevent.stop="onSubmit" class="q-col-gutter-md row q-mb-lg">
+			<q-form
+				@submit="onSubmit"
+				class="q-col-gutter-md row q-mb-lg"
+				@reset="onReset"
+			>
+				<q-input
+					class="col-12 col-md-4 col-lg-3"
+					label="Height"
+					dense
+					filled
+					v-model.number="snapshotForm.height"
+					:loading="snapshotStore.loadingBlock"
+					type="number"
+					clearable
+				/>
 				<q-select
 					class="col-12 col-md-4 col-lg-3"
 					label="Validator"
@@ -150,6 +171,7 @@ const exportJsonTable = () => {
 					<q-btn type="submit" color="primary">
 						<q-icon name="search" />
 					</q-btn>
+					<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 				</div>
 			</q-form>
 

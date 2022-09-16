@@ -1,8 +1,10 @@
-import { stakingClient } from "@/services"
+import { baseClient, bitsongClient, stakingClient } from "@/services"
 import {
 	DelegationResponse,
 	Validator,
 } from "@bitsongjs/client/dist/codec/cosmos/staking/v1beta1/staking"
+import { QueryClientImpl as StakingQueryClientImpl } from "@bitsongjs/client/dist/codec/cosmos/staking/v1beta1/query"
+import { GetLatestBlockRequest } from "@bitsongjs/client/dist/codec/cosmos/base/tendermint/v1beta1/query"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { BigNumber } from "bignumber.js"
 import { SnapshotSearch } from "@/models"
@@ -10,24 +12,44 @@ import { reduce, groupBy, compact } from "lodash"
 import { btsgStakingCoin } from "@/configs"
 import { fromBaseToDisplay, gteCoin, sumCoins } from "@/utils"
 import Long from "long"
+import { Block } from "@bitsongjs/client/dist/codec/tendermint/types/block"
 
 export interface SnapshotState {
 	loading: boolean
 	loadingValidators: boolean
+	loadingBlock: boolean
 	submitting: boolean
 	validators: Validator[]
 	delegators: DelegationResponse[]
+	latestBlock?: Block
 }
 
 const useSnapshot = defineStore("snapshot", {
 	state: (): SnapshotState => ({
 		loading: false,
 		loadingValidators: false,
+		loadingBlock: false,
 		submitting: false,
 		validators: [],
 		delegators: [],
+		latestBlock: undefined,
 	}),
 	actions: {
+		async loadBlock() {
+			try {
+				this.loadingBlock = true
+
+				const response = await baseClient.GetLatestBlock({
+					$type: GetLatestBlockRequest.$type,
+				})
+
+				this.latestBlock = response.block
+			} catch (error) {
+				console.error(error)
+			} finally {
+				this.loadingBlock = false
+			}
+		},
 		async loadValidators() {
 			try {
 				this.loadingValidators = true
@@ -61,13 +83,23 @@ const useSnapshot = defineStore("snapshot", {
 			try {
 				this.loading = true
 
+				if (this.validators.length === 0) {
+					await this.loadValidators()
+				}
+
+				bitsongClient.setQueryHeight(search.height)
+
+				const heightStakingClient = new StakingQueryClientImpl(
+					bitsongClient.queryClient
+				)
+
 				const validatorAddresses =
 					search.validators.length > 0
 						? search.validators
 						: this.validators.map((validator) => validator.operatorAddress)
 
 				const delegationsRequests = validatorAddresses.map((validatorAddr) =>
-					stakingClient.ValidatorDelegations({
+					heightStakingClient.ValidatorDelegations({
 						$type: "cosmos.staking.v1beta1.QueryValidatorDelegationsRequest",
 						validatorAddr,
 						pagination: {
@@ -135,6 +167,8 @@ const useSnapshot = defineStore("snapshot", {
 				label: validator.description?.moniker ?? "Not Found",
 				value: validator.operatorAddress,
 			})),
+		latestHeight: ({ latestBlock }) =>
+			latestBlock?.lastCommit?.height.toNumber() ?? 0,
 	},
 })
 
