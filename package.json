@@ -9,8 +9,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@bitsongjs/client": "2.1.0-beta.13",
-		"@bitsongjs/utils": "2.1.0-beta.11",
+		"@bitsongjs/client": "^2.2.0",
+		"@bitsongjs/utils": "^2.1.0",
 		"@quasar/extras": "^1.15.3",
 		"bignumber.js": "^9.1.0",
 		"chain-registry": "^0.11.0",

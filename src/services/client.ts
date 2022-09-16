@@ -11,7 +11,6 @@ BitsongClient.connect({
 		endpoints: bitsongRpcAddresses,
 	},
 }).then((client) => {
-	console.log(client)
 	bitsongClient = client
 
 	stakingClient = new StakingQueryClientImpl(bitsongClient.queryClient)
