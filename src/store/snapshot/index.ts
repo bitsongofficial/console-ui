@@ -170,6 +170,9 @@ const useSnapshot = defineStore("snapshot", {
 		latestHeight: ({ latestBlock }) =>
 			latestBlock?.lastCommit?.height.toNumber() ?? 0,
 	},
+	persistedState: {
+		persist: false,
+	},
 })
 
 if (import.meta.hot) {

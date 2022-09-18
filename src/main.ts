@@ -14,6 +14,7 @@ import "quasar/src/css/index.sass"
 // Assumes your root component is App.vue
 // and placed in same folder as main.js
 import App from "./App.vue"
+import { createPersistedStatePlugin } from "pinia-plugin-persistedstate-2"
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -21,6 +22,8 @@ const router = createRouter({
 })
 
 const pinia = createPinia()
+
+pinia.use(createPersistedStatePlugin())
 
 const app = createApp(App)
 
@@ -31,6 +34,7 @@ app.use(Quasar, {
 })
 
 app.use(router)
+
 app.use(pinia)
 
 // Assumes you have a <div id="app"></div> in your index.html

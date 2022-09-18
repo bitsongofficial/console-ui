@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import useAuth from "@/store/auth"
 import { ref } from "vue"
 
+const authStore = useAuth()
 const leftDrawerOpen = ref(false)
 const link = ref("homepage")
 </script>
@@ -24,6 +26,25 @@ const link = ref("homepage")
 					width="140px"
 					fit="contain"
 				/>
+
+				<q-btn
+					class="q-ml-auto"
+					type="submit"
+					color="primary"
+					@click="authStore.signIn"
+					v-if="!authStore.session"
+				>
+					Connect to Keplr
+				</q-btn>
+				<q-btn
+					class="q-ml-auto"
+					type="submit"
+					color="primary"
+					@click="authStore.$reset"
+					v-else
+				>
+					Disconnect
+				</q-btn>
 			</q-toolbar>
 		</q-header>
 

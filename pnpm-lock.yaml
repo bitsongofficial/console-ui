@@ -4,6 +4,9 @@ specifiers:
   '@bitsongjs/client': ^2.2.0
   '@bitsongjs/utils': ^2.1.0
   '@chain-registry/types': ^0.8.0
+  '@cosmjs/encoding': ^0.29.0
+  '@cosmjs/proto-signing': ^0.29.0
+  '@keplr-wallet/types': ^0.11.0
   '@quasar/extras': ^1.15.3
   '@quasar/vite-plugin': ~1.1.0
   '@types/lodash': ^4.14.185
@@ -14,6 +17,7 @@ specifiers:
   long: ^5.2.0
   path: ^0.12.7
   pinia: ^2.0.22
+  pinia-plugin-persistedstate-2: ^2.0.1
   quasar: ~2.7.7
   sass: 1.32.12
   typescript: ^4.6.4
@@ -25,6 +29,8 @@ specifiers:
 dependencies:
   '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.2.0
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
+  '@cosmjs/encoding': registry.npmjs.org/@cosmjs/encoding/0.29.0
+  '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.29.0
   '@quasar/extras': registry.npmjs.org/@quasar/extras/1.15.3
   bignumber.js: registry.npmjs.org/bignumber.js/9.1.0
   chain-registry: registry.npmjs.org/chain-registry/0.11.0
@@ -32,12 +38,14 @@ dependencies:
   long: registry.npmjs.org/long/5.2.0
   path: registry.npmjs.org/path/0.12.7
   pinia: registry.npmjs.org/pinia/2.0.22_arz4dztosvwy2ghjrlh2wdhejm
+  pinia-plugin-persistedstate-2: registry.npmjs.org/pinia-plugin-persistedstate-2/2.0.1_pinia@2.0.22
   quasar: registry.npmjs.org/quasar/2.7.7
   vue: registry.npmjs.org/vue/3.2.39
   vue-router: registry.npmjs.org/vue-router/4.1.5_vue@3.2.39
 
 devDependencies:
   '@chain-registry/types': registry.npmjs.org/@chain-registry/types/0.8.0
+  '@keplr-wallet/types': registry.npmjs.org/@keplr-wallet/types/0.11.0
   '@quasar/vite-plugin': registry.npmjs.org/@quasar/vite-plugin/1.1.1_ei4z6pof6ndevwjsu4ftth6li4
   '@types/lodash': registry.npmjs.org/@types/lodash/4.14.185
   '@vitejs/plugin-vue': registry.npmjs.org/@vitejs/plugin-vue/3.1.0_vite@3.1.0+vue@3.2.39
@@ -453,6 +461,20 @@ packages:
       secretjs: registry.npmjs.org/secretjs/0.17.7
     transitivePeerDependencies:
       - debug
+
+  registry.npmjs.org/@keplr-wallet/types/0.11.0:
+    resolution: {integrity: sha512-MDKHkO0tiDmecAATmTWvZbz2/EvPM3wly/hLfH1hkyzsCVMKoEMTi3Ccfkqa1NqoJCA3slBtfSsUDjW4R0TIuQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@keplr-wallet/types/-/types-0.11.0.tgz}
+    name: '@keplr-wallet/types'
+    version: 0.11.0
+    dependencies:
+      '@cosmjs/launchpad': registry.npmjs.org/@cosmjs/launchpad/0.24.1
+      '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.24.1
+      axios: registry.npmjs.org/axios/0.27.2
+      long: registry.npmjs.org/long/4.0.0
+      secretjs: registry.npmjs.org/secretjs/0.17.7
+    transitivePeerDependencies:
+      - debug
+    dev: true
 
   registry.npmjs.org/@keplr-wallet/unit/0.10.24:
     resolution: {integrity: sha512-8wDLpBUc/yQ6pWJOotk8V4OlxjPqU8V1OJgzYSQDF4FD9/BjRGifXY1LkYp2QhaJ7c6vKhw8v773SgmBq5w5vg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@keplr-wallet/unit/-/unit-0.10.24.tgz}
@@ -1916,6 +1938,19 @@ packages:
     engines: {node: '>=8.6'}
     dev: true
 
+  registry.npmjs.org/pinia-plugin-persistedstate-2/2.0.1_pinia@2.0.22:
+    resolution: {integrity: sha512-xtX2YOahow7MLrKSKuLQKE3VNJ8JQkfRgTCJ+T9rggiRDDhBQMg1usZ+LP3km9iOnJsR8JofA60g6cL63gsg5A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/pinia-plugin-persistedstate-2/-/pinia-plugin-persistedstate-2-2.0.1.tgz}
+    id: registry.npmjs.org/pinia-plugin-persistedstate-2/2.0.1
+    name: pinia-plugin-persistedstate-2
+    version: 2.0.1
+    engines: {node: ^14 || ^16 || >=18}
+    peerDependencies:
+      pinia: ^2
+    dependencies:
+      pinia: registry.npmjs.org/pinia/2.0.22_arz4dztosvwy2ghjrlh2wdhejm
+      shvl: registry.npmjs.org/shvl/3.0.0
+    dev: false
+
   registry.npmjs.org/pinia/2.0.22_arz4dztosvwy2ghjrlh2wdhejm:
     resolution: {integrity: sha512-u+b8/BC+tmvo3ACbYO2w5NfxHWFOjvvw9DQnyT0dW8aUMCPRQT5QnfZ5R5W2MzZBMTeZRMQI7V/QFbafmM9QHw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/pinia/-/pinia-2.0.22.tgz}
     id: registry.npmjs.org/pinia/2.0.22
@@ -2173,6 +2208,12 @@ packages:
     version: 2.1.4
     dependencies:
       buffer: registry.npmjs.org/buffer/6.0.3
+
+  registry.npmjs.org/shvl/3.0.0:
+    resolution: {integrity: sha512-5IomAM3ykE/g9K9L6lhODc+TpCuN03rrhlboegeKyyfh66DDdpRD5JN37DYhNHH+RaYjiIDx64K/Ms/xQYOR5w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/shvl/-/shvl-3.0.0.tgz}
+    name: shvl
+    version: 3.0.0
+    dev: false
 
   registry.npmjs.org/source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz}

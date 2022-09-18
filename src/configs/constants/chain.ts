@@ -10,6 +10,11 @@ export const bitsongRpcAddresses =
 		? bitsongChain.apis.rpc.map((grpc) => grpc.address)
 		: ["https://rpc.explorebitsong.com"]
 
+export const bitsongLcdAddresses =
+	bitsongChain && bitsongChain.apis
+		? bitsongChain.apis.rest.map((rest) => rest.address)
+		: ["https://lcd.explorebitsong.com"]
+
 export const btsgAssets = assets.find(
 	({ chain_name }) => chain_name === "bitsong"
 )
