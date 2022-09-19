@@ -25,6 +25,7 @@ export const fromBaseToDenom = (
 	coin: Coin,
 	asset: Asset,
 	toDenom: string,
+	toUnit: string,
 	scalar: number = -1
 ): Coin => {
 	const denomUnit = asset.denom_units.find((unit) => unit.denom === toDenom)
@@ -32,7 +33,7 @@ export const fromBaseToDenom = (
 	if (denomUnit) {
 		return {
 			$type: "cosmos.base.v1beta1.Coin",
-			denom: asset.display,
+			denom: toUnit,
 			amount: new BigNumber(coin.amount)
 				.multipliedBy(`1e${denomUnit.exponent * scalar}`)
 				.toString(),
@@ -43,9 +44,9 @@ export const fromBaseToDenom = (
 }
 
 export const fromBaseToDisplay = (coin: Coin, asset: Asset) => {
-	return fromBaseToDenom(coin, asset, asset.display)
+	return fromBaseToDenom(coin, asset, asset.display, asset.display)
 }
 
 export const fromDisplayToBase = (coin: Coin, asset: Asset) => {
-	return fromBaseToDenom(coin, asset, asset.base, 1)
+	return fromBaseToDenom(coin, asset, asset.display, asset.base, 1)
 }

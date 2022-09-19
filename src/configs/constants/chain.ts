@@ -1,4 +1,5 @@
 import { MicroDenom } from "@bitsongjs/client"
+import { StdFee } from "@cosmjs/stargate/build"
 import { chains, assets } from "chain-registry"
 
 export const bitsongChain = chains.find(
@@ -22,3 +23,21 @@ export const btsgAssets = assets.find(
 export const btsgStakingCoin = btsgAssets?.assets.find(
 	(asset) => asset.base === MicroDenom
 )
+
+export const bitsongStdFee: StdFee = {
+	gas: "350000",
+	amount: [
+		{
+			denom: MicroDenom,
+			amount: "10000",
+		},
+		{
+			denom: MicroDenom,
+			amount: "25000",
+		},
+		{
+			denom: MicroDenom,
+			amount: "40000",
+		},
+	],
+}

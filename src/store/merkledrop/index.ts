@@ -1,10 +1,13 @@
-import { merkledropClient } from "@/services"
+import { bitsongClient, merkledropClient } from "@/services"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { QueryParamsRequest } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/query"
-import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
+import { MsgCreate } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/tx"
 import { Params } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/params"
 import { fromBaseToDisplay } from "@/utils"
-import { btsgStakingCoin } from "@/configs"
+import { bitsongStdFee, btsgStakingCoin } from "@/configs"
+import { MerkledropCreate } from "@/models"
+import { DeliverTxResponse, logs } from "@cosmjs/stargate"
+import useAuth from "@/store/auth"
 
 export interface MerkledropState {
 	loading: boolean
@@ -32,6 +35,51 @@ const useMerkledrop = defineStore("merkledrop", {
 				console.error(error)
 			} finally {
 				this.loadingParams = false
+			}
+		},
+		async createMerkledrop(payload: MerkledropCreate) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.loading = true
+
+					const msg = MsgCreate.fromPartial({
+						owner: authStore.bitsongAddress,
+						coin: payload.coin,
+						merkleRoot: payload.merkleRoot,
+						endHeight: payload.endHeight,
+						startHeight: payload.startHeight,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+
+						const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
+
+						const merkledropIdAttr = logs.findAttribute(
+							parsedLogs,
+							"bitsong.merkledrop.v1beta1.EventCreate",
+							"merkledrop_id"
+						)
+
+						return merkledropIdAttr.value.slice(1, -1)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.loading = false
+				}
 			}
 		},
 	},

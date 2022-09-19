@@ -4,7 +4,7 @@ import { MerkledropForm } from "@/models"
 import { Account, Merkledrop } from "@bitsongjs/utils"
 import { btsgAssets } from "@/configs"
 import { BigNumber } from "bignumber.js"
-import { fromBaseToDisplay } from "@/utils"
+import { fromBaseToDisplay, fromDisplayToBase } from "@/utils"
 import { exportFile, useQuasar } from "quasar"
 import useAuth from "@/store/auth"
 import useMerkledrop from "@/store/merkledrop"
@@ -26,8 +26,54 @@ const merkledropForm = reactive<MerkledropForm>({
 
 const merkledrop = ref<Merkledrop>()
 
-const onSubmit = () => {
-	//snapshotStore.loadDelegators(snapshotForm)
+const onSubmit = async () => {
+	if (merkledropForm.asset) {
+		console.log(
+			fromDisplayToBase(
+				{
+					$type: "cosmos.base.v1beta1.Coin",
+					amount: merkledropForm.coin.toString(),
+					denom: merkledropForm.asset.display,
+				},
+				merkledropForm.asset
+			),
+			merkledropForm.coin
+		)
+		try {
+			const merkledropId = await merkledropStore.createMerkledrop({
+				startHeight: merkledropForm.startHeight,
+				endHeight: merkledropForm.endHeight,
+				merkleRoot: merkledropForm.merkleRoot,
+				coin: fromDisplayToBase(
+					{
+						$type: "cosmos.base.v1beta1.Coin",
+						amount: merkledropForm.coin.toString(),
+						denom: merkledropForm.asset.display,
+					},
+					merkledropForm.asset
+				),
+				asset: merkledropForm.asset,
+			})
+
+			quasar.notify({
+				message: `Merkledrop created with ID: ${merkledropId}`,
+				color: "positive",
+				icon: "warning",
+				closeBtn: true,
+				timeout: 10000,
+			})
+		} catch (error) {
+			console.error(error)
+
+			quasar.notify({
+				message: `Something went wrong: ${(error as Error).message}`,
+				color: "negative",
+				icon: "warning",
+				closeBtn: true,
+				timeout: 10000,
+			})
+		}
+	}
 }
 
 const onReset = () => {
@@ -134,9 +180,7 @@ onMounted(() => {
 					:loading="chainStore.loadingBlock"
 					type="number"
 					:rules="[
-						(val) =>
-							val >= chainStore.latestHeight ||
-							`Please use a value greater then zero ${chainStore.latestHeight}`,
+						(val) => val >= 0 || 'Please use a value greater or equal to zero',
 					]"
 				/>
 
@@ -151,7 +195,7 @@ onMounted(() => {
 					:rules="[
 						(val) =>
 							val >= chainStore.latestHeight ||
-							`Please use a value greater then zero ${chainStore.latestHeight}`,
+							`Please use a value greater then ${chainStore.latestHeight}`,
 					]"
 				/>
 
@@ -199,7 +243,12 @@ onMounted(() => {
 				</p>
 
 				<div class="col-12 flex justify-end">
-					<q-btn type="submit" color="primary" :disable="!authStore.session">
+					<q-btn
+						type="submit"
+						color="primary"
+						:disable="!authStore.session"
+						:loading="authStore.loading"
+					>
 						<q-icon name="send" />
 					</q-btn>
 					<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />

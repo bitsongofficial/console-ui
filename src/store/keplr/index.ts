@@ -3,6 +3,7 @@ import { AccountData } from "@cosmjs/proto-signing"
 import { tokenToExperimentalSuggestChain } from "@/common"
 import { AppCurrency } from "@keplr-wallet/types"
 import { bitsongChain, btsgStakingCoin } from "@/configs"
+import { connectClient } from "@/services"
 
 export interface KeplrState {
 	accounts: AccountData[]
@@ -41,6 +42,12 @@ const useKeplr = defineStore("keplr", {
 					const offlineSigner = await window.keplr.getOfflineSignerAuto(
 						bitsongChain.chain_id
 					)
+
+					const aminoOfflineSigner = await window.keplr.getOfflineSignerOnlyAmino(
+						bitsongChain.chain_id
+					)
+
+					connectClient(aminoOfflineSigner)
 
 					const tokenAccounts = [...(await offlineSigner.getAccounts())]
 

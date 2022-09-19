@@ -6,6 +6,7 @@ specifiers:
   '@chain-registry/types': ^0.8.0
   '@cosmjs/encoding': ^0.29.0
   '@cosmjs/proto-signing': ^0.29.0
+  '@cosmjs/stargate': ^0.29.0
   '@keplr-wallet/types': ^0.11.0
   '@quasar/extras': ^1.15.3
   '@quasar/vite-plugin': ~1.1.0
@@ -31,6 +32,7 @@ dependencies:
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
   '@cosmjs/encoding': registry.npmjs.org/@cosmjs/encoding/0.29.0
   '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.29.0
+  '@cosmjs/stargate': registry.npmjs.org/@cosmjs/stargate/0.29.0
   '@quasar/extras': registry.npmjs.org/@quasar/extras/1.15.3
   bignumber.js: registry.npmjs.org/bignumber.js/9.1.0
   chain-registry: registry.npmjs.org/chain-registry/0.11.0

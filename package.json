@@ -13,6 +13,7 @@
 		"@bitsongjs/utils": "^2.1.0",
 		"@cosmjs/encoding": "^0.29.0",
 		"@cosmjs/proto-signing": "^0.29.0",
+		"@cosmjs/stargate": "^0.29.0",
 		"@quasar/extras": "^1.15.3",
 		"bignumber.js": "^9.1.0",
 		"chain-registry": "^0.11.0",
