@@ -8,8 +8,10 @@ import { fromBaseToDisplay } from "@/utils"
 import { BigNumber } from "bignumber.js"
 import { exportFile, useQuasar } from "quasar"
 import useSnapshot from "@/store/snapshot"
+import useChain from "@/store/chain"
 
 const snapshotStore = useSnapshot()
+const chainStore = useChain()
 const quasar = useQuasar()
 
 const validatorSearchTxt = ref("")
@@ -135,7 +137,7 @@ const exportJsonTable = () => {
 					dense
 					filled
 					v-model.number="snapshotForm.height"
-					:loading="snapshotStore.loadingBlock"
+					:loading="chainStore.loadingBlock"
 					type="number"
 					clearable
 				/>

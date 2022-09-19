@@ -30,7 +30,7 @@ export const tokenToKeplrCoin = (
 					coinDecimals: denomUnit.exponent,
 					// (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
 					// You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
-					coinGeckoId: network.chain_name,
+					coinGeckoId: coinLookup.coingecko_id,
 				}
 			}
 		}
