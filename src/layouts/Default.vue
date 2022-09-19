@@ -5,6 +5,10 @@ import { ref } from "vue"
 const authStore = useAuth()
 const leftDrawerOpen = ref(false)
 const link = ref("homepage")
+
+const logout = () => {
+	authStore.$reset()
+}
 </script>
 
 <template>
@@ -40,7 +44,7 @@ const link = ref("homepage")
 					class="q-ml-auto"
 					type="submit"
 					color="primary"
-					@click="authStore.$reset"
+					@click="logout"
 					v-else
 				>
 					Disconnect

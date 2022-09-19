@@ -4,13 +4,15 @@ import { MerkledropForm } from "@/models"
 import { Account, Merkledrop } from "@bitsongjs/utils"
 import { btsgAssets } from "@/configs"
 import { BigNumber } from "bignumber.js"
-import useMerkledrop from "@/store/merkledrop"
-import useChain from "@/store/chain"
 import { fromBaseToDisplay } from "@/utils"
 import { exportFile, useQuasar } from "quasar"
+import useAuth from "@/store/auth"
+import useMerkledrop from "@/store/merkledrop"
+import useChain from "@/store/chain"
 
 const merkledropStore = useMerkledrop()
 const chainStore = useChain()
+const authStore = useAuth()
 const quasar = useQuasar()
 
 const merkledropForm = reactive<MerkledropForm>({
@@ -197,7 +199,7 @@ onMounted(() => {
 				</p>
 
 				<div class="col-12 flex justify-end">
-					<q-btn type="submit" color="primary">
+					<q-btn type="submit" color="primary" :disable="!authStore.session">
 						<q-icon name="send" />
 					</q-btn>
 					<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
