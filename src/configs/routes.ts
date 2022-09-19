@@ -17,6 +17,10 @@ export const routes: RouteRecordRaw[] = [
 				path: "merkledrop",
 				component: () => import("@/pages/Merkledrop.vue"),
 			},
+			{
+				path: "fantokens",
+				component: () => import("@/pages/Fantokens.vue"),
+			},
 		],
 	},
 ]
