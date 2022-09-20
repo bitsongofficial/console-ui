@@ -1,3 +1,4 @@
+import { toMicroUnit } from "./../../utils/number"
 import { assets } from "chain-registry"
 import { fromBaseToDisplay } from "@/utils"
 import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
@@ -62,7 +63,18 @@ const useBank = defineStore("bank", {
 						balances.map((balance) => {
 							const asset = assets.assets.find((el) => el.base === balance.denom)
 
-							return asset ? fromBaseToDisplay(balance, asset) : undefined
+							if (asset) {
+								return fromBaseToDisplay(balance, asset)
+							}
+
+							if (btsgStakingCoin) {
+								return {
+									denom: balance.denom,
+									amount: toMicroUnit(balance.amount, -6),
+								}
+							}
+
+							return undefined
 						})
 				  )
 				: []

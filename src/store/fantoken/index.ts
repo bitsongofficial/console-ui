@@ -5,7 +5,10 @@ import {
 	QueryParamsRequest,
 } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/query"
 import { Params } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/params"
-import { MsgIssue } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/tx"
+import {
+	MsgIssue,
+	MsgMint,
+} from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/tx"
 import {
 	PageRequest,
 	PageResponse,
@@ -14,7 +17,7 @@ import Long from "long"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { bitsongStdFee, btsgStakingCoin } from "@/configs"
 import { fromBaseToDisplay, toMicroUnit } from "@/utils"
-import { IssueFantoken } from "@/models"
+import { IssueFantoken, MintFantoken } from "@/models"
 import useAuth from "../auth"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
 import { sortBy } from "lodash"
@@ -22,6 +25,7 @@ import { sortBy } from "lodash"
 export interface FantokenState {
 	loading: boolean
 	issuing: boolean
+	minting: boolean
 	loadingParams: boolean
 	fantokens: FanToken[]
 	fantokensPagination?: PageResponse
@@ -32,6 +36,7 @@ const useFantoken = defineStore("fantoken", {
 	state: (): FantokenState => ({
 		loading: false,
 		issuing: false,
+		minting: false,
 		loadingParams: false,
 		fantokens: [],
 		fantokensPagination: undefined,
@@ -132,6 +137,44 @@ const useFantoken = defineStore("fantoken", {
 					throw error
 				} finally {
 					this.issuing = false
+				}
+			}
+		},
+		async mintFantoken(payload: MintFantoken, fantoken: FanToken) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.minting = true
+
+					const amountMicro = toMicroUnit(payload.amount)
+
+					const msg = MsgMint.fromPartial({
+						coin: {
+							amount: amountMicro,
+							denom: fantoken.denom,
+						},
+						recipient: payload.recipient,
+						minter: authStore.bitsongAddress,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.minting = false
 				}
 			}
 		},

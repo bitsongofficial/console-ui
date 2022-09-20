@@ -6,3 +6,8 @@ export interface IssueFantoken {
 	authority: string
 	minter: string
 }
+
+export interface MintFantoken {
+	amount: number
+	recipient: string
+}

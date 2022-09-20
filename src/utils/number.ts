@@ -2,6 +2,37 @@ import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { Asset } from "@chain-registry/types"
 import { BigNumber } from "bignumber.js"
 
+export const isNegative = (amount: string): boolean => {
+	const number = new BigNumber(amount)
+
+	return number.isNegative()
+}
+
+export const isNaN = (amount: string): boolean => {
+	const number = new BigNumber(amount)
+
+	return number.isNaN()
+}
+
+export const gtnZero = (amount: string): boolean => {
+	const number = new BigNumber(amount)
+
+	return number.gt(0)
+}
+
+export const gteCompare = (amount: string, compare: string): boolean => {
+	const number = new BigNumber(amount)
+
+	return number.gte(new BigNumber(compare))
+}
+
+export const compareBalance = (amount: string, compare: string): boolean => {
+	const number = new BigNumber(amount)
+	const compareNumber = new BigNumber(compare)
+
+	return number.lte(compareNumber)
+}
+
 export const gtCoin = (coin: Coin, compareAmount: string | number) => {
 	return new BigNumber(coin.amount).gt(compareAmount)
 }
