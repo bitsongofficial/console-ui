@@ -61,6 +61,7 @@ const onSubmit = async () => {
 		<q-card class="q-dialog-plugin">
 			<q-form @submit="onSubmit">
 				<q-card-section>
+					<p class="text-bold text-h6">Issue Fantoken</p>
 					<div class="q-col-gutter-md row q-mb-lg">
 						<q-input
 							class="col-12"
@@ -137,7 +138,12 @@ const onSubmit = async () => {
 					</div>
 				</q-card-section>
 				<q-card-actions align="right">
-					<q-btn color="primary" label="Issue" type="submit" />
+					<q-btn
+						color="primary"
+						label="Issue"
+						type="submit"
+						:loading="fantokenStore.issuing"
+					/>
 					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 				</q-card-actions>
 			</q-form>

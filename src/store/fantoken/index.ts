@@ -17,9 +17,11 @@ import { fromBaseToDisplay, toMicroUnit } from "@/utils"
 import { IssueFantoken } from "@/models"
 import useAuth from "../auth"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
+import { sortBy } from "lodash"
 
 export interface FantokenState {
 	loading: boolean
+	issuing: boolean
 	loadingParams: boolean
 	fantokens: FanToken[]
 	fantokensPagination?: PageResponse
@@ -29,6 +31,7 @@ export interface FantokenState {
 const useFantoken = defineStore("fantoken", {
 	state: (): FantokenState => ({
 		loading: false,
+		issuing: false,
 		loadingParams: false,
 		fantokens: [],
 		fantokensPagination: undefined,
@@ -55,6 +58,7 @@ const useFantoken = defineStore("fantoken", {
 			limit = 9999,
 			nextKey = new Uint8Array([])
 		) {
+			const authStore = useAuth()
 			try {
 				this.loading = true
 
@@ -71,7 +75,13 @@ const useFantoken = defineStore("fantoken", {
 					},
 				})
 
-				this.fantokens = response.fantokens
+				this.fantokens = sortBy(response.fantokens, (fantoken) => {
+					if (authStore.bitsongAddress) {
+						return fantoken.minter !== authStore.bitsongAddress
+					}
+
+					return fantoken.metaData?.name ?? fantoken.denom
+				})
 				this.fantokensPagination = response.pagination
 			} catch (error) {
 				console.error(error)
@@ -84,7 +94,7 @@ const useFantoken = defineStore("fantoken", {
 
 			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
 				try {
-					this.loading = true
+					this.issuing = true
 
 					const msg = MsgIssue.fromPartial({
 						name: payload.name,
@@ -121,7 +131,7 @@ const useFantoken = defineStore("fantoken", {
 					console.error(error)
 					throw error
 				} finally {
-					this.loading = false
+					this.issuing = false
 				}
 			}
 		},

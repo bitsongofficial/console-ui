@@ -68,6 +68,13 @@ const columns: TableColumn[] = [
 			return `${maxSupply} ${row.metaData?.symbol.toUpperCase()}`
 		},
 	},
+	{
+		name: "actions",
+		required: true,
+		label: "",
+		align: "right",
+		field: "actions",
+	},
 ]
 
 const pagination = {
@@ -139,6 +146,38 @@ const openCreateDialog = () => {
 					>
 						<q-icon name="add"></q-icon>
 					</q-btn>
+				</template>
+				<template v-slot:body-cell-actions="actionsProps">
+					<q-td :props="actionsProps">
+						<q-btn
+							flat
+							unelevated
+							:ripple="false"
+							v-if="actionsProps.row.minter === authStore.bitsongAddress"
+						>
+							<q-icon name="more_vert"></q-icon>
+
+							<q-menu>
+								<q-list style="min-width: 140px">
+									<q-item clickable v-close-popup>
+										<q-item-section>Mint</q-item-section>
+									</q-item>
+									<q-item clickable v-close-popup>
+										<q-item-section>Burn</q-item-section>
+									</q-item>
+									<q-item clickable v-close-popup>
+										<q-item-section>Change URI</q-item-section>
+									</q-item>
+									<q-item clickable v-close-popup>
+										<q-item-section>Change Authority</q-item-section>
+									</q-item>
+									<q-item clickable v-close-popup>
+										<q-item-section>Change Authority</q-item-section>
+									</q-item>
+								</q-list>
+							</q-menu>
+						</q-btn>
+					</q-td>
 				</template>
 			</q-table>
 		</div>
