@@ -28,17 +28,6 @@ const merkledrop = ref<Merkledrop>()
 
 const onSubmit = async () => {
 	if (merkledropForm.asset) {
-		console.log(
-			fromDisplayToBase(
-				{
-					$type: "cosmos.base.v1beta1.Coin",
-					amount: merkledropForm.coin.toString(),
-					denom: merkledropForm.asset.display,
-				},
-				merkledropForm.asset
-			),
-			merkledropForm.coin
-		)
 		try {
 			const merkledropId = await merkledropStore.createMerkledrop({
 				startHeight: merkledropForm.startHeight,

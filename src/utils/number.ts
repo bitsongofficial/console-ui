@@ -21,6 +21,10 @@ export const sumCoins = (left: Coin, right: Coin, asset: Asset): Coin => {
 	}
 }
 
+export const toMicroUnit = (amount: string | number, exponent = 6) => {
+	return new BigNumber(amount).multipliedBy(`1e${exponent}`).toString()
+}
+
 export const fromBaseToDenom = (
 	coin: Coin,
 	asset: Asset,

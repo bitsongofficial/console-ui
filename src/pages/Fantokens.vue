@@ -2,15 +2,18 @@
 import { btsgAssets, btsgStakingCoin } from "@/configs"
 import { TableColumn } from "@/models"
 import { FanToken } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/fantoken"
-import { onMounted, ref } from "vue"
+import { onMounted } from "vue"
 import { fromBaseToDisplay } from "@/utils"
 import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { useVueFuse } from "vue-fuse"
+import { useQuasar } from "quasar"
+import { IssueFantoken } from "@/components"
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
 
 const fantokenStore = useFantoken()
 const authStore = useAuth()
+const quasar = useQuasar()
 
 const { search, runSearch, results, noResults } = useVueFuse(
 	fantokenStore.fantokens,
@@ -74,7 +77,10 @@ const pagination = {
 }
 
 onMounted(() => {
-	fantokenStore.loadFantokens()
+	setTimeout(() => {
+		fantokenStore.loadFantokens()
+		fantokenStore.loadParams()
+	}, 500)
 })
 
 const onSearchText = (value: string | number | null) => {
@@ -83,6 +89,12 @@ const onSearchText = (value: string | number | null) => {
 		runSearch(search.value)
 	}
 }
+
+const openCreateDialog = () => {
+	quasar.dialog({
+		component: IssueFantoken,
+	})
+}
 </script>
 
 <template>
@@ -90,9 +102,7 @@ const onSearchText = (value: string | number | null) => {
 		<div class="col-auto">
 			<div class="row">
 				<div class="col">
-					<h4 class="q-mb-lg q-mt-none text-bold">
-						Fantokens {{ noResults }} {{ results.length }}
-					</h4>
+					<h4 class="q-mb-lg q-mt-none text-bold">Fantokens</h4>
 				</div>
 			</div>
 		</div>
@@ -107,13 +117,24 @@ const onSearchText = (value: string | number | null) => {
 			>
 				<template v-slot:top-right>
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
 						label="Search"
 						dense
 						filled
 						v-model="search"
 						@update:model-value="onSearchText"
 					/>
+
+					<q-btn
+						class="q-ml-md"
+						color="primary"
+						no-caps
+						round
+						rounded
+						:disable="!authStore.session"
+						@click="openCreateDialog"
+					>
+						<q-icon name="add"></q-icon>
+					</q-btn>
 				</template>
 			</q-table>
 		</div>
