@@ -32,6 +32,7 @@ export interface FantokenState {
 	issuing: boolean
 	minting: boolean
 	burning: boolean
+	disablingMinting: boolean
 	changingUri: boolean
 	changingAuthority: boolean
 	changingMinter: boolean
@@ -47,6 +48,7 @@ const useFantoken = defineStore("fantoken", {
 		issuing: false,
 		minting: false,
 		burning: false,
+		disablingMinting: false,
 		changingUri: false,
 		changingAuthority: false,
 		changingMinter: false,
@@ -321,6 +323,38 @@ const useFantoken = defineStore("fantoken", {
 					throw error
 				} finally {
 					this.changingMinter = false
+				}
+			}
+		},
+		async disableMint(fantoken: FanToken) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.disablingMinting = true
+
+					const msg = MsgDisableMint.fromPartial({
+						denom: fantoken.denom,
+						minter: fantoken.minter,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.disablingMinting = false
 				}
 			}
 		},

@@ -180,6 +180,39 @@ const openChangeMinterDialog = (fantoken: FanToken) => {
 			fantokenStore.loadFantokens()
 		})
 }
+
+const openDisableMintDialog = (fantoken: FanToken) => {
+	quasar
+		.dialog({
+			title: "Disable Mint",
+			message:
+				"Are you sure you want to disable mint? This operation is not reversible",
+			cancel: true,
+		})
+		.onOk(async () => {
+			try {
+				await fantokenStore.disableMint(fantoken)
+
+				quasar.notify({
+					message: `Minting disabled for ${fantoken.metaData?.name}`,
+					color: "positive",
+					icon: "warning",
+					closeBtn: true,
+					timeout: 10000,
+				})
+			} catch (error) {
+				console.error(error)
+
+				quasar.notify({
+					message: `Something went wrong: ${(error as Error).message}`,
+					color: "negative",
+					icon: "warning",
+					closeBtn: true,
+					timeout: 10000,
+				})
+			}
+		})
+}
 </script>
 
 <template>
@@ -252,6 +285,14 @@ const openChangeMinterDialog = (fantoken: FanToken) => {
 										@click="openBurnDialog(actionsProps.row)"
 									>
 										<q-item-section>Burn</q-item-section>
+									</q-item>
+									<q-item
+										clickable
+										v-close-popup
+										@click="openDisableMintDialog(actionsProps.row)"
+										v-if="actionsProps.row.minter === authStore.bitsongAddress"
+									>
+										<q-item-section>Disable Mint</q-item-section>
 									</q-item>
 									<q-item
 										clickable
