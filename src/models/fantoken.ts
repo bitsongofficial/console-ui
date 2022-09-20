@@ -11,3 +11,7 @@ export interface MintFantoken {
 	amount: number
 	recipient: string
 }
+
+export interface BurnFantoken {
+	amount: number
+}

@@ -8,6 +8,7 @@ import { Params } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/pa
 import {
 	MsgIssue,
 	MsgMint,
+	MsgBurn,
 } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/tx"
 import {
 	PageRequest,
@@ -17,7 +18,7 @@ import Long from "long"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { bitsongStdFee, btsgStakingCoin } from "@/configs"
 import { fromBaseToDisplay, toMicroUnit } from "@/utils"
-import { IssueFantoken, MintFantoken } from "@/models"
+import { BurnFantoken, IssueFantoken, MintFantoken } from "@/models"
 import useAuth from "../auth"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
 import { sortBy } from "lodash"
@@ -26,6 +27,7 @@ export interface FantokenState {
 	loading: boolean
 	issuing: boolean
 	minting: boolean
+	burning: boolean
 	loadingParams: boolean
 	fantokens: FanToken[]
 	fantokensPagination?: PageResponse
@@ -37,6 +39,7 @@ const useFantoken = defineStore("fantoken", {
 		loading: false,
 		issuing: false,
 		minting: false,
+		burning: false,
 		loadingParams: false,
 		fantokens: [],
 		fantokensPagination: undefined,
@@ -175,6 +178,43 @@ const useFantoken = defineStore("fantoken", {
 					throw error
 				} finally {
 					this.minting = false
+				}
+			}
+		},
+		async burnFantoken(payload: BurnFantoken, fantoken: FanToken) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.burning = true
+
+					const amountMicro = toMicroUnit(payload.amount)
+
+					const msg = MsgBurn.fromPartial({
+						coin: {
+							amount: amountMicro,
+							denom: fantoken.denom,
+						},
+						sender: authStore.bitsongAddress,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.burning = false
 				}
 			}
 		},

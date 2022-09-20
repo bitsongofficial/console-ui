@@ -79,6 +79,18 @@ const useBank = defineStore("bank", {
 				  )
 				: []
 		},
+		balance: ({ balances }) => {
+			return (denom: string) => {
+				const balance = balances.find((el) => el.denom === denom)
+
+				if (balance) {
+					return {
+						denom: balance.denom,
+						amount: toMicroUnit(balance.amount, -6),
+					}
+				}
+			}
+		},
 	},
 	persistedState: {
 		persist: false,

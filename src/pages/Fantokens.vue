@@ -7,7 +7,7 @@ import { fromBaseToDisplay } from "@/utils"
 import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { useVueFuse } from "vue-fuse"
 import { useQuasar } from "quasar"
-import { IssueFantoken, MintFantoken } from "@/components"
+import { IssueFantoken, MintFantoken, BurnFantoken } from "@/components"
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
 import useBank from "@/store/bank"
@@ -121,6 +121,19 @@ const openMintDialog = (fantoken: FanToken) => {
 			bankStore.loadBalance()
 		})
 }
+
+const openBurnDialog = (fantoken: FanToken) => {
+	quasar
+		.dialog({
+			component: BurnFantoken,
+			componentProps: {
+				fantoken,
+			},
+		})
+		.onOk(() => {
+			bankStore.loadBalance()
+		})
+}
 </script>
 
 <template>
@@ -181,7 +194,11 @@ const openMintDialog = (fantoken: FanToken) => {
 									>
 										<q-item-section>Mint</q-item-section>
 									</q-item>
-									<q-item clickable v-close-popup>
+									<q-item
+										clickable
+										v-close-popup
+										@click="openBurnDialog(actionsProps.row)"
+									>
 										<q-item-section>Burn</q-item-section>
 									</q-item>
 									<q-item clickable v-close-popup>
