@@ -85,11 +85,12 @@ const onSubmit = async () => {
 						/>
 						<q-input
 							class="col-12"
-							label="Uri"
+							label="URI"
 							dense
 							filled
 							v-model="dataForm.uri"
-							hint="Your fantoken uri (optional)"
+							hint="Your fantoken uri"
+							:rules="[(val) => !!val || 'URI field is required']"
 						/>
 						<q-input
 							class="col-12"

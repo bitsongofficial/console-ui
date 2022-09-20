@@ -9,6 +9,9 @@ import {
 	MsgIssue,
 	MsgMint,
 	MsgBurn,
+	MsgSetUri,
+	MsgSetAuthority,
+	MsgSetMinter,
 } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/tx"
 import {
 	PageRequest,
@@ -28,6 +31,9 @@ export interface FantokenState {
 	issuing: boolean
 	minting: boolean
 	burning: boolean
+	changingUri: boolean
+	changingAuthority: boolean
+	changingMinter: boolean
 	loadingParams: boolean
 	fantokens: FanToken[]
 	fantokensPagination?: PageResponse
@@ -40,6 +46,9 @@ const useFantoken = defineStore("fantoken", {
 		issuing: false,
 		minting: false,
 		burning: false,
+		changingUri: false,
+		changingAuthority: false,
+		changingMinter: false,
 		loadingParams: false,
 		fantokens: [],
 		fantokensPagination: undefined,
@@ -215,6 +224,39 @@ const useFantoken = defineStore("fantoken", {
 					throw error
 				} finally {
 					this.burning = false
+				}
+			}
+		},
+		async setUriFantoken(payload: Partial<IssueFantoken>, fantoken: FanToken) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.changingUri = true
+
+					const msg = MsgSetUri.fromPartial({
+						denom: fantoken.denom,
+						authority: fantoken.metaData?.authority ?? authStore.bitsongAddress,
+						uri: payload.uri ?? fantoken.metaData?.uri,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.changingUri = false
 				}
 			}
 		},
