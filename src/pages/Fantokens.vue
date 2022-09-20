@@ -91,9 +91,13 @@ const onSearchText = (value: string | number | null) => {
 }
 
 const openCreateDialog = () => {
-	quasar.dialog({
-		component: IssueFantoken,
-	})
+	quasar
+		.dialog({
+			component: IssueFantoken,
+		})
+		.onOk(() => {
+			fantokenStore.loadFantokens()
+		})
 }
 </script>
 
