@@ -12,6 +12,7 @@ import {
 	MsgSetUri,
 	MsgSetAuthority,
 	MsgSetMinter,
+	MsgDisableMint,
 } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/tx"
 import {
 	PageRequest,
@@ -287,6 +288,39 @@ const useFantoken = defineStore("fantoken", {
 					throw error
 				} finally {
 					this.changingAuthority = false
+				}
+			}
+		},
+		async setMinterFantoken(payload: Partial<IssueFantoken>, fantoken: FanToken) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.changingMinter = true
+
+					const msg = MsgSetMinter.fromPartial({
+						denom: fantoken.denom,
+						oldMinter: fantoken.minter,
+						newMinter: payload.minter,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.changingMinter = false
 				}
 			}
 		},

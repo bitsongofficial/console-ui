@@ -12,7 +12,8 @@ import {
 	MintFantoken,
 	BurnFantoken,
 	ChangeUriFantoken,
-	ChangeAuthority,
+	ChangeAuthorityFantoken,
+	ChangeMinterFantoken,
 } from "@/components"
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
@@ -157,7 +158,20 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 const openChangeAuthorityDialog = (fantoken: FanToken) => {
 	quasar
 		.dialog({
-			component: ChangeAuthority,
+			component: ChangeAuthorityFantoken,
+			componentProps: {
+				fantoken,
+			},
+		})
+		.onOk(() => {
+			fantokenStore.loadFantokens()
+		})
+}
+
+const openChangeMinterDialog = (fantoken: FanToken) => {
+	quasar
+		.dialog({
+			component: ChangeMinterFantoken,
 			componentProps: {
 				fantoken,
 			},
@@ -262,6 +276,7 @@ const openChangeAuthorityDialog = (fantoken: FanToken) => {
 									<q-item
 										clickable
 										v-close-popup
+										@click="openChangeMinterDialog(actionsProps.row)"
 										v-if="actionsProps.row.minter === authStore.bitsongAddress"
 									>
 										<q-item-section>Change Minter</q-item-section>
