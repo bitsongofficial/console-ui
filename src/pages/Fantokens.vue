@@ -61,7 +61,7 @@ const columns: TableColumn[] = [
 						asset
 					)
 
-					return `${newCoin.amount} ${newCoin.denom.toUpperCase()}`
+					return `${newCoin.amount} ${row.metaData?.symbol.toUpperCase()}`
 				}
 			}
 
