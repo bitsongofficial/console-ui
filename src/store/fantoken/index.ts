@@ -92,13 +92,7 @@ const useFantoken = defineStore("fantoken", {
 					},
 				})
 
-				this.fantokens = sortBy(response.fantokens, (fantoken) => {
-					if (authStore.bitsongAddress) {
-						return fantoken.minter !== authStore.bitsongAddress
-					}
-
-					return fantoken.metaData?.name ?? fantoken.denom
-				})
+				this.fantokens = response.fantokens
 				this.fantokensPagination = response.pagination
 			} catch (error) {
 				console.error(error)
@@ -260,8 +254,55 @@ const useFantoken = defineStore("fantoken", {
 				}
 			}
 		},
+		async setAuthorityFantoken(
+			payload: Partial<IssueFantoken>,
+			fantoken: FanToken
+		) {
+			const authStore = useAuth()
+
+			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
+				try {
+					this.changingAuthority = true
+
+					const msg = MsgSetAuthority.fromPartial({
+						denom: fantoken.denom,
+						oldAuthority: fantoken.metaData?.authority ?? authStore.bitsongAddress,
+						newAuthority: payload.authority ?? fantoken.metaData?.authority,
+					})
+
+					const signedTxBytes = await bitsongClient.txClient.sign(
+						authStore.bitsongAddress,
+						[msg],
+						bitsongStdFee,
+						""
+					)
+
+					let txRes: DeliverTxResponse | undefined
+
+					if (signedTxBytes) {
+						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+					}
+				} catch (error) {
+					console.error(error)
+					throw error
+				} finally {
+					this.changingAuthority = false
+				}
+			}
+		},
 	},
 	getters: {
+		sortedFantokens: ({ fantokens }) => {
+			const authStore = useAuth()
+
+			return sortBy(fantokens, (fantoken) => {
+				if (authStore.bitsongAddress) {
+					return fantoken.minter !== authStore.bitsongAddress
+				}
+
+				return fantoken.metaData?.name ?? fantoken.denom
+			})
+		},
 		issueFee: ({ params }) => {
 			if (params && params.issueFee && btsgStakingCoin) {
 				return fromBaseToDisplay(params.issueFee, btsgStakingCoin)

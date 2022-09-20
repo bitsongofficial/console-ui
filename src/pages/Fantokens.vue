@@ -12,6 +12,7 @@ import {
 	MintFantoken,
 	BurnFantoken,
 	ChangeUriFantoken,
+	ChangeAuthority,
 } from "@/components"
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
@@ -23,7 +24,7 @@ const bankStore = useBank()
 const quasar = useQuasar()
 
 const { search, runSearch, results, noResults } = useVueFuse(
-	fantokenStore.fantokens,
+	fantokenStore.sortedFantokens,
 	{
 		keys: ["metaData.name", "metaData.symbol", "minter"],
 	}
@@ -152,6 +153,19 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 			fantokenStore.loadFantokens()
 		})
 }
+
+const openChangeAuthorityDialog = (fantoken: FanToken) => {
+	quasar
+		.dialog({
+			component: ChangeAuthority,
+			componentProps: {
+				fantoken,
+			},
+		})
+		.onOk(() => {
+			fantokenStore.loadFantokens()
+		})
+}
 </script>
 
 <template>
@@ -166,7 +180,9 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 
 		<div class="col-auto">
 			<q-table
-				:rows="noResults || search.length === 0 ? fantokenStore.fantokens : results"
+				:rows="
+					noResults || search.length === 0 ? fantokenStore.sortedFantokens : results
+				"
 				:loading="fantokenStore.loading"
 				:columns="columns"
 				:pagination="pagination"
@@ -199,7 +215,10 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 							flat
 							unelevated
 							:ripple="false"
-							v-if="actionsProps.row.minter === authStore.bitsongAddress"
+							v-if="
+								actionsProps.row.minter === authStore.bitsongAddress ||
+								actionsProps.row.metaData.authority === authStore.bitsongAddress
+							"
 						>
 							<q-icon name="more_vert"></q-icon>
 
@@ -209,6 +228,7 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 										clickable
 										v-close-popup
 										@click="openMintDialog(actionsProps.row)"
+										v-if="actionsProps.row.minter === authStore.bitsongAddress"
 									>
 										<q-item-section>Mint</q-item-section>
 									</q-item>
@@ -232,6 +252,7 @@ const openChangeUriDialog = (fantoken: FanToken) => {
 									<q-item
 										clickable
 										v-close-popup
+										@click="openChangeAuthorityDialog(actionsProps.row)"
 										v-if="
 											actionsProps.row.metaData.authority === authStore.bitsongAddress
 										"

@@ -58,6 +58,9 @@ const useAuth = defineStore("auth", {
 			}
 		},
 	},
+	persistedState: {
+		persist: false,
+	},
 })
 
 if (import.meta.hot) {
