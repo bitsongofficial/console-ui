@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@bitsongjs/client': ^2.2.0
+  '@bitsongjs/client': ^2.4.0
   '@bitsongjs/utils': ^2.1.0
   '@chain-registry/types': ^0.8.0
   '@cosmjs/encoding': ^0.29.0
@@ -21,6 +21,7 @@ specifiers:
   pinia: ^2.0.22
   pinia-plugin-persistedstate-2: ^2.0.1
   quasar: ~2.7.7
+  rxjs: ^7.5.7
   sass: 1.32.12
   typescript: ^4.6.4
   vite: ^3.1.0
@@ -30,7 +31,7 @@ specifiers:
   vue-tsc: ^0.40.4
 
 dependencies:
-  '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.2.0
+  '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.4.0
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
   '@cosmjs/encoding': registry.npmjs.org/@cosmjs/encoding/0.29.0
   '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.29.0
@@ -45,6 +46,7 @@ dependencies:
   pinia: registry.npmjs.org/pinia/2.0.22_arz4dztosvwy2ghjrlh2wdhejm
   pinia-plugin-persistedstate-2: registry.npmjs.org/pinia-plugin-persistedstate-2/2.0.1_pinia@2.0.22
   quasar: registry.npmjs.org/quasar/2.7.7
+  rxjs: registry.npmjs.org/rxjs/7.5.7
   vue: registry.npmjs.org/vue/3.2.39
   vue-fuse: registry.npmjs.org/vue-fuse/4.1.1_fuse.js@6.6.2+vue@3.2.39
   vue-router: registry.npmjs.org/vue-router/4.1.5_vue@3.2.39
@@ -77,16 +79,16 @@ packages:
     dependencies:
       regenerator-runtime: registry.npmjs.org/regenerator-runtime/0.13.9
 
-  registry.npmjs.org/@bitsongjs/client/2.2.0:
-    resolution: {integrity: sha512-RPs35DA9unwk7MXI+cfO2BGwHZDip2ON/cgNzG2s06D0apzYPLERlpUJvjCXXrbc4taiW2V5mvKDNMGIYI81gA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/client/-/client-2.2.0.tgz}
+  registry.npmjs.org/@bitsongjs/client/2.4.0:
+    resolution: {integrity: sha512-vDcEGf+l3k/RrGISW6qcogerBi/yOzGw/LcQ7K9y0RlL06LPYnziQvdY/SQKjBaSVUfNww/m5311Z/YTyNqxGQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/client/-/client-2.4.0.tgz}
     name: '@bitsongjs/client'
-    version: 2.2.0
+    version: 2.4.0
     dependencies:
       '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
       '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.29.0
       '@cosmjs/stargate': registry.npmjs.org/@cosmjs/stargate/0.29.0
       '@cosmjs/tendermint-rpc': registry.npmjs.org/@cosmjs/tendermint-rpc/0.29.0
-      rxjs: registry.npmjs.org/rxjs/7.5.6
+      rxjs: registry.npmjs.org/rxjs/7.5.7
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -2125,10 +2127,10 @@ packages:
       fsevents: registry.npmjs.org/fsevents/2.3.2
     dev: true
 
-  registry.npmjs.org/rxjs/7.5.6:
-    resolution: {integrity: sha512-dnyv2/YsXhnm461G+R/Pe5bWP41Nm6LBXEYWI6eiFP4fiwx6WRI/CD0zbdVAudd9xwLEF2IDcKXLHit0FYjUzw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/rxjs/-/rxjs-7.5.6.tgz}
+  registry.npmjs.org/rxjs/7.5.7:
+    resolution: {integrity: sha512-z9MzKh/UcOqB3i20H6rtrlaE/CgjLOvheWK/9ILrbhROGTweAi1BaFsTT9FbwZi5Trr1qNRs+MXkhmR06awzQA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/rxjs/-/rxjs-7.5.7.tgz}
     name: rxjs
-    version: 7.5.6
+    version: 7.5.7
     dependencies:
       tslib: registry.npmjs.org/tslib/2.4.0
     dev: false

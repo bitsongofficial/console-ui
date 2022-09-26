@@ -1,4 +1,4 @@
-import { bitsongClient, stakingClient } from "@/services"
+import { bitsongClient } from "@/services"
 import {
 	DelegationResponse,
 	Validator,
@@ -11,6 +11,7 @@ import { reduce, groupBy, compact } from "lodash"
 import { btsgStakingCoin } from "@/configs"
 import { fromBaseToDisplay, gteCoin, sumCoins } from "@/utils"
 import Long from "long"
+import { lastValueFrom } from "rxjs"
 
 export interface SnapshotState {
 	loading: boolean
@@ -33,7 +34,9 @@ const useSnapshot = defineStore("snapshot", {
 			try {
 				this.loadingValidators = true
 
-				const response = await stakingClient.Validators({
+				const query = await lastValueFrom(bitsongClient.query)
+
+				const response = await query.staking.Validators({
 					$type: "cosmos.staking.v1beta1.QueryValidatorsRequest",
 					status: "BOND_STATUS_BONDED",
 					pagination: {
@@ -66,11 +69,11 @@ const useSnapshot = defineStore("snapshot", {
 					await this.loadValidators()
 				}
 
-				bitsongClient.setQueryHeight(search.height)
+				const query = await lastValueFrom(bitsongClient.query)
 
-				const heightStakingClient = new StakingQueryClientImpl(
-					bitsongClient.queryClient
-				)
+				const heightStakingClient = search.height
+					? query.staking.setHeight(search.height)
+					: query.staking
 
 				const validatorAddresses =
 					search.validators.length > 0

@@ -2,8 +2,8 @@ import { acceptHMRUpdate, defineStore } from "pinia"
 import { AccountData } from "@cosmjs/proto-signing"
 import { tokenToExperimentalSuggestChain } from "@/common"
 import { AppCurrency } from "@keplr-wallet/types"
-import { bitsongChain, btsgStakingCoin } from "@/configs"
-import { connectClient } from "@/services"
+import { bitsongChain, bitsongRpcAddresses, btsgStakingCoin } from "@/configs"
+import { bitsongClient } from "@/services"
 
 export interface KeplrState {
 	accounts: AccountData[]
@@ -47,7 +47,11 @@ const useKeplr = defineStore("keplr", {
 						bitsongChain.chain_id
 					)
 
-					connectClient(aminoOfflineSigner)
+					await bitsongClient.connectSigner({
+						type: "tendermint",
+						endpoints: bitsongRpcAddresses,
+						signer: aminoOfflineSigner,
+					})
 
 					const tokenAccounts = [...(await offlineSigner.getAccounts())]
 

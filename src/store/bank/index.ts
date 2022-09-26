@@ -1,13 +1,12 @@
-import { toMicroUnit } from "./../../utils/number"
-import { assets } from "chain-registry"
-import { fromBaseToDisplay } from "@/utils"
+import { fromBaseToDisplay, toMicroUnit } from "@/utils"
 import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { acceptHMRUpdate, defineStore } from "pinia"
-import { bankClient } from "@/services"
+import { bitsongClient } from "@/services"
 import { QueryAllBalancesRequest } from "@bitsongjs/client/dist/codec/cosmos/bank/v1beta1/query"
 import { btsgStakingCoin, btsgAssets } from "@/configs"
-import useAuth from "@/store/auth"
 import { compact } from "lodash"
+import useAuth from "@/store/auth"
+import { lastValueFrom } from "rxjs"
 
 export interface BankState {
 	loading: boolean
@@ -38,7 +37,9 @@ const useBank = defineStore("bank", {
 				const bitsongAddress = authStore.bitsongAddress
 
 				if (bitsongAddress) {
-					const balancesResponse = await bankClient.AllBalances({
+					const query = await lastValueFrom(bitsongClient.query)
+
+					const balancesResponse = await query.bank.AllBalances({
 						$type: QueryAllBalancesRequest.$type,
 						address: bitsongAddress,
 					})

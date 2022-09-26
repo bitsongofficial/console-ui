@@ -1,4 +1,4 @@
-import { bitsongClient, fantokenClient } from "@/services"
+import { bitsongClient } from "@/services"
 import { FanToken } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/fantoken"
 import {
 	QueryFanTokensRequest,
@@ -26,6 +26,7 @@ import { BurnFantoken, IssueFantoken, MintFantoken } from "@/models"
 import useAuth from "../auth"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
 import { sortBy } from "lodash"
+import { lastValueFrom } from "rxjs"
 
 export interface FantokenState {
 	loading: boolean
@@ -62,7 +63,9 @@ const useFantoken = defineStore("fantoken", {
 			try {
 				this.loadingParams = true
 
-				const params = await fantokenClient.Params({
+				const query = await lastValueFrom(bitsongClient.query)
+
+				const params = await query.fantoken.Params({
 					$type: QueryParamsRequest.$type,
 				})
 
@@ -82,7 +85,9 @@ const useFantoken = defineStore("fantoken", {
 			try {
 				this.loading = true
 
-				const response = await fantokenClient.FanTokens({
+				const query = await lastValueFrom(bitsongClient.query)
+
+				const response = await query.fantoken.FanTokens({
 					$type: QueryFanTokensRequest.$type,
 					authority,
 					pagination: {
@@ -119,27 +124,31 @@ const useFantoken = defineStore("fantoken", {
 						minter: payload.minter,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
-
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
-
-						const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
-
-						const denomAttr = logs.findAttribute(
-							parsedLogs,
-							"bitsong.fantoken.v1beta1.EventIssue",
-							"denom"
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
 						)
 
-						return denomAttr.value.slice(1, -1)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+
+							const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
+
+							const denomAttr = logs.findAttribute(
+								parsedLogs,
+								"bitsong.fantoken.v1beta1.EventIssue",
+								"denom"
+							)
+
+							return denomAttr.value.slice(1, -1)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -167,17 +176,21 @@ const useFantoken = defineStore("fantoken", {
 						minter: authStore.bitsongAddress,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -204,17 +217,21 @@ const useFantoken = defineStore("fantoken", {
 						sender: authStore.bitsongAddress,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -237,17 +254,21 @@ const useFantoken = defineStore("fantoken", {
 						uri: payload.uri ?? fantoken.metaData?.uri,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -273,17 +294,21 @@ const useFantoken = defineStore("fantoken", {
 						newAuthority: payload.authority ?? fantoken.metaData?.authority,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -306,17 +331,21 @@ const useFantoken = defineStore("fantoken", {
 						newMinter: payload.minter,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)
@@ -338,17 +367,21 @@ const useFantoken = defineStore("fantoken", {
 						minter: fantoken.minter,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
 
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
 					}
 				} catch (error) {
 					console.error(error)

@@ -1,4 +1,5 @@
-import { baseClient } from "@/services"
+import { lastValueFrom } from "rxjs"
+import { bitsongClient } from "@/services"
 import { GetLatestBlockRequest } from "@bitsongjs/client/dist/codec/cosmos/base/tendermint/v1beta1/query"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { Block } from "@bitsongjs/client/dist/codec/tendermint/types/block"
@@ -18,7 +19,9 @@ const useChain = defineStore("chain", {
 			try {
 				this.loadingBlock = true
 
-				const response = await baseClient.GetLatestBlock({
+				const query = await lastValueFrom(bitsongClient.query)
+
+				const response = await query.base.GetLatestBlock({
 					$type: GetLatestBlockRequest.$type,
 				})
 

@@ -1,4 +1,4 @@
-import { bitsongClient, merkledropClient } from "@/services"
+import { bitsongClient } from "@/services"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { QueryParamsRequest } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/query"
 import { MsgCreate } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/tx"
@@ -8,6 +8,7 @@ import { bitsongStdFee, btsgStakingCoin } from "@/configs"
 import { MerkledropCreate } from "@/models"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
 import useAuth from "@/store/auth"
+import { lastValueFrom } from "rxjs"
 
 export interface MerkledropState {
 	loading: boolean
@@ -26,7 +27,9 @@ const useMerkledrop = defineStore("merkledrop", {
 			try {
 				this.loadingParams = true
 
-				const params = await merkledropClient.Params({
+				const query = await lastValueFrom(bitsongClient.query)
+
+				const params = await query.merkledrop.Params({
 					$type: QueryParamsRequest.$type,
 				})
 
@@ -52,27 +55,31 @@ const useMerkledrop = defineStore("merkledrop", {
 						startHeight: payload.startHeight,
 					})
 
-					const signedTxBytes = await bitsongClient.txClient.sign(
-						authStore.bitsongAddress,
-						[msg],
-						bitsongStdFee,
-						""
-					)
+					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					let txRes: DeliverTxResponse | undefined
-
-					if (signedTxBytes) {
-						txRes = await bitsongClient.txClient.broadcast(signedTxBytes)
-
-						const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
-
-						const merkledropIdAttr = logs.findAttribute(
-							parsedLogs,
-							"bitsong.merkledrop.v1beta1.EventCreate",
-							"merkledrop_id"
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
 						)
 
-						return merkledropIdAttr.value.slice(1, -1)
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+
+							const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
+
+							const merkledropIdAttr = logs.findAttribute(
+								parsedLogs,
+								"bitsong.merkledrop.v1beta1.EventCreate",
+								"merkledrop_id"
+							)
+
+							return merkledropIdAttr.value.slice(1, -1)
+						}
 					}
 				} catch (error) {
 					console.error(error)
