@@ -18,6 +18,7 @@ import {
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
 import useBank from "@/store/bank"
+import { formatShortAddress } from "@/common"
 
 const fantokenStore = useFantoken()
 const authStore = useAuth()
@@ -40,11 +41,32 @@ const columns: TableColumn[] = [
 		field: (row: FanToken) => row.metaData?.name ?? "",
 	},
 	{
+		name: "denom",
+		required: true,
+		label: "Denom",
+		align: "left",
+		field: (row: FanToken) => row.denom,
+	},
+	{
 		name: "symbol",
 		required: true,
 		label: "Symbol",
 		align: "left",
 		field: (row: FanToken) => (row.metaData?.symbol ?? "").toUpperCase(),
+	},
+	{
+		name: "minter",
+		required: true,
+		label: "Minter",
+		align: "left",
+		field: (row: FanToken) => formatShortAddress(row.minter),
+	},
+	{
+		name: "authority",
+		required: true,
+		label: "Authority",
+		align: "left",
+		field: (row: FanToken) => formatShortAddress(row.metaData?.authority ?? ""),
 	},
 	{
 		name: "maxSupply",
