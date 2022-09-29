@@ -94,6 +94,19 @@ const logout = () => {
 
 					<q-item-section>Fantokens</q-item-section>
 				</q-item>
+				<q-item
+					clickable
+					v-ripple
+					:active="link === 'nft'"
+					@click="link = 'nft'"
+					to="/nft"
+				>
+					<q-item-section avatar>
+						<q-icon name="grain" />
+					</q-item-section>
+
+					<q-item-section>NFT</q-item-section>
+				</q-item>
 			</q-list>
 		</q-drawer>
 
