@@ -18,7 +18,7 @@ import {
 import useAuth from "@/store/auth"
 import useFantoken from "@/store/fantoken"
 import useBank from "@/store/bank"
-import { formatShortAddress } from "@/common"
+import { formatShortAddress, formatShortText } from "@/common"
 
 const fantokenStore = useFantoken()
 const authStore = useAuth()
@@ -45,7 +45,7 @@ const columns: TableColumn[] = [
 		required: true,
 		label: "Denom",
 		align: "left",
-		field: (row: FanToken) => row.denom,
+		field: (row: FanToken) => formatShortText(row.denom, 3),
 	},
 	{
 		name: "symbol",
@@ -67,6 +67,13 @@ const columns: TableColumn[] = [
 		label: "Authority",
 		align: "left",
 		field: (row: FanToken) => formatShortAddress(row.metaData?.authority ?? ""),
+	},
+	{
+		name: "uri",
+		required: true,
+		label: "URI",
+		align: "left",
+		field: (row: FanToken) => formatShortText(row.metaData?.uri ?? ""),
 	},
 	{
 		name: "maxSupply",
