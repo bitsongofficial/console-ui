@@ -21,6 +21,11 @@ const nftForm = reactive({
 	nftStorageToken: "",
 	pinataApiKey: "",
 	pinataSecretApiKey: "",
+	symbol: "",
+	name: "",
+	uri: "",
+	isMutable: false,
+	updateAuthority: "",
 })
 
 const onSubmit = async () => {
@@ -83,22 +88,22 @@ const onSubmit = async () => {
 				</div>
 			</div>
 
-			<q-card class="q-pa-lg" bordered>
-				<div class="flex">
-					<q-tabs
-						v-model="providerType"
-						dense
-						no-caps
-						inline-label
-						class="text-white text-bold q-mb-lg"
-						indicator-color="primary"
-					>
-						<q-tab :ripple="false" name="nft.storage" label="NFT.Storage" />
-						<q-tab :ripple="false" name="pinata" label="Pinata" />
-					</q-tabs>
-				</div>
+			<q-form @submit="onSubmit">
+				<q-card class="q-pa-lg q-mb-md" bordered>
+					<div class="flex">
+						<q-tabs
+							v-model="providerType"
+							dense
+							no-caps
+							inline-label
+							class="text-white text-bold q-mb-lg"
+							indicator-color="primary"
+						>
+							<q-tab :ripple="false" name="nft.storage" label="NFT.Storage" />
+							<q-tab :ripple="false" name="pinata" label="Pinata" />
+						</q-tabs>
+					</div>
 
-				<q-form @submit="onSubmit">
 					<div class="q-col-gutter-md row">
 						<template v-if="providerType === 'nft.storage'">
 							<q-input
@@ -134,23 +139,71 @@ const onSubmit = async () => {
 
 					<div class="q-col-gutter-md row">
 						<q-file
-							class="col-12 col-md-4 col-lg-3"
+							class="col-12 col-md-6"
 							v-model="nftForm.images"
-							label="Pick images"
+							label="Select Assets"
 							dense
 							filled
 							multiple
 							:rules="[(val) => (!!val && val.length > 0) || 'Required']"
-						/>
+						>
+							<template v-slot:append>
+								<q-icon name="attachment" />
+							</template>
+						</q-file>
 
 						<q-file
-							class="col-12 col-md-4 col-lg-3"
+							class="col-12 col-md-6"
 							v-model="nftForm.metadata"
-							label="Pick metadata"
+							label="Select Metadata"
 							dense
 							filled
 							multiple
 							:rules="[(val) => (!!val && val.length > 0) || 'Required']"
+						>
+							<template v-slot:append>
+								<q-icon name="attachment" />
+							</template>
+						</q-file>
+					</div>
+				</q-card>
+				<q-card class="q-pa-lg" bordered>
+					<h5 class="text-bold q-mt-none q-mb-md">Collection Details</h5>
+					<div class="q-col-gutter-md row">
+						<q-input
+							class="col-12 col-md-6"
+							label="Name"
+							dense
+							filled
+							v-model="nftForm.name"
+							:rules="[(val) => !!val || 'Required']"
+						/>
+
+						<q-input
+							class="col-12 col-md-6"
+							label="Symbol"
+							dense
+							filled
+							v-model="nftForm.symbol"
+							:rules="[(val) => !!val || 'Required']"
+						/>
+
+						<q-input
+							class="col-12 col-md-6"
+							label="URI"
+							dense
+							filled
+							v-model="nftForm.uri"
+							:rules="[(val) => !!val || 'Required']"
+						/>
+
+						<q-input
+							class="col-12 col-md-6"
+							label="Update Authority"
+							dense
+							filled
+							v-model="nftForm.updateAuthority"
+							:rules="[(val) => !!val || 'Required']"
 						/>
 
 						<div class="col-12 flex justify-end">
@@ -160,8 +213,8 @@ const onSubmit = async () => {
 							<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 						</div>
 					</div>
-				</q-form>
-			</q-card>
+				</q-card>
+			</q-form>
 		</div>
 	</q-page>
 </template>
