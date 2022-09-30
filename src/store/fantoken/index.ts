@@ -126,6 +126,8 @@ const useFantoken = defineStore("fantoken", {
 
 					const txClient = await lastValueFrom(bitsongClient.txClient)
 
+					console.log(txClient)
+
 					if (txClient) {
 						const signedTxBytes = await txClient.sign(
 							authStore.bitsongAddress,

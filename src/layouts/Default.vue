@@ -97,15 +97,15 @@ const logout = () => {
 				<q-item
 					clickable
 					v-ripple
-					:active="link === 'nft'"
-					@click="link = 'nft'"
-					to="/nft"
+					:active="link === 'create-collection'"
+					@click="link = 'create-collection'"
+					to="/create-collection"
 				>
 					<q-item-section avatar>
 						<q-icon name="grain" />
 					</q-item-section>
 
-					<q-item-section>NFT</q-item-section>
+					<q-item-section>Create Collection</q-item-section>
 				</q-item>
 			</q-list>
 		</q-drawer>

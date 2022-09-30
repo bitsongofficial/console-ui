@@ -134,131 +134,135 @@ onMounted(() => {
 
 <template>
 	<q-page class="fit q-pa-md">
-		<div class="col-auto">
-			<div class="row">
-				<div class="col">
-					<h4 class="q-mb-lg q-mt-none text-bold">Merkledrop</h4>
+		<div class="max-w-xl container">
+			<div class="col-auto">
+				<div class="row">
+					<div class="col">
+						<h4 class="q-mb-lg q-mt-none text-bold">Merkledrop</h4>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-auto">
-			<q-form
-				@submit="onSubmit"
-				class="q-col-gutter-md row q-mb-lg"
-				@reset="onReset"
-			>
-				<q-select
-					class="col-12 col-md-4 col-lg-3"
-					label="Asset *"
-					dense
-					filled
-					v-model="merkledropForm.asset"
-					:options="btsgAssets?.assets ?? []"
-					option-label="description"
-					option-value="base"
-					:rules="[(val) => !!val || '* Required']"
-					@update:model-value="onFileChange"
-				/>
-				<q-input
-					class="col-12 col-md-4 col-lg-3"
-					label="Start Height *"
-					dense
-					filled
-					v-model.number="merkledropForm.startHeight"
-					:loading="chainStore.loadingBlock"
-					type="number"
-					:rules="[
-						(val) => val >= 0 || 'Please use a value greater or equal to zero',
-					]"
-				/>
-
-				<q-input
-					class="col-12 col-md-4 col-lg-3"
-					label="End Height *"
-					dense
-					filled
-					v-model.number="merkledropForm.endHeight"
-					:loading="chainStore.loadingBlock"
-					type="number"
-					:rules="[
-						(val) =>
-							val >= chainStore.latestHeight ||
-							`Please use a value greater then ${chainStore.latestHeight}`,
-					]"
-				/>
-
-				<q-file
-					class="col-12 col-md-4 col-lg-3"
-					label="Accounts file *"
-					dense
-					filled
-					v-model="merkledropForm.accountsFile"
-					accept=".json, application/json"
-					@update:model-value="onFileChange"
-					:rules="[(val) => !!val || '* Required']"
-					:readonly="!merkledropForm.asset"
+			<div class="col-auto">
+				<q-form
+					@submit="onSubmit"
+					class="q-col-gutter-md row q-mb-lg"
+					@reset="onReset"
 				>
-					<template v-slot:prepend>
-						<q-icon name="attach_file" />
-					</template>
-				</q-file>
-
-				<q-input
-					class="col-12 col-md-4 col-lg-3"
-					label="Merkle Root *"
-					dense
-					filled
-					v-model="merkledropForm.merkleRoot"
-					readonly
-					:rules="[(val) => !!val || '* Required']"
-				/>
-
-				<q-input
-					class="col-12 col-md-4 col-lg-3"
-					label="Total amount *"
-					dense
-					filled
-					v-model="merkledropForm.coin"
-					readonly
-					:rules="[(val) => !!val || '* Required']"
-					:suffix="merkledropForm.asset?.symbol ?? ''"
-				/>
-
-				<p class="col-12" v-if="merkledropStore.creationFee">
-					<span class="text-bold">Creation fee:</span>
-					{{ merkledropStore.creationFee.amount }}
-					<span class="text-uppercase">{{ merkledropStore.creationFee.denom }}</span>
-				</p>
-
-				<div class="col-12 flex justify-end">
-					<q-btn
-						type="submit"
-						color="primary"
-						:disable="!authStore.session"
-						:loading="authStore.loading"
-					>
-						<q-icon name="send" />
-					</q-btn>
-					<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
-				</div>
-			</q-form>
-
-			<q-card v-if="merkledrop">
-				<q-card-actions>
-					<q-btn
-						color="primary"
-						icon-right="archive"
-						label="Export to JSON"
-						class="q-ml-auto"
-						no-caps
-						@click="exportJsonAccounts"
+					<q-select
+						class="col-12 col-md-4 col-lg-3"
+						label="Asset *"
+						dense
+						filled
+						v-model="merkledropForm.asset"
+						:options="btsgAssets?.assets ?? []"
+						option-label="description"
+						option-value="base"
+						:rules="[(val) => !!val || '* Required']"
+						@update:model-value="onFileChange"
 					/>
-				</q-card-actions>
-				<q-card-section>
-					<pre>{{ merkledrop.getAccountsWithProofs() }}</pre>
-				</q-card-section>
-			</q-card>
+					<q-input
+						class="col-12 col-md-4 col-lg-3"
+						label="Start Height *"
+						dense
+						filled
+						v-model.number="merkledropForm.startHeight"
+						:loading="chainStore.loadingBlock"
+						type="number"
+						:rules="[
+							(val) => val >= 0 || 'Please use a value greater or equal to zero',
+						]"
+					/>
+
+					<q-input
+						class="col-12 col-md-4 col-lg-3"
+						label="End Height *"
+						dense
+						filled
+						v-model.number="merkledropForm.endHeight"
+						:loading="chainStore.loadingBlock"
+						type="number"
+						:rules="[
+							(val) =>
+								val >= chainStore.latestHeight ||
+								`Please use a value greater then ${chainStore.latestHeight}`,
+						]"
+					/>
+
+					<q-file
+						class="col-12 col-md-4 col-lg-3"
+						label="Accounts file *"
+						dense
+						filled
+						v-model="merkledropForm.accountsFile"
+						accept=".json, application/json"
+						@update:model-value="onFileChange"
+						:rules="[(val) => !!val || '* Required']"
+						:readonly="!merkledropForm.asset"
+					>
+						<template v-slot:prepend>
+							<q-icon name="attach_file" />
+						</template>
+					</q-file>
+
+					<q-input
+						class="col-12 col-md-4 col-lg-3"
+						label="Merkle Root *"
+						dense
+						filled
+						v-model="merkledropForm.merkleRoot"
+						readonly
+						:rules="[(val) => !!val || '* Required']"
+					/>
+
+					<q-input
+						class="col-12 col-md-4 col-lg-3"
+						label="Total amount *"
+						dense
+						filled
+						v-model="merkledropForm.coin"
+						readonly
+						:rules="[(val) => !!val || '* Required']"
+						:suffix="merkledropForm.asset?.symbol ?? ''"
+					/>
+
+					<p class="col-12" v-if="merkledropStore.creationFee">
+						<span class="text-bold">Creation fee:</span>
+						{{ merkledropStore.creationFee.amount }}
+						<span class="text-uppercase">{{
+							merkledropStore.creationFee.denom
+						}}</span>
+					</p>
+
+					<div class="col-12 flex justify-end">
+						<q-btn
+							type="submit"
+							color="primary"
+							:disable="!authStore.session"
+							:loading="authStore.loading"
+						>
+							<q-icon name="send" />
+						</q-btn>
+						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
+					</div>
+				</q-form>
+
+				<q-card v-if="merkledrop">
+					<q-card-actions>
+						<q-btn
+							color="primary"
+							icon-right="archive"
+							label="Export to JSON"
+							class="q-ml-auto"
+							no-caps
+							@click="exportJsonAccounts"
+						/>
+					</q-card-actions>
+					<q-card-section>
+						<pre>{{ merkledrop.getAccountsWithProofs() }}</pre>
+					</q-card-section>
+				</q-card>
+			</div>
 		</div>
 	</q-page>
 </template>

@@ -5,6 +5,7 @@ import { QueryClientImpl as BankQueryClientImpl } from "@bitsongjs/client/dist/c
 import { ServiceClientImpl as BaseQueryClientImpl } from "@bitsongjs/client/dist/codec/cosmos/base/tendermint/v1beta1/query"
 import { QueryClientImpl as MerkledropQueryClientImpl } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/query"
 import { QueryClientImpl as FantokenQueryClientImpl } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/query"
+import { tap } from "rxjs"
 
 const modules = {
 	bank: BankQueryClientImpl,

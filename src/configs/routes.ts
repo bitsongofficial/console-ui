@@ -22,8 +22,8 @@ export const routes: RouteRecordRaw[] = [
 				component: () => import("@/pages/Fantokens.vue"),
 			},
 			{
-				path: "nft",
-				component: () => import("@/pages/NFT.vue"),
+				path: "create-collection",
+				component: () => import("@/pages/CreateCollection.vue"),
 			},
 		],
 	},
