@@ -3,10 +3,13 @@ import { reactive, ref } from "vue"
 import { NFTStorageProvider } from "@bitsongjs/storage"
 import { NFTUploader } from "@bitsongjs/nft"
 import { useQuasar } from "quasar"
+import { CollectionProvider } from "@/models"
 
 const quasar = useQuasar()
 
 const loading = ref(false)
+
+const providerType = ref(CollectionProvider.NFT_STORAGE)
 
 const nftForm = reactive({
 	images: [],
@@ -62,45 +65,85 @@ const onSubmit = async () => {
 				</div>
 			</div>
 
-			<div class="col-auto">
-				<q-form @submit="onSubmit" class="q-col-gutter-md row q-mb-lg">
-					<q-input
-						class="col-12 col-md-4 col-lg-3"
-						label="NFT.storage Token"
+			<q-card class="q-pa-lg" bordered>
+				<div class="flex">
+					<q-tabs
+						v-model="providerType"
 						dense
-						filled
-						v-model="nftForm.nftStorageToken"
-						:rules="[(val) => !!val || 'Required']"
-					/>
+						no-caps
+						inline-label
+						class="text-white text-bold q-mb-lg"
+						indicator-color="primary"
+					>
+						<q-tab :ripple="false" name="nft.storage" label="NFT.Storage" />
+						<q-tab :ripple="false" name="pinata" label="Pinata" />
+					</q-tabs>
+				</div>
 
-					<q-file
-						class="col-12 col-md-4 col-lg-3"
-						v-model="nftForm.images"
-						label="Pick images"
-						dense
-						filled
-						multiple
-						:rules="[(val) => (!!val && val.length > 0) || 'Required']"
-					/>
+				<q-form @submit="onSubmit">
+					<div class="q-col-gutter-md row">
+						<template v-if="providerType === 'nft.storage'">
+							<q-input
+								class="col-12"
+								label="NFT.storage Token"
+								dense
+								filled
+								v-model="nftForm.nftStorageToken"
+								:rules="[(val) => !!val || 'Required']"
+							/>
+						</template>
+						<template v-else>
+							<q-input
+								class="col-12 col-md-6"
+								label="Pinata API Key"
+								dense
+								filled
+								v-model="nftForm.nftStorageToken"
+								:rules="[(val) => !!val || 'Required']"
+							/>
+							<q-input
+								class="col-12 col-md-6"
+								label="Pinata Secret API Key"
+								dense
+								filled
+								v-model="nftForm.nftStorageToken"
+								:rules="[(val) => !!val || 'Required']"
+							/>
+						</template>
+					</div>
 
-					<q-file
-						class="col-12 col-md-4 col-lg-3"
-						v-model="nftForm.metadata"
-						label="Pick metadata"
-						dense
-						filled
-						multiple
-						:rules="[(val) => (!!val && val.length > 0) || 'Required']"
-					/>
+					<div class="w-100"></div>
 
-					<div class="col-12 flex justify-end">
-						<q-btn type="submit" color="primary" :loading="loading">
-							<q-icon name="send" />
-						</q-btn>
-						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
+					<div class="q-col-gutter-md row">
+						<q-file
+							class="col-12 col-md-4 col-lg-3"
+							v-model="nftForm.images"
+							label="Pick images"
+							dense
+							filled
+							multiple
+							:rules="[(val) => (!!val && val.length > 0) || 'Required']"
+						/>
+
+						<q-file
+							class="col-12 col-md-4 col-lg-3"
+							v-model="nftForm.metadata"
+							label="Pick metadata"
+							dense
+							filled
+							multiple
+							:rules="[(val) => (!!val && val.length > 0) || 'Required']"
+						/>
+
+						<div class="col-12 flex justify-end">
+							<q-btn type="submit" color="primary" :loading="loading">
+								<q-icon name="send" />
+							</q-btn>
+							<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
+						</div>
 					</div>
 				</q-form>
-			</div>
+			</q-card>
 		</div>
 	</q-page>
 </template>

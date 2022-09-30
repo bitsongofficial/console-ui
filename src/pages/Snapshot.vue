@@ -126,14 +126,10 @@ const exportJsonTable = () => {
 				</div>
 			</div>
 
-			<div class="col-auto">
-				<q-form
-					@submit="onSubmit"
-					class="q-col-gutter-md row q-mb-lg"
-					@reset="onReset"
-				>
+			<q-card class="q-pa-lg q-mb-lg" bordered>
+				<q-form @submit="onSubmit" class="q-col-gutter-md row" @reset="onReset">
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Height"
 						dense
 						filled
@@ -143,7 +139,7 @@ const exportJsonTable = () => {
 						clearable
 					/>
 					<q-select
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Validator"
 						dense
 						filled
@@ -158,7 +154,7 @@ const exportJsonTable = () => {
 						use-input
 					/>
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Min Tokens Amount"
 						dense
 						filled
@@ -177,26 +173,26 @@ const exportJsonTable = () => {
 						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 					</div>
 				</q-form>
+			</q-card>
 
-				<q-table
-					title="Delegators"
-					:rows="snapshotStore.delegators"
-					:loading="snapshotStore.loading"
-					:columns="columns"
-					:pagination="pagination"
-					row-key="address"
-				>
-					<template v-slot:top-right>
-						<q-btn
-							color="primary"
-							icon-right="archive"
-							label="Export to JSON"
-							no-caps
-							@click="exportJsonTable"
-						/>
-					</template>
-				</q-table>
-			</div>
+			<q-table
+				title="Delegators"
+				:rows="snapshotStore.delegators"
+				:loading="snapshotStore.loading"
+				:columns="columns"
+				:pagination="pagination"
+				row-key="address"
+			>
+				<template v-slot:top-right>
+					<q-btn
+						color="primary"
+						icon-right="archive"
+						label="Export to JSON"
+						no-caps
+						@click="exportJsonTable"
+					/>
+				</template>
+			</q-table>
 		</div>
 	</q-page>
 </template>

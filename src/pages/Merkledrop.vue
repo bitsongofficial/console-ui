@@ -143,14 +143,10 @@ onMounted(() => {
 				</div>
 			</div>
 
-			<div class="col-auto">
-				<q-form
-					@submit="onSubmit"
-					class="q-col-gutter-md row q-mb-lg"
-					@reset="onReset"
-				>
+			<q-card class="q-pa-lg q-mb-lg" bordered>
+				<q-form @submit="onSubmit" class="q-col-gutter-md row" @reset="onReset">
 					<q-select
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Asset *"
 						dense
 						filled
@@ -162,7 +158,7 @@ onMounted(() => {
 						@update:model-value="onFileChange"
 					/>
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Start Height *"
 						dense
 						filled
@@ -175,7 +171,7 @@ onMounted(() => {
 					/>
 
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="End Height *"
 						dense
 						filled
@@ -190,7 +186,7 @@ onMounted(() => {
 					/>
 
 					<q-file
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Accounts file *"
 						dense
 						filled
@@ -206,7 +202,7 @@ onMounted(() => {
 					</q-file>
 
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Merkle Root *"
 						dense
 						filled
@@ -216,7 +212,7 @@ onMounted(() => {
 					/>
 
 					<q-input
-						class="col-12 col-md-4 col-lg-3"
+						class="col-12 col-md-6"
 						label="Total amount *"
 						dense
 						filled
@@ -246,23 +242,23 @@ onMounted(() => {
 						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 					</div>
 				</q-form>
+			</q-card>
 
-				<q-card v-if="merkledrop">
-					<q-card-actions>
-						<q-btn
-							color="primary"
-							icon-right="archive"
-							label="Export to JSON"
-							class="q-ml-auto"
-							no-caps
-							@click="exportJsonAccounts"
-						/>
-					</q-card-actions>
-					<q-card-section>
-						<pre>{{ merkledrop.getAccountsWithProofs() }}</pre>
-					</q-card-section>
-				</q-card>
-			</div>
+			<q-card class="q-pa-md" v-if="merkledrop">
+				<q-card-actions>
+					<q-btn
+						color="primary"
+						icon-right="archive"
+						label="Export to JSON"
+						class="q-ml-auto"
+						no-caps
+						@click="exportJsonAccounts"
+					/>
+				</q-card-actions>
+				<q-card-section>
+					<pre>{{ merkledrop.getAccountsWithProofs() }}</pre>
+				</q-card-section>
+			</q-card>
 		</div>
 	</q-page>
 </template>
