@@ -28,6 +28,9 @@ pinia.use(createPersistedStatePlugin())
 const app = createApp(App)
 
 app.use(Quasar, {
+	config: {
+		dark: true,
+	},
 	plugins: {
 		Notify,
 		Dialog,

@@ -3,7 +3,7 @@ import useAuth from "@/store/auth"
 import { ref } from "vue"
 
 const authStore = useAuth()
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(true)
 const link = ref("homepage")
 
 const logout = () => {
@@ -53,7 +53,7 @@ const logout = () => {
 		</q-header>
 
 		<q-drawer v-model="leftDrawerOpen" side="left" bordered>
-			<q-list bordered padding class="rounded-borders text-primary">
+			<q-list padding class="rounded-borders text-primary">
 				<q-item
 					clickable
 					v-ripple

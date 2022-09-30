@@ -2,8 +2,8 @@ lockfileVersion: 5.4
 
 specifiers:
   '@bitsongjs/client': ^2.4.0
-  '@bitsongjs/nft': 2.1.0-beta.2
-  '@bitsongjs/storage': 2.1.0-beta.1
+  '@bitsongjs/nft': 2.1.0-beta.3
+  '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
   '@chain-registry/types': ^0.8.0
   '@cosmjs/encoding': ^0.29.0
@@ -34,8 +34,8 @@ specifiers:
 
 dependencies:
   '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.4.0
-  '@bitsongjs/nft': registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.2
-  '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.1
+  '@bitsongjs/nft': registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.3
+  '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.2
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
   '@cosmjs/encoding': registry.npmjs.org/@cosmjs/encoding/0.29.0
   '@cosmjs/proto-signing': registry.npmjs.org/@cosmjs/proto-signing/0.29.0
@@ -139,12 +139,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.2:
-    resolution: {integrity: sha512-Hc6ittokwGd5KK+b7VlOtVmOcfVdWEKXzsuK+UBgW3Zpx2kZKz829yxu3Yhk33v2NB6+F8yJaO/MX5/XB87c+g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/nft/-/nft-2.1.0-beta.2.tgz}
+  registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.3:
+    resolution: {integrity: sha512-FpQ5Ua7QW4yvZPOaUiCAVCipH44T6IUpSy1+nKdyK6FAXxSPhCQ+//z1VE9UCb4uO38smgwWfjG9aKmibCkNzQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/nft/-/nft-2.1.0-beta.3.tgz}
     name: '@bitsongjs/nft'
-    version: 2.1.0-beta.2
+    version: 2.1.0-beta.3
     dependencies:
-      '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.1
+      '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.2
       ajv: registry.npmjs.org/ajv/8.11.0
       files-from-path: registry.npmjs.org/files-from-path/0.2.6
       stream: registry.npmjs.org/stream/0.0.2
@@ -155,14 +155,14 @@ packages:
       - supports-color
     dev: false
 
-  registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.1:
-    resolution: {integrity: sha512-10ZpKtZxmYy6jesd4sywSxWiYxb3ulRKMewzkUuom4BFdh1QEOZP8XPi4oo+To/MBjyGcYgJWkt8it26iV6v5A==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/storage/-/storage-2.1.0-beta.1.tgz}
+  registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.2:
+    resolution: {integrity: sha512-PQHA5N5vu8FWZwd1Se76Z4aFK2XIQX3rBpVZtdIqYSSw4l9QSMIcWx4rQHKw7p9JxFXiToN5BsLMzcAGOYilVg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/storage/-/storage-2.1.0-beta.2.tgz}
     name: '@bitsongjs/storage'
-    version: 2.1.0-beta.1
+    version: 2.1.0-beta.2
     dependencies:
       '@ipld/car': registry.npmjs.org/@ipld/car/4.1.5
       axios: registry.npmjs.org/axios/0.27.2
-      dotenv: registry.npmjs.org/dotenv/16.0.2
+      dotenv: registry.npmjs.org/dotenv/16.0.3
       files-from-path: registry.npmjs.org/files-from-path/0.2.6
       ipfs-car: registry.npmjs.org/ipfs-car/0.8.1
       ipfs-http-client: registry.npmjs.org/ipfs-http-client/56.0.2
@@ -1612,10 +1612,10 @@ packages:
       - supports-color
     dev: false
 
-  registry.npmjs.org/dotenv/16.0.2:
-    resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dotenv/-/dotenv-16.0.2.tgz}
+  registry.npmjs.org/dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/dotenv/-/dotenv-16.0.3.tgz}
     name: dotenv
-    version: 16.0.2
+    version: 16.0.3
     engines: {node: '>=12'}
     dev: false
 
