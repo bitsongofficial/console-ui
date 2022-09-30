@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@bitsongjs/client': ^2.4.0
-  '@bitsongjs/nft': 2.1.0-beta.3
+  '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
   '@chain-registry/types': ^0.8.0
@@ -34,7 +34,7 @@ specifiers:
 
 dependencies:
   '@bitsongjs/client': registry.npmjs.org/@bitsongjs/client/2.4.0
-  '@bitsongjs/nft': registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.3
+  '@bitsongjs/nft': registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.4
   '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.2
   '@bitsongjs/utils': registry.npmjs.org/@bitsongjs/utils/2.1.0
   '@cosmjs/encoding': registry.npmjs.org/@cosmjs/encoding/0.29.0
@@ -139,10 +139,10 @@ packages:
       - utf-8-validate
     dev: false
 
-  registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.3:
-    resolution: {integrity: sha512-FpQ5Ua7QW4yvZPOaUiCAVCipH44T6IUpSy1+nKdyK6FAXxSPhCQ+//z1VE9UCb4uO38smgwWfjG9aKmibCkNzQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/nft/-/nft-2.1.0-beta.3.tgz}
+  registry.npmjs.org/@bitsongjs/nft/2.1.0-beta.4:
+    resolution: {integrity: sha512-4n+GL6bP1vL9unaKWiKailWOm1Vo9rr5naom2dbq4qJZQAnJDCnAuqry5M+Bc0+15viVyeYHRbf0xf9v2vakRQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/@bitsongjs/nft/-/nft-2.1.0-beta.4.tgz}
     name: '@bitsongjs/nft'
-    version: 2.1.0-beta.3
+    version: 2.1.0-beta.4
     dependencies:
       '@bitsongjs/storage': registry.npmjs.org/@bitsongjs/storage/2.1.0-beta.2
       ajv: registry.npmjs.org/ajv/8.11.0

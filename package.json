@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@bitsongjs/client": "^2.4.0",
-		"@bitsongjs/nft": "2.1.0-beta.3",
+		"@bitsongjs/nft": "2.1.0-beta.4",
 		"@bitsongjs/storage": "2.1.0-beta.2",
 		"@bitsongjs/utils": "^2.1.0",
 		"@cosmjs/encoding": "^0.29.0",

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue"
-import { NFTStorageProvider } from "@bitsongjs/storage"
+import {
+	NFTStorageProvider,
+	PinataStorageProvider,
+	StorageProvider,
+} from "@bitsongjs/storage"
 import { NFTUploader } from "@bitsongjs/nft"
 import { useQuasar } from "quasar"
 import { CollectionProvider } from "@/models"
@@ -15,15 +19,29 @@ const nftForm = reactive({
 	images: [],
 	metadata: [],
 	nftStorageToken: "",
+	pinataApiKey: "",
+	pinataSecretApiKey: "",
 })
 
 const onSubmit = async () => {
 	try {
 		loading.value = true
 
-		const provider = new NFTStorageProvider({
-			token: nftForm.nftStorageToken,
-		})
+		let provider: StorageProvider
+
+		switch (providerType.value) {
+			case CollectionProvider.NFT_STORAGE:
+				provider = new NFTStorageProvider({
+					token: nftForm.nftStorageToken,
+				})
+				break
+			case CollectionProvider.PINATA:
+				provider = new PinataStorageProvider(
+					nftForm.pinataApiKey,
+					nftForm.pinataSecretApiKey
+				)
+				break
+		}
 
 		const client = new NFTUploader(provider)
 
@@ -98,7 +116,7 @@ const onSubmit = async () => {
 								label="Pinata API Key"
 								dense
 								filled
-								v-model="nftForm.nftStorageToken"
+								v-model="nftForm.pinataApiKey"
 								:rules="[(val) => !!val || 'Required']"
 							/>
 							<q-input
@@ -106,7 +124,7 @@ const onSubmit = async () => {
 								label="Pinata Secret API Key"
 								dense
 								filled
-								v-model="nftForm.nftStorageToken"
+								v-model="nftForm.pinataSecretApiKey"
 								:rules="[(val) => !!val || 'Required']"
 							/>
 						</template>
