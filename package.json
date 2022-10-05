@@ -9,7 +9,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@bitsongjs/client": "^2.4.0",
+		"@bitsongjs/client": "2.4.0-beta.1",
 		"@bitsongjs/nft": "2.1.0-beta.4",
 		"@bitsongjs/storage": "2.1.0-beta.2",
 		"@bitsongjs/utils": "^2.1.0",

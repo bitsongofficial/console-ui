@@ -5,3 +5,64 @@
 .container {
   margin: 0 auto;
 }
+
+// Grid
+.grid {
+  display: grid;
+}
+
+@each $k, $s in $custom-sizes {
+  .gap-#{$k} {
+    --grid-gap-offset: #{$s};
+    gap: $s;
+  }
+
+  .grid-cols-#{$k} {
+    grid-template-columns: repeat($k, minmax(0, 1fr))
+  }
+
+  .col-span-#{$k} {
+    grid-column: span $k / span $k;
+  }
+
+  .col-start-#{$k} {
+    grid-column-start: $k !important;
+  }
+
+  .col-start-span-#{$k} {
+    grid-column-start: span $k !important;
+  }
+
+  .col-end-#{$k} {
+    grid-column-end: $k !important;
+  }
+}
+
+@media screen and (min-width: $breakpoint-sm) {
+  @each $k, $s in $custom-sizes {
+    .gap-sm-#{$k} {
+      --grid-gap-offset: #{$s};
+      gap: $s;
+    }
+
+    .grid-cols-sm-#{$k} {
+      grid-template-columns: repeat($k, minmax(0, 1fr))
+    }
+
+    .col-span-sm-#{$k} {
+      grid-column: span $k / span $k;
+    }
+
+    .col-start-sm-#{$k} {
+      grid-column-start: $k !important;
+    }
+
+    .col-start-span-sm-#{$k} {
+      grid-column-start: span $k !important;
+    }
+
+    .col-end-sm-#{$k} {
+      grid-column-end: $k !important;
+    }
+  }
+}

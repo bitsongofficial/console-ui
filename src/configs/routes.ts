@@ -22,8 +22,12 @@ export const routes: RouteRecordRaw[] = [
 				component: () => import("@/pages/Fantokens.vue"),
 			},
 			{
-				path: "create-collection",
-				component: () => import("@/pages/CreateCollection.vue"),
+				path: "launchpad",
+				component: () => import("@/pages/Launchpad.vue"),
+			},
+			{
+				path: "collections",
+				component: () => import("@/pages/Collections.vue"),
 			},
 		],
 	},

@@ -5,7 +5,7 @@ import { QueryClientImpl as BankQueryClientImpl } from "@bitsongjs/client/dist/c
 import { ServiceClientImpl as BaseQueryClientImpl } from "@bitsongjs/client/dist/codec/cosmos/base/tendermint/v1beta1/query"
 import { QueryClientImpl as MerkledropQueryClientImpl } from "@bitsongjs/client/dist/codec/bitsong/merkledrop/v1beta1/query"
 import { QueryClientImpl as FantokenQueryClientImpl } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/query"
-import { tap } from "rxjs"
+import { QueryClientImpl as NFTQueryClientImpl } from "@bitsongjs/client/dist/codec/bitsong/nft/v1beta1/query"
 
 const modules = {
 	bank: BankQueryClientImpl,
@@ -13,6 +13,7 @@ const modules = {
 	base: BaseQueryClientImpl,
 	merkledrop: MerkledropQueryClientImpl,
 	fantoken: FantokenQueryClientImpl,
+	nft: NFTQueryClientImpl
 }
 
 const bitsongClient = new BitsongClient<typeof modules>(

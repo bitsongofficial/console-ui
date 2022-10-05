@@ -1,0 +1,12 @@
+@use "sass:map";
+
+$custom-sizes: ();
+
+@for $i from 0 through 50 {
+  $s: $i;
+  $custom-sizes: map.set($custom-sizes, $s, $s * 1px);
+  $s: $i*2;
+  $custom-sizes: map.set($custom-sizes, $s, $s * 1px);
+  $s: $i*3;
+  $custom-sizes: map.set($custom-sizes, $s, $s * 1px);
+}
