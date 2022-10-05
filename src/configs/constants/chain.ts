@@ -1,4 +1,5 @@
 import { MicroDenom } from "@bitsongjs/client"
+import { AssetList } from "@chain-registry/types"
 import { StdFee } from "@cosmjs/stargate/build"
 import { chains, assets } from "chain-registry"
 
@@ -6,15 +7,43 @@ export const bitsongChain = chains.find(
 	({ chain_name }) => chain_name === "bitsong"
 )
 
-export const bitsongRpcAddresses =
-	bitsongChain && bitsongChain.apis
-		? bitsongChain.apis.rpc.map((grpc) => grpc.address)
-		: ["https://rpc.explorebitsong.com"]
+export const osmosisChain = chains.find(
+	({ chain_name }) => chain_name === "osmosis"
+)
 
-export const bitsongLcdAddresses =
-	bitsongChain && bitsongChain.apis
-		? bitsongChain.apis.rest.map((rest) => rest.address)
-		: ["https://lcd.explorebitsong.com"]
+const defaultOsmosisRpcAddress = "https://rpc.osmo-test.bitsong.network"
+
+export const osmosisRpcAddress = (function () {
+	if (osmosisChain && osmosisChain.apis && osmosisChain.apis.rpc) {
+		const rpc = osmosisChain.apis.rpc.map((grpc) => grpc.address).shift()
+
+		if (rpc) {
+			return rpc
+		}
+	}
+
+	return defaultOsmosisRpcAddress
+})()
+
+export const osmosisAssets = assets.find(
+	({ chain_name }) => chain_name === "osmosis"
+)
+
+export const bitsongRpcAddresses = (function () {
+	if (bitsongChain && bitsongChain.apis && bitsongChain.apis.rpc) {
+		return bitsongChain.apis.rpc.map((grpc) => grpc.address)
+	}
+
+	return ["https://rpc.explorebitsong.com"]
+})()
+
+export const bitsongLcdAddresses = (function () {
+	if (bitsongChain && bitsongChain.apis && bitsongChain.apis.rest) {
+		return bitsongChain.apis.rest.map((grpc) => grpc.address)
+	}
+
+	return ["https://lcd.explorebitsong.com"]
+})()
 
 export const btsgAssets = assets.find(
 	({ chain_name }) => chain_name === "bitsong"

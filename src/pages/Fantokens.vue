@@ -92,7 +92,6 @@ const columns: TableColumn[] = [
 				if (asset) {
 					const newCoin = fromBaseToDisplay(
 						{
-							$type: Coin.$type,
 							amount: maxSupply,
 							denom: row.denom,
 						},
@@ -122,10 +121,8 @@ const pagination = {
 }
 
 onMounted(() => {
-	setTimeout(() => {
-		fantokenStore.loadFantokens()
-		fantokenStore.loadParams()
-	}, 500)
+	fantokenStore.loadFantokens()
+	fantokenStore.loadParams()
 })
 
 const onSearchText = (value: string | number | null) => {

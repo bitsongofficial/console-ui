@@ -1,5 +1,6 @@
-import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
+import { ibcMap } from "@/configs"
 import { Asset } from "@chain-registry/types"
+import { Coin } from "@cosmjs/proto-signing"
 import { BigNumber } from "bignumber.js"
 
 export const isNegative = (amount: string): boolean => {
@@ -46,7 +47,6 @@ export const sumCoins = (left: Coin, right: Coin, asset: Asset): Coin => {
 	const rightAmount = new BigNumber(right.amount)
 
 	return {
-		$type: Coin.$type,
 		denom: asset.base,
 		amount: leftAmount.plus(rightAmount).toString(),
 	}
@@ -67,7 +67,6 @@ export const fromBaseToDenom = (
 
 	if (denomUnit) {
 		return {
-			$type: "cosmos.base.v1beta1.Coin",
 			denom: toUnit,
 			amount: new BigNumber(coin.amount)
 				.multipliedBy(`1e${denomUnit.exponent * scalar}`)
@@ -84,4 +83,54 @@ export const fromBaseToDisplay = (coin: Coin, asset: Asset) => {
 
 export const fromDisplayToBase = (coin: Coin, asset: Asset) => {
 	return fromBaseToDenom(coin, asset, asset.display, asset.base, 1)
+}
+
+export const toViewDenomByAssets = (
+	coin: Coin,
+	assets: Asset[],
+	decCoinExponent = 0
+) => {
+	const assetCoin = assets.find((asset) => asset.base === coin.denom)
+
+	if (assetCoin) {
+		const denomUnit = assetCoin.denom_units.find(
+			(el) => el.denom === assetCoin.display
+		)
+
+		if (denomUnit) {
+			return {
+				denom: assetCoin.display,
+				amount: new BigNumber(coin.amount)
+					.multipliedBy(`1e-${denomUnit.exponent + decCoinExponent}`)
+					.toString(),
+			}
+		}
+	}
+}
+
+export const toViewDenom = (
+	coin: Coin,
+	assets: Asset[],
+	decCoinExponent = 0
+): Coin | undefined => {
+	const newCoin = toViewDenomByAssets(coin, assets, decCoinExponent)
+
+	if (newCoin) {
+		return newCoin
+	}
+
+	const ibc = ibcMap.find((ibcEl) => {
+		const assets = ibcEl.assets as Asset[]
+
+		return assets.find((asset) => asset.base === coin.denom) !== undefined
+	})
+
+	if (ibc) {
+		return toViewDenomByAssets(coin, ibc.assets, decCoinExponent)
+	}
+
+	return {
+		...coin,
+		amount: toMicroUnit(coin.amount, -6),
+	}
 }

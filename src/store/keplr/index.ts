@@ -1,9 +1,13 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { AccountData } from "@cosmjs/proto-signing"
 import { tokenToExperimentalSuggestChain } from "@/common"
-import { AppCurrency } from "@keplr-wallet/types"
-import { bitsongChain, bitsongRpcAddresses, btsgStakingCoin } from "@/configs"
-import { bitsongClient } from "@/services"
+import {
+	bitsongChain,
+	bitsongRpcAddresses,
+	btsgStakingCoin,
+	osmosisChain,
+} from "@/configs"
+import { bitsongClient, setOsmosisClient } from "@/services"
 
 export interface KeplrState {
 	accounts: AccountData[]
@@ -23,8 +27,8 @@ const useKeplr = defineStore("keplr", {
 			try {
 				this.loading = true
 
-				if (window.keplr && bitsongChain && btsgStakingCoin) {
-					const chainIds = [bitsongChain.chain_id]
+				if (window.keplr && bitsongChain && osmosisChain && btsgStakingCoin) {
+					const chainIds = [bitsongChain.chain_id, osmosisChain.chain_id]
 
 					const experimentalChain = tokenToExperimentalSuggestChain(
 						bitsongChain,
@@ -39,13 +43,17 @@ const useKeplr = defineStore("keplr", {
 
 					const accounts: AccountData[] = []
 
-					const offlineSigner = await window.keplr.getOfflineSignerAuto(
-						bitsongChain.chain_id
-					)
-
 					const aminoOfflineSigner = await window.keplr.getOfflineSignerOnlyAmino(
 						bitsongChain.chain_id
 					)
+
+					const osmosisAminoOfflineSigner =
+						await window.keplr.getOfflineSignerOnlyAmino(osmosisChain.chain_id)
+
+					const bitsongAccounts = [...(await aminoOfflineSigner.getAccounts())]
+					const osmosisAccounts = [
+						...(await osmosisAminoOfflineSigner.getAccounts()),
+					]
 
 					await bitsongClient.connectSigner({
 						type: "tendermint",
@@ -53,7 +61,7 @@ const useKeplr = defineStore("keplr", {
 						signer: aminoOfflineSigner,
 					})
 
-					const tokenAccounts = [...(await offlineSigner.getAccounts())]
+					const tokenAccounts = [...bitsongAccounts, ...osmosisAccounts]
 
 					accounts.push(...tokenAccounts)
 

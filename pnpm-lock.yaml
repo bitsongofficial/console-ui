@@ -5,20 +5,24 @@ specifiers:
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
-  '@chain-registry/types': ^0.8.0
+  '@chain-registry/types': ^0.11.0
+  '@chain-registry/utils': ^1.0.0
   '@cosmjs/encoding': ^0.29.0
   '@cosmjs/proto-signing': ^0.29.0
   '@cosmjs/stargate': ^0.29.0
+  '@esbuild-plugins/node-globals-polyfill': ^0.1.1
   '@keplr-wallet/types': ^0.11.0
   '@quasar/extras': ^1.15.3
   '@quasar/vite-plugin': ~1.1.0
   '@types/lodash': ^4.14.185
   '@vitejs/plugin-vue': ^3.1.0
   bignumber.js: ^9.1.0
-  chain-registry: ^0.11.0
+  buffer: ^6.0.3
+  chain-registry: ^1.0.0
   fuse.js: ^6.6.2
   lodash: ^4.17.21
   long: ^5.2.0
+  osmojs: ^0.27.0
   path: ^0.12.7
   pinia: ^2.0.22
   pinia-plugin-persistedstate-2: ^2.0.1
@@ -37,15 +41,19 @@ dependencies:
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': 2.1.0
+  '@chain-registry/utils': 1.0.0
   '@cosmjs/encoding': 0.29.0
   '@cosmjs/proto-signing': 0.29.0
   '@cosmjs/stargate': 0.29.0
+  '@esbuild-plugins/node-globals-polyfill': 0.1.1
   '@quasar/extras': 1.15.3
   bignumber.js: 9.1.0
-  chain-registry: 0.11.0
+  buffer: 6.0.3
+  chain-registry: 1.0.0
   fuse.js: 6.6.2
   lodash: 4.17.21
   long: 5.2.0
+  osmojs: 0.27.0
   path: 0.12.7
   pinia: 2.0.22_arz4dztosvwy2ghjrlh2wdhejm
   pinia-plugin-persistedstate-2: 2.0.1_pinia@2.0.22
@@ -56,7 +64,7 @@ dependencies:
   vue-router: 4.1.5_vue@3.2.39
 
 devDependencies:
-  '@chain-registry/types': 0.8.0
+  '@chain-registry/types': 0.11.0
   '@keplr-wallet/types': 0.11.0
   '@quasar/vite-plugin': 1.1.1_ei4z6pof6ndevwjsu4ftth6li4
   '@types/lodash': 4.14.185
@@ -181,14 +189,27 @@ packages:
       merkletreejs: 0.2.32
     dev: false
 
-  /@chain-registry/types/0.8.0:
-    resolution: {integrity: sha512-rkQgSxbztvG7ow33XRP5kyjNS+WhE+Y+ZSup9iBVoIBxwgy9s9AtdcnIgGvhG+jvFnoz5THoKYya9Vd5jCNCJw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@chain-registry/types/-/types-0.8.0.tgz}
+  /@chain-registry/types/0.11.0:
+    resolution: {integrity: sha512-VtsJ+/iM4Iwj4hiDB5SK6scenonONTyLTRuuUVZOERU7U0+WwaKb9H0br0ZKiralCQJKhwDTdJfxGSdYsAy70Q==}
     dependencies:
       '@babel/runtime': 7.19.0
       '@keplr-wallet/cosmos': 0.10.24
       '@keplr-wallet/crypto': 0.10.24
     transitivePeerDependencies:
       - debug
+
+  /@chain-registry/utils/1.0.0:
+    resolution: {integrity: sha512-V29B62occGViXU4m6vu6/9H06nAh5snxHk3dBtYJW/MFHDfj2XSe13vNNfnevSxflAPL9nnAHHPREnykVVN0NA==}
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@chain-registry/types': 0.11.0
+      bfs-path: 1.0.2
+      cross-fetch: 3.1.5
+      sha.js: 2.4.11
+    transitivePeerDependencies:
+      - debug
+      - encoding
+    dev: false
 
   /@confio/ics23/0.6.8:
     resolution: {integrity: sha512-wB6uo+3A50m0sW/EWcU64xpV/8wShZ6bMTa7pF8eYsTrSkQA7oLUIJcs/wb8g4y2Oyq701BaGiO6n/ak5WXO1w==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@confio/ics23/-/ics23-0.6.8.tgz}
@@ -198,7 +219,7 @@ packages:
     dev: false
 
   /@cosmjs/amino/0.29.0:
-    resolution: {integrity: sha512-/ZUVx6nRN5YE36H3SDq9+i8g2nZ8DJQnN9fVRC8rSHQKauNkoEuK4NxTNcQ2o2EBLUT0kyYAFY2550HVsPMrgw==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@cosmjs/amino/-/amino-0.29.0.tgz}
+    resolution: {integrity: sha512-/ZUVx6nRN5YE36H3SDq9+i8g2nZ8DJQnN9fVRC8rSHQKauNkoEuK4NxTNcQ2o2EBLUT0kyYAFY2550HVsPMrgw==}
     dependencies:
       '@cosmjs/crypto': 0.29.0
       '@cosmjs/encoding': 0.29.0
@@ -365,6 +386,12 @@ packages:
     resolution: {integrity: sha512-NiJk3ISX+FU1cQcTTgmJcY84A8mV/p8L5CRewp/2jc/lUmo8j9lMGbX17U7NxVQ9RX5RmrwgdjYnBASzhRCVmA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@cosmjs/utils/-/utils-0.29.0.tgz}
     dev: false
 
+  /@esbuild-plugins/node-globals-polyfill/0.1.1:
+    resolution: {integrity: sha512-MR0oAA+mlnJWrt1RQVQ+4VYuRJW/P2YmRTv1AsplObyvuBMnPHiizUF95HHYiSsMGLhyGtWufaq2XQg6+iurBg==}
+    peerDependencies:
+      esbuild: '*'
+    dev: false
+
   /@esbuild/linux-loong64/0.15.7:
     resolution: {integrity: sha512-IKznSJOsVUuyt7cDzzSZyqBEcZe+7WlBqTVXiF1OXP/4Nm387ToaXZ0fyLwI1iBlI/bzpxVq411QE2/Bt2XWWw==}
     engines: {node: '>=12'}
@@ -375,7 +402,7 @@ packages:
     optional: true
 
   /@ethersproject/address/5.7.0:
-    resolution: {integrity: sha512-9wYhYt7aghVGo758POM5nqcOMaE168Q6aRLJZwUmiqSrAungkG74gSSeKEIR7ukixesdRZGPgVqme6vmxs1fkA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@ethersproject/address/-/address-5.7.0.tgz}
+    resolution: {integrity: sha512-9wYhYt7aghVGo758POM5nqcOMaE168Q6aRLJZwUmiqSrAungkG74gSSeKEIR7ukixesdRZGPgVqme6vmxs1fkA==}
     dependencies:
       '@ethersproject/bignumber': 5.7.0
       '@ethersproject/bytes': 5.7.0
@@ -481,7 +508,7 @@ packages:
     dev: false
 
   /@keplr-wallet/cosmos/0.10.24:
-    resolution: {integrity: sha512-fKaHoto4+AYL/HKR3ieZYMwYXlN8yTuQuIghAxDXHHaW8r+G2qrt7U1bLZR9E8e9/YxaxzBjiL2Xpd0WNdkjrQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@keplr-wallet/cosmos/-/cosmos-0.10.24.tgz}
+    resolution: {integrity: sha512-fKaHoto4+AYL/HKR3ieZYMwYXlN8yTuQuIghAxDXHHaW8r+G2qrt7U1bLZR9E8e9/YxaxzBjiL2Xpd0WNdkjrQ==}
     dependencies:
       '@cosmjs/launchpad': 0.24.1
       '@ethersproject/address': 5.7.0
@@ -498,7 +525,7 @@ packages:
       - debug
 
   /@keplr-wallet/crypto/0.10.24:
-    resolution: {integrity: sha512-NBXOrX+qeVa4Pqr+g5VIswtPz3cIBlF869pIX98F9AN1xLWkSwqysNLWNPgCQaQGqtqrA1izagW3oGmePSpRPQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@keplr-wallet/crypto/-/crypto-0.10.24.tgz}
+    resolution: {integrity: sha512-NBXOrX+qeVa4Pqr+g5VIswtPz3cIBlF869pIX98F9AN1xLWkSwqysNLWNPgCQaQGqtqrA1izagW3oGmePSpRPQ==}
     dependencies:
       bip32: 2.0.6
       bip39: 3.0.4
@@ -509,13 +536,13 @@ packages:
       sha.js: 2.4.11
 
   /@keplr-wallet/proto-types/0.10.24:
-    resolution: {integrity: sha512-wcR2AcmYdMF2yQgj1CdNJqUHsvQWj4yFBPfJvZfpA3Cldq3ZRH+/UgpVm0QUYqUbuNmGHQMzkZkAkfZNtr8BSg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@keplr-wallet/proto-types/-/proto-types-0.10.24.tgz}
+    resolution: {integrity: sha512-wcR2AcmYdMF2yQgj1CdNJqUHsvQWj4yFBPfJvZfpA3Cldq3ZRH+/UgpVm0QUYqUbuNmGHQMzkZkAkfZNtr8BSg==}
     dependencies:
       long: 4.0.0
       protobufjs: 6.11.3
 
   /@keplr-wallet/types/0.10.24:
-    resolution: {integrity: sha512-L90/1/w2/QS9QMB9T0rqqfduy6qn9Isqjfdmi6AHewhKjy2TfZJaXBFuMvyYmpYBbkhkei+pM9mLh4+f3eblww==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@keplr-wallet/types/-/types-0.10.24.tgz}
+    resolution: {integrity: sha512-L90/1/w2/QS9QMB9T0rqqfduy6qn9Isqjfdmi6AHewhKjy2TfZJaXBFuMvyYmpYBbkhkei+pM9mLh4+f3eblww==}
     dependencies:
       '@cosmjs/launchpad': 0.24.1
       '@cosmjs/proto-signing': 0.24.1
@@ -538,7 +565,7 @@ packages:
     dev: true
 
   /@keplr-wallet/unit/0.10.24:
-    resolution: {integrity: sha512-8wDLpBUc/yQ6pWJOotk8V4OlxjPqU8V1OJgzYSQDF4FD9/BjRGifXY1LkYp2QhaJ7c6vKhw8v773SgmBq5w5vg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@keplr-wallet/unit/-/unit-0.10.24.tgz}
+    resolution: {integrity: sha512-8wDLpBUc/yQ6pWJOotk8V4OlxjPqU8V1OJgzYSQDF4FD9/BjRGifXY1LkYp2QhaJ7c6vKhw8v773SgmBq5w5vg==}
     dependencies:
       '@keplr-wallet/types': 0.10.24
       big-integer: 1.6.51
@@ -555,6 +582,15 @@ packages:
 
   /@noble/hashes/1.1.3:
     resolution: {integrity: sha512-CE0FCR57H2acVI5UOzIGSSIYxZ6v/HOhDR0Ro9VLyhnzLwx0o8W1mmgaqlEUx4049qJDlIBRztv5k+MM8vbO3A==}
+    dev: false
+
+  /@osmonauts/lcd/0.6.0:
+    resolution: {integrity: sha512-vz9VavXrEfxZoXbSAfNfk90MLpn34XtBYPV3L9YilE+s56AhqYxUh83nne9J5somnTRfGnyR3oeV8C+lHkqiuA==}
+    dependencies:
+      '@babel/runtime': 7.19.0
+      axios: 0.27.2
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@protobufjs/aspromise/1.1.2:
@@ -952,8 +988,12 @@ packages:
   /bech32/1.1.4:
     resolution: {integrity: sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/bech32/-/bech32-1.1.4.tgz}
 
+  /bfs-path/1.0.2:
+    resolution: {integrity: sha512-KTKx2JJtAAAT7C/rJYDXXWA2VLPycAS4kwFktKsxUo0hj4UTtw/Gm5PJuY7Uf3xSlIQNo7HRCSWei2ivncVwbQ==}
+    dev: false
+
   /big-integer/1.6.51:
-    resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/big-integer/-/big-integer-1.6.51.tgz}
+    resolution: {integrity: sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==}
     engines: {node: '>=0.6'}
 
   /bignumber.js/9.1.0:
@@ -1090,7 +1130,7 @@ packages:
       ieee754: 1.2.1
 
   /buffer/6.0.3:
-    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/buffer/-/buffer-6.0.3.tgz}
+    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
@@ -1130,11 +1170,11 @@ packages:
     hasBin: true
     dev: false
 
-  /chain-registry/0.11.0:
-    resolution: {integrity: sha512-T3uhnfvU+stR8Dmno6s0rx3Kh9TYl29URjR1kqs4TH3dhM9XmN/5sMnHRXBfljkGVewqwHgbhXiFa1LM8SQNiQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/chain-registry/-/chain-registry-0.11.0.tgz}
+  /chain-registry/1.0.0:
+    resolution: {integrity: sha512-9yKRyj8qk34v+JZVd4tuUaxCblc+19Tp9bCyWG7c1O4u2wknIbbyeWtMYROkpIMXv5gnEqGy2NO7QJfTMC4ziw==}
     dependencies:
       '@babel/runtime': 7.19.0
-      '@chain-registry/types': 0.8.0
+      '@chain-registry/types': 0.11.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -1217,6 +1257,14 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
+
+  /cross-fetch/3.1.5:
+    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
+    dependencies:
+      node-fetch: 2.6.7
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /crypt/0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
@@ -2705,7 +2753,7 @@ packages:
     dev: false
 
   /node-fetch/2.6.7:
-    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/node-fetch/-/node-fetch-2.6.7.tgz}
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
     peerDependencies:
       encoding: ^0.1.0
@@ -2770,6 +2818,23 @@ packages:
       define-properties: 1.1.4
       has-symbols: 1.0.3
       object-keys: 1.1.1
+    dev: false
+
+  /osmojs/0.27.0:
+    resolution: {integrity: sha512-CVuGPgUsVMIkoNr+cEtoPjBuRN0PzMtEOaVLASndvqlqarRI3mUKCc/pvhbIGrPeD0tb/C0JRtOUc8Zt2ZykSg==}
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@cosmjs/amino': 0.29.0
+      '@cosmjs/proto-signing': 0.29.0
+      '@cosmjs/stargate': 0.29.0
+      '@cosmjs/tendermint-rpc': 0.29.0
+      '@osmonauts/lcd': 0.6.0
+      long: 5.2.0
+      protobufjs: 6.11.3
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - utf-8-validate
     dev: false
 
   /p-defer/3.0.0:
@@ -3435,7 +3500,7 @@ packages:
     dev: false
 
   /utility-types/3.10.0:
-    resolution: {integrity: sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/utility-types/-/utility-types-3.10.0.tgz}
+    resolution: {integrity: sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==}
     engines: {node: '>= 4'}
 
   /validate-npm-package-license/3.0.4:

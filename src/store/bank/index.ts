@@ -1,5 +1,4 @@
-import { fromBaseToDisplay, toMicroUnit } from "@/utils"
-import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
+import { fromBaseToDisplay, toMicroUnit, toViewDenom } from "@/utils"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { bitsongClient } from "@/services"
 import { QueryAllBalancesRequest } from "@bitsongjs/client/dist/codec/cosmos/bank/v1beta1/query"
@@ -7,16 +6,17 @@ import { btsgStakingCoin, btsgAssets } from "@/configs"
 import { compact } from "lodash"
 import useAuth from "@/store/auth"
 import { lastValueFrom } from "rxjs"
+import { Coin } from "@cosmjs/proto-signing"
 
 export interface BankState {
 	loading: boolean
-	balances: Coin[]
+	balancesRaw: Coin[]
 }
 
 const useBank = defineStore("bank", {
 	state: (): BankState => ({
 		loading: false,
-		balances: [],
+		balancesRaw: [],
 	}),
 	actions: {
 		async init() {
@@ -44,7 +44,7 @@ const useBank = defineStore("bank", {
 						address: bitsongAddress,
 					})
 
-					this.balances = balancesResponse.balances
+					this.balancesRaw = balancesResponse.balances
 				}
 			} catch (error) {
 				console.error(error)
@@ -55,7 +55,7 @@ const useBank = defineStore("bank", {
 		},
 	},
 	getters: {
-		balancesDisplay: ({ balances }) => {
+		balancesDisplay: ({ balancesRaw }) => {
 			const stakingCoin = btsgStakingCoin
 			const assets = btsgAssets
 
@@ -80,9 +80,22 @@ const useBank = defineStore("bank", {
 				  )
 				: []
 		},
-		balance: ({ balances }) => {
+		balances({ balancesRaw }) {
+			if (btsgAssets) {
+				const balancesCompact = compact(
+					balancesRaw.map((balance) => toViewDenom(balance, btsgAssets.assets))
+				)
+
+				return balancesCompact.filter(
+					(el) => !el.denom.startsWith("gamm/pool") && !el.denom.startsWith("ibc")
+				)
+			}
+
+			return []
+		},
+		balance: ({ balancesRaw }) => {
 			return (denom: string) => {
-				const balance = balances.find((el) => el.denom === denom)
+				const balance = balancesRaw.find((el) => el.denom === denom)
 
 				if (balance) {
 					return {

@@ -10,6 +10,10 @@ export const routes: RouteRecordRaw[] = [
 				redirect: "/snapshot",
 			},
 			{
+				path: "balances",
+				component: () => import("@/pages/Balances.vue"),
+			},
+			{
 				path: "snapshot",
 				component: () => import("@/pages/Snapshot.vue"),
 			},
@@ -28,6 +32,10 @@ export const routes: RouteRecordRaw[] = [
 			{
 				path: "collections",
 				component: () => import("@/pages/Collections.vue"),
+			},
+			{
+				path: "osmosis-balances",
+				component: () => import("@/pages/OsmosisBalances.vue"),
 			},
 		],
 	},

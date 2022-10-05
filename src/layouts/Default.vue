@@ -57,6 +57,20 @@ const logout = () => {
 				<q-item
 					clickable
 					v-ripple
+					:active="link === 'balances'"
+					@click="link = 'balances'"
+					to="/balances"
+				>
+					<q-item-section avatar>
+						<q-icon name="savings" />
+					</q-item-section>
+
+					<q-item-section>Balances</q-item-section>
+				</q-item>
+
+				<q-item
+					clickable
+					v-ripple
 					:active="link === 'snapshot'"
 					@click="link = 'snapshot'"
 					to="/"
@@ -120,6 +134,27 @@ const logout = () => {
 
 					<q-item-section>Launchpad</q-item-section>
 				</q-item>
+
+				<q-expansion-item
+					:content-inset-level="0.5"
+					expand-separator
+					icon="science"
+					label="Osmosis"
+				>
+					<q-item
+						clickable
+						v-ripple
+						:active="link === 'osmosis-balances'"
+						@click="link = 'osmosis-balances'"
+						to="/osmosis-balances"
+					>
+						<q-item-section avatar>
+							<q-icon name="savings" />
+						</q-item-section>
+
+						<q-item-section>Balances</q-item-section>
+					</q-item>
+				</q-expansion-item>
 			</q-list>
 		</q-drawer>
 

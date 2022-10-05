@@ -1,9 +1,10 @@
 import { isValidAddress } from "@/common"
 import { Session, SessionType } from "@/models"
 import { acceptHMRUpdate, defineStore } from "pinia"
-import { bitsongChain } from "@/configs"
+import { bitsongChain, osmosisChain } from "@/configs"
 import useKeplr from "@/store/keplr"
 import useBank from "@/store/bank"
+import useOsmosis from "../osmosis"
 
 export interface AuthState {
 	loading: boolean
@@ -21,6 +22,7 @@ const useAuth = defineStore("auth", {
 				if (window.keplr) {
 					const keplrStore = useKeplr()
 					const bankStore = useBank()
+					const osmosisStore = useOsmosis()
 					this.loading = true
 
 					await keplrStore.init()
@@ -31,6 +33,7 @@ const useAuth = defineStore("auth", {
 					}
 
 					bankStore.loadBalance()
+					osmosisStore.loadBalances()
 				}
 			} catch (error) {
 				console.error(error)
@@ -48,6 +51,13 @@ const useAuth = defineStore("auth", {
 				)
 			}
 		},
+		osmosisAddress({ session }) {
+			if (session && osmosisChain) {
+				return session.addresses.find((address) =>
+					isValidAddress(address, osmosisChain?.bech32_prefix ?? "")
+				)
+			}
+		},
 		getAddress({ session }) {
 			return (addressPrefix: string) => {
 				if (session) {
@@ -59,7 +69,7 @@ const useAuth = defineStore("auth", {
 		},
 	},
 	persistedState: {
-		persist: false,
+		persist: true,
 	},
 })
 
