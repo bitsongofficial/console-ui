@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import useAuth from "../auth"
-import { Coin } from "@cosmjs/proto-signing"
+import { Coin, coins } from "@cosmjs/proto-signing"
 import { toViewDenom } from "@/utils"
 import {
 	osmosisAssets,
@@ -65,7 +65,7 @@ const useOsmosis = defineStore("osmosis", {
 			try {
 				this.creatingGauge = true
 
-				if (window.keplr && osmosisChain && authStore.osmosisAddress) {
+				if (window.keplr && osmosisChain && authStore.osmosisAddress && data.coin) {
 					const signer = await window.keplr.getOfflineSignerOnlyAmino(
 						osmosisChain.chain_id
 					)
@@ -80,7 +80,7 @@ const useOsmosis = defineStore("osmosis", {
 					const msg = createGauge({
 						isPerpetual: data.isPerpetual,
 						owner: authStore.osmosisAddress,
-						coins: data.coins,
+						coins: coins(data.amount, data.coin.denom),
 						numEpochsPaidOver: Long.fromNumber(data.numEpochsPaidOver),
 						startTime: new Date(data.startTime),
 						distributeTo: {
@@ -119,9 +119,11 @@ const useOsmosis = defineStore("osmosis", {
 	},
 	getters: {
 		balances({ balancesRaw }) {
-			if (osmosisAssets) {
+			const assetsList = osmosisAssets
+
+			if (assetsList) {
 				const balancesCompact = compact(
-					balancesRaw.map((balance) => toViewDenom(balance, osmosisAssets.assets))
+					balancesRaw.map((balance) => toViewDenom(balance, assetsList.assets))
 				)
 
 				return balancesCompact.filter(

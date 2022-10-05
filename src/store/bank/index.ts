@@ -127,7 +127,7 @@ const useBank = defineStore("bank", {
 
 			return stakingCoin && assets
 				? compact(
-						balances.map((balance) => {
+						balancesRaw.map((balance) => {
 							const asset = assets.assets.find((el) => el.base === balance.denom)
 
 							if (asset) {
@@ -147,9 +147,11 @@ const useBank = defineStore("bank", {
 				: []
 		},
 		balances({ balancesRaw }) {
-			if (btsgAssets) {
+			const assetsList = btsgAssets
+
+			if (assetsList) {
 				const balancesCompact = compact(
-					balancesRaw.map((balance) => toViewDenom(balance, btsgAssets.assets))
+					balancesRaw.map((balance) => toViewDenom(balance, assetsList.assets))
 				)
 
 				return balancesCompact.filter(

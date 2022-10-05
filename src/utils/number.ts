@@ -1,6 +1,7 @@
 import { ibcMap } from "@/configs"
-import { Asset } from "@chain-registry/types"
+import { Coin as BitsongCoin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { Coin } from "@cosmjs/proto-signing"
+import { Asset } from "@chain-registry/types"
 import { BigNumber } from "bignumber.js"
 
 export const isNegative = (amount: string): boolean => {
@@ -42,11 +43,16 @@ export const gteCoin = (coin: Coin, compareAmount: string | number) => {
 	return new BigNumber(coin.amount).gte(compareAmount)
 }
 
-export const sumCoins = (left: Coin, right: Coin, asset: Asset): Coin => {
+export const sumCoins = (
+	left: BitsongCoin,
+	right: BitsongCoin,
+	asset: Asset
+): BitsongCoin => {
 	const leftAmount = new BigNumber(left.amount)
 	const rightAmount = new BigNumber(right.amount)
 
 	return {
+		$type: "cosmos.base.v1beta1.Coin",
 		denom: asset.base,
 		amount: leftAmount.plus(rightAmount).toString(),
 	}

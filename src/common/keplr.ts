@@ -11,12 +11,12 @@ export const tokenToExperimentalSuggestChain = (
 	const feeCurrencies: AppCurrency[] = []
 
 	const rpcAddresses =
-		chain && chain.apis
+		chain && chain.apis && chain.apis.rpc
 			? chain.apis.rpc.map((grpc) => grpc.address)
 			: ["https://rpc.explorebitsong.com"]
 
 	const lcdAddresses =
-		chain && chain.apis
+		chain && chain.apis && chain.apis.rest
 			? chain.apis.rest.map((rest) => rest.address)
 			: ["https://lcd.explorebitsong.com"]
 
