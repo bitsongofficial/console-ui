@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@bitsongjs/client': 2.4.0-beta.1
+  '@bitsongjs/client': 2.4.0-beta.2
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
@@ -37,7 +37,7 @@ specifiers:
   vue-tsc: ^0.40.4
 
 dependencies:
-  '@bitsongjs/client': 2.4.0-beta.1
+  '@bitsongjs/client': 2.4.0-beta.2
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': 2.1.0
@@ -130,8 +130,8 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
 
-  /@bitsongjs/client/2.4.0-beta.1:
-    resolution: {integrity: sha512-A9jQyyF/ArfB4WQTN//Red/7fumHtuG2G4IsIJaYOYxkdp6fGy+0jHse7FgBZgOmdHrFmMKoUXoJ1Vlk2oMzMw==}
+  /@bitsongjs/client/2.4.0-beta.2:
+    resolution: {integrity: sha512-UGsWpn6+70RXc8rvvhQxXCH8x1H3eSNq0RlGGi4lXvceeYAacndbAlhC9srAGhmNWdUWkDhR+pceO/y2ECnXzQ==}
     dependencies:
       '@bitsongjs/utils': 2.1.1-beta.0
       '@cosmjs/proto-signing': 0.29.0

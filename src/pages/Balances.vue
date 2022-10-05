@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { TableColumn } from "@/models"
-import useBank from "@/store/bank"
 import { Coin } from "@cosmjs/proto-signing"
+import { useQuasar } from "quasar"
+import useBank from "@/store/bank"
+import { TransferToOsmosis } from "@/components"
+import useOsmosis from "@/store/osmosis"
 
+const quasar = useQuasar()
 const bankStore = useBank()
+const osmosisStore = useOsmosis()
 
 const columns: TableColumn[] = [
 	{
@@ -24,12 +29,33 @@ const columns: TableColumn[] = [
 			return parseFloat(a) - parseFloat(b)
 		},
 	},
+	{
+		name: "actions",
+		required: true,
+		label: "",
+		align: "right",
+		field: "actions",
+	},
 ]
 
 const pagination = {
 	sortBy: "amount",
 	descending: true,
 	rowsPerPage: 30,
+}
+
+const openTransferDialog = (coin: Coin) => {
+	quasar
+		.dialog({
+			component: TransferToOsmosis,
+			componentProps: {
+				balance: coin,
+			},
+		})
+		.onOk(() => {
+			bankStore.loadBalance()
+			osmosisStore.loadBalances()
+		})
 }
 </script>
 
@@ -50,7 +76,27 @@ const pagination = {
 				:columns="columns"
 				:pagination="pagination"
 				row-key="denom"
-			/>
+			>
+				<template v-slot:body-cell-actions="actionsProps">
+					<q-td :props="actionsProps">
+						<q-btn flat unelevated :ripple="false">
+							<q-icon name="more_vert"></q-icon>
+
+							<q-menu>
+								<q-list style="min-width: 140px">
+									<q-item
+										clickable
+										v-close-popup
+										@click="openTransferDialog(actionsProps.row)"
+									>
+										<q-item-section>Transfer to Osmosis</q-item-section>
+									</q-item>
+								</q-list>
+							</q-menu>
+						</q-btn>
+					</q-td>
+				</template>
+			</q-table>
 		</div>
 	</q-page>
 </template>

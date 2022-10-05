@@ -2,23 +2,89 @@ import { fromBaseToDisplay, toMicroUnit, toViewDenom } from "@/utils"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { bitsongClient } from "@/services"
 import { QueryAllBalancesRequest } from "@bitsongjs/client/dist/codec/cosmos/bank/v1beta1/query"
-import { btsgStakingCoin, btsgAssets } from "@/configs"
+import {
+	btsgStakingCoin,
+	btsgAssets,
+	ibcBitsongOsmosis,
+	bitsongStdFee,
+} from "@/configs"
 import { compact } from "lodash"
 import useAuth from "@/store/auth"
 import { lastValueFrom } from "rxjs"
 import { Coin } from "@cosmjs/proto-signing"
+import { MsgTransfer } from "@bitsongjs/client/dist/codec/ibc/applications/transfer/v1/tx"
+import { MessageTimestamp } from "@/models"
+import Long from "long"
+import { DeliverTxResponse } from "@cosmjs/stargate"
 
 export interface BankState {
 	loading: boolean
+	transfering: boolean
 	balancesRaw: Coin[]
 }
 
 const useBank = defineStore("bank", {
 	state: (): BankState => ({
 		loading: false,
+		transfering: false,
 		balancesRaw: [],
 	}),
 	actions: {
+		async sendIbcTokensToOsmosis(transferAmount: Coin) {
+			try {
+				const authStore = useAuth()
+
+				if (
+					ibcBitsongOsmosis &&
+					authStore.osmosisAddress &&
+					authStore.bitsongAddress
+				) {
+					this.transfering = true
+					const txClient = await lastValueFrom(bitsongClient.txClient)
+
+					const timeoutTimestamp = Math.floor(new Date().getTime() / 1000) + 600
+
+					const timeoutTimestampNanoseconds = timeoutTimestamp
+						? Long.fromNumber(timeoutTimestamp).multiply(1_000_000_000)
+						: undefined
+
+					const msg = MsgTransfer.fromJSON({
+						sourcePort: ibcBitsongOsmosis.chain_1.port_id,
+						sourceChannel: ibcBitsongOsmosis.chain_1.channel_id,
+						sender: authStore.bitsongAddress,
+						receiver: authStore.osmosisAddress,
+						token: {
+							denom: transferAmount.denom,
+							amount: transferAmount.amount,
+						},
+						timeoutTimestamp:
+							timeoutTimestampNanoseconds ?? (Long.fromString("0") as any),
+					})
+
+					// @ts-ignore
+					delete msg.token?.$type
+
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
+
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
+					}
+				}
+			} catch (error) {
+				console.error(error)
+			} finally {
+				this.transfering = false
+			}
+		},
 		async init() {
 			try {
 				this.loading = true

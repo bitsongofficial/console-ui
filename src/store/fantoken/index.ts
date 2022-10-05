@@ -27,6 +27,7 @@ import useAuth from "../auth"
 import { DeliverTxResponse, logs } from "@cosmjs/stargate"
 import { sortBy } from "lodash"
 import { lastValueFrom } from "rxjs"
+import useBank from "../bank"
 
 export interface FantokenState {
 	loading: boolean
@@ -162,6 +163,7 @@ const useFantoken = defineStore("fantoken", {
 		},
 		async mintFantoken(payload: MintFantoken, fantoken: FanToken) {
 			const authStore = useAuth()
+			const bankStore = useBank()
 
 			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
 				try {
@@ -192,6 +194,8 @@ const useFantoken = defineStore("fantoken", {
 
 						if (signedTxBytes) {
 							txRes = await txClient.broadcast(signedTxBytes)
+
+							bankStore.loadBalance()
 						}
 					}
 				} catch (error) {
@@ -204,6 +208,7 @@ const useFantoken = defineStore("fantoken", {
 		},
 		async burnFantoken(payload: BurnFantoken, fantoken: FanToken) {
 			const authStore = useAuth()
+			const bankStore = useBank()
 
 			if (bitsongClient && bitsongClient.txClient && authStore.bitsongAddress) {
 				try {
@@ -233,6 +238,8 @@ const useFantoken = defineStore("fantoken", {
 
 						if (signedTxBytes) {
 							txRes = await txClient.broadcast(signedTxBytes)
+
+							bankStore.loadBalance()
 						}
 					}
 				} catch (error) {
