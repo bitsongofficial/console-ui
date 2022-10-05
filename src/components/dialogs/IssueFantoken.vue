@@ -139,13 +139,13 @@ const onSubmit = async () => {
 					</div>
 				</q-card-section>
 				<q-card-actions align="right">
+					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 					<q-btn
 						color="primary"
 						label="Issue"
 						type="submit"
 						:loading="fantokenStore.issuing"
 					/>
-					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 				</q-card-actions>
 			</q-form>
 		</q-card>

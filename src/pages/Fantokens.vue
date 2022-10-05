@@ -216,7 +216,12 @@ const openDisableMintDialog = (fantoken: FanToken) => {
 			title: "Disable Mint",
 			message:
 				"Are you sure you want to disable mint? This operation is not reversible",
-			cancel: true,
+			ok: {
+				color: "primary",
+			},
+			cancel: {
+				color: "secondary",
+			},
 		})
 		.onOk(async () => {
 			try {

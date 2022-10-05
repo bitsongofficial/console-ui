@@ -97,7 +97,7 @@ const availableCoins = computed(() => {
 						/>
 						<q-input
 							class="col-12"
-							label="Authority"
+							label="Recipient"
 							dense
 							filled
 							v-model="dataForm.recipient"
@@ -118,13 +118,13 @@ const availableCoins = computed(() => {
 					</div>
 				</q-card-section>
 				<q-card-actions align="right">
+					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 					<q-btn
 						color="primary"
 						label="Mint"
 						type="submit"
 						:loading="fantokenStore.minting"
 					/>
-					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 				</q-card-actions>
 			</q-form>
 		</q-card>

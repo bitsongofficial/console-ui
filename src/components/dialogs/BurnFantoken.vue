@@ -100,13 +100,13 @@ const availableCoins = computed(() => {
 					</div>
 				</q-card-section>
 				<q-card-actions align="right">
+					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 					<q-btn
 						color="primary"
 						label="Burn"
 						type="submit"
 						:loading="fantokenStore.burning"
 					/>
-					<q-btn color="secondary" label="Cancel" @click="onDialogCancel" />
 				</q-card-actions>
 			</q-form>
 		</q-card>
