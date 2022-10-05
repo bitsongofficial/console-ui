@@ -99,7 +99,7 @@ const onSubmit = async () => {
 								(val) => gtnZero(val) || 'Amount must be a greater then zero',
 								(val) =>
 									compareBalance(val, balance.amount) ||
-									'Amount greater then max supply',
+									'Amount greater then available balance',
 								(val) => !isNegative(val) || 'Amount must be greater then zero',
 							]"
 							placeholder="0"

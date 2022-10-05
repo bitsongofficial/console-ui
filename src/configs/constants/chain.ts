@@ -70,3 +70,21 @@ export const bitsongStdFee: StdFee = {
 		},
 	],
 }
+
+export const osmosisStdFee: StdFee = {
+	gas: "350000",
+	amount: [
+		{
+			denom: "uosmo",
+			amount: "10000",
+		},
+		{
+			denom: "uosmo",
+			amount: "25000",
+		},
+		{
+			denom: "uosmo",
+			amount: "40000",
+		},
+	],
+}

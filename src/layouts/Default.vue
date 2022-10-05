@@ -154,6 +154,19 @@ const logout = () => {
 
 						<q-item-section>Balances</q-item-section>
 					</q-item>
+					<q-item
+						clickable
+						v-ripple
+						:active="link === 'osmosis-gauges'"
+						@click="link = 'osmosis-gauges'"
+						to="/osmosis-gauges"
+					>
+						<q-item-section avatar>
+							<q-icon name="data_saver_on" />
+						</q-item-section>
+
+						<q-item-section>Gauges</q-item-section>
+					</q-item>
 				</q-expansion-item>
 			</q-list>
 		</q-drawer>

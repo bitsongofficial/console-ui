@@ -35,7 +35,6 @@ const onSubmit = async () => {
 				merkleRoot: merkledropForm.merkleRoot,
 				coin: fromDisplayToBase(
 					{
-						$type: "cosmos.base.v1beta1.Coin",
 						amount: merkledropForm.coin.toString(),
 						denom: merkledropForm.asset.display,
 					},
@@ -93,7 +92,6 @@ const onFileChange = async () => {
 
 			const totalAmountCoin = fromBaseToDisplay(
 				{
-					$type: "cosmos.base.v1beta1.Coin",
 					amount: totalAmount.toString(),
 					denom: merkledropForm.asset.base,
 				},
@@ -231,15 +229,16 @@ onMounted(() => {
 					</p>
 
 					<div class="col-12 flex justify-end">
+						<q-btn type="reset" color="secondary" label="reset" />
 						<q-btn
 							type="submit"
 							color="primary"
+							class="q-ml-sm"
 							:disable="!authStore.session"
 							:loading="authStore.loading"
 						>
 							<q-icon name="send" />
 						</q-btn>
-						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 					</div>
 				</q-form>
 			</q-card>

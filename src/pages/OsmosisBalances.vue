@@ -44,7 +44,7 @@ const pagination = {
 			<div class="col-auto">
 				<div class="row">
 					<div class="col">
-						<h4 class="q-mb-lg q-mt-none text-bold">Balances</h4>
+						<h4 class="q-mb-lg q-mt-none text-bold">Osmosis Balances</h4>
 					</div>
 				</div>
 			</div>

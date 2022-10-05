@@ -207,10 +207,10 @@ const onSubmit = async () => {
 						/>
 
 						<div class="col-12 flex justify-end">
-							<q-btn type="submit" color="primary" :loading="loading">
+							<q-btn type="reset" color="secondary" label="reset" />
+							<q-btn type="submit" class="q-ml-sm" color="primary" :loading="loading">
 								<q-icon name="send" />
 							</q-btn>
-							<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 						</div>
 					</div>
 				</q-card>

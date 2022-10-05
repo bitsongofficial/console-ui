@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { btsgStakingCoin } from "@/configs"
 import { SnapshotSearch, TableColumn } from "@/models"
 import { DelegationResponse } from "@bitsongjs/client/dist/codec/cosmos/staking/v1beta1/staking"
@@ -167,10 +167,10 @@ const exportJsonTable = () => {
 					/>
 
 					<div class="col-12 flex justify-end">
-						<q-btn type="submit" color="primary">
+						<q-btn type="reset" color="secondary" label="reset" />
+						<q-btn type="submit" class="q-ml-sm" color="primary">
 							<q-icon name="search" />
 						</q-btn>
-						<q-btn type="reset" class="q-ml-sm" color="secondary" label="reset" />
 					</div>
 				</q-form>
 			</q-card>

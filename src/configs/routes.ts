@@ -37,6 +37,10 @@ export const routes: RouteRecordRaw[] = [
 				path: "osmosis-balances",
 				component: () => import("@/pages/OsmosisBalances.vue"),
 			},
+			{
+				path: "osmosis-gauges",
+				component: () => import("@/pages/OsmosisGauges.vue"),
+			},
 		],
 	},
 ]
