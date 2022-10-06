@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import useAuth from "../auth"
-import { Coin, coins } from "@cosmjs/proto-signing"
+import { Coin, coins, Registry } from "@cosmjs/proto-signing"
 import { toViewDenom } from "@/utils"
 import {
 	osmosisAssets,
@@ -14,7 +14,13 @@ import { signAndBroadcast, toDuration } from "@osmonauts/helpers"
 import { CreateGauge } from "@/models"
 import { parse, toSeconds } from "duration-fns"
 import Long from "long"
-import { logs } from "@cosmjs/stargate"
+import {
+	AminoTypes,
+	defaultRegistryTypes,
+	logs,
+	SigningStargateClient,
+} from "@cosmjs/stargate"
+import { createOsmosisAminoConverters } from "@/signing"
 
 const { createGauge } = osmosis.incentives.MessageComposer.withTypeUrl
 
@@ -68,12 +74,32 @@ const useOsmosis = defineStore("osmosis", {
 				if (window.keplr && osmosisChain && authStore.osmosisAddress && data.coin) {
 					const signer = await window.keplr.getOfflineSigner(osmosisChain.chain_id)
 
-					const osmosisClient = await getSigningOsmosisClient({
-						rpcEndpoint: osmosisRpcAddress,
-						signer,
+					const registry = new Registry(defaultRegistryTypes)
+
+					const aminoTypes = new AminoTypes({
+						...osmosis.gamm.v1beta1.AminoConverter,
+						...osmosis.lockup.AminoConverter,
+						...osmosis.incentives.AminoConverter,
+						...createOsmosisAminoConverters(),
 					})
 
+					osmosis.gamm.v1beta1.load(registry)
+					osmosis.lockup.load(registry)
+					osmosis.incentives.load(registry)
+
+					const client = await SigningStargateClient.connectWithSigner(
+						osmosisRpcAddress,
+						signer,
+						{ registry, aminoTypes }
+					)
+
 					const duration = parse(`P${data.duration}`)
+					const msgDuration = toSeconds(duration) * 1_000_000_000
+
+					const durationObj = {
+						seconds: Long.fromNumber(Math.floor(msgDuration / 1_000_000_000)),
+						nanos: msgDuration % 1_000_000_000,
+					}
 
 					const msg = createGauge({
 						isPerpetual: data.isPerpetual,
@@ -84,13 +110,13 @@ const useOsmosis = defineStore("osmosis", {
 						distributeTo: {
 							lockQueryType: 0,
 							denom: `gamm/pool/${data.denom}`,
-							duration: toDuration(toSeconds(duration).toString()),
+							duration: durationObj,
 							timestamp: new Date(),
 						},
 					})
 
 					const res = await signAndBroadcast({
-						client: osmosisClient,
+						client,
 						chainId: "osmosis-1",
 						address: authStore.osmosisAddress,
 						msgs: [msg],
@@ -100,13 +126,11 @@ const useOsmosis = defineStore("osmosis", {
 
 					const parsedLogs = logs.parseLogs(logs.parseRawLog(res.rawLog))
 
-					/* const denomAttr = logs.findAttribute(
-            parsedLogs,
-            'bitsong.fantoken.v1beta1.EventIssue',
-            'denom',
-          ); */
+					const gaugeAttr = logs.findAttribute(parsedLogs, "create_gauge", "key")
 
-					console.log(parsedLogs, logs.parseRawLog(res.rawLog), res.rawLog)
+					const gaugeID = gaugeAttr.value.slice(1, -1)
+
+					console.log(gaugeAttr, gaugeID)
 				}
 			} catch (error) {
 				console.error(error)

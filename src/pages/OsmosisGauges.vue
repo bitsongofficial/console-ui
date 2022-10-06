@@ -11,7 +11,11 @@ import { CreateGauge, GaugeDuration } from "@/models"
 import { reactive } from "vue"
 import useAuth from "@/store/auth"
 import useOsmosis from "@/store/osmosis"
+import { ibcMap } from "@/configs"
+import { Asset } from "@chain-registry/types"
+import { useQuasar } from "quasar"
 
+const quasar = useQuasar()
 const authStore = useAuth()
 const osmosisStore = useOsmosis()
 
@@ -32,7 +36,41 @@ const durationOptions = [
 ]
 
 const onSubmit = async () => {
-	await osmosisStore.createNewGauge(dataForm)
+	try {
+		const ibcMapOsmosis = ibcMap.find((el) => el.chain_name === "osmosis")
+
+		if (ibcMapOsmosis && dataForm.coin) {
+			const asset = ibcMapOsmosis.assets.find(
+				(el: Asset) => el.display === dataForm.coin?.denom
+			)
+
+			if (asset) {
+				await osmosisStore.createNewGauge({
+					...dataForm,
+					coin: fromDisplayToBase(dataForm.coin, asset),
+					amount: toMicroUnit(dataForm.amount),
+				})
+
+				onReset()
+
+				quasar.notify({
+					message: "New gauge created",
+					color: "positive",
+					icon: "warning",
+					closeBtn: true,
+					timeout: 10000,
+				})
+			}
+		}
+	} catch (error) {
+		quasar.notify({
+			message: `Something went wrong: ${(error as Error).message}`,
+			color: "negative",
+			icon: "warning",
+			closeBtn: true,
+			timeout: 10000,
+		})
+	}
 }
 
 const onReset = () => {
