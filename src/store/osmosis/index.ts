@@ -66,9 +66,7 @@ const useOsmosis = defineStore("osmosis", {
 				this.creatingGauge = true
 
 				if (window.keplr && osmosisChain && authStore.osmosisAddress && data.coin) {
-					const signer = await window.keplr.getOfflineSignerOnlyAmino(
-						osmosisChain.chain_id
-					)
+					const signer = await window.keplr.getOfflineSigner(osmosisChain.chain_id)
 
 					const osmosisClient = await getSigningOsmosisClient({
 						rpcEndpoint: osmosisRpcAddress,
