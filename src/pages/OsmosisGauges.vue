@@ -8,7 +8,7 @@ import {
 	fromDisplayToBase,
 } from "@/utils"
 import { CreateGauge, GaugeDuration } from "@/models"
-import { reactive } from "vue"
+import { computed, reactive } from "vue"
 import useAuth from "@/store/auth"
 import useOsmosis from "@/store/osmosis"
 import { ibcMap } from "@/configs"
@@ -29,16 +29,35 @@ const dataForm = reactive<CreateGauge>({
 	numEpochsPaidOver: 240,
 })
 
+const ibcMapOsmosis = ibcMap.find((el) => el.chain_name === "osmosis")
+
 const durationOptions = [
 	GaugeDuration["1D"],
 	GaugeDuration["7D"],
 	GaugeDuration["14D"],
 ]
 
+const balancesWithDenom = computed(() =>
+	osmosisStore.balances.map((balance) => {
+		if (ibcMapOsmosis) {
+			const asset = ibcMapOsmosis.assets.find(
+				(el: Asset) => el.display === balance.denom
+			)
+
+			if (asset) {
+				return {
+					...balance,
+					ibcDenom: fromDisplayToBase(balance, asset).denom,
+				}
+			}
+		}
+
+		return balance
+	})
+)
+
 const onSubmit = async () => {
 	try {
-		const ibcMapOsmosis = ibcMap.find((el) => el.chain_name === "osmosis")
-
 		if (ibcMapOsmosis && dataForm.coin) {
 			const asset = ibcMapOsmosis.assets.find(
 				(el: Asset) => el.display === dataForm.coin?.denom
@@ -103,8 +122,8 @@ const onReset = () => {
 						dense
 						filled
 						v-model="dataForm.coin"
-						:options="osmosisStore.balances"
-						option-label="denom"
+						:options="balancesWithDenom"
+						:option-label="(item) => `${item.denom} - ${item.ibcDenom ?? ''}`"
 						:option-value="(item) => item"
 						:rules="[(val) => !!val || 'Required']"
 					/>
