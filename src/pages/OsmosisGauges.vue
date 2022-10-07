@@ -45,18 +45,23 @@ const balancesWithDenom = computed(() =>
 			)
 
 			if (asset) {
+				const ibcCoin = fromDisplayToBase(balance, asset)
 				return {
-					...balance,
-					ibcDenom: fromDisplayToBase(balance, asset).denom,
+					label: `${balance.denom.toUpperCase()} - ${ibcCoin.denom ?? ""}`,
+					value: balance,
 				}
 			}
 		}
 
-		return balance
+		return {
+			label: balance.denom,
+			value: balance,
+		}
 	})
 )
 
 const onSubmit = async () => {
+	console.log(dataForm)
 	try {
 		if (ibcMapOsmosis && dataForm.coin) {
 			const asset = ibcMapOsmosis.assets.find(
@@ -123,8 +128,8 @@ const onReset = () => {
 						filled
 						v-model="dataForm.coin"
 						:options="balancesWithDenom"
-						:option-label="(item) => `${item.denom} - ${item.ibcDenom ?? ''}`"
-						:option-value="(item) => item"
+						emit-value
+						map-options
 						:rules="[(val) => !!val || 'Required']"
 					/>
 

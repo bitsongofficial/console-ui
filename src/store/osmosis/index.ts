@@ -134,6 +134,7 @@ const useOsmosis = defineStore("osmosis", {
 				}
 			} catch (error) {
 				console.error(error)
+				throw error
 			} finally {
 				this.creatingGauge = false
 			}
