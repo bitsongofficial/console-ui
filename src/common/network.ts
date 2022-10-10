@@ -4,7 +4,8 @@ import { AppCurrency } from "@keplr-wallet/types"
 
 export const tokenToKeplrCoin = (
 	network: Chain,
-	denom: string
+	denom: string,
+	denomUnitBase: string
 ): AppCurrency | undefined => {
 	const assetList = assets.find(
 		(asset) => asset.chain_name === network.chain_name
@@ -17,7 +18,7 @@ export const tokenToKeplrCoin = (
 
 		if (coinLookup) {
 			const denomUnit = coinLookup.denom_units.find(
-				(unit) => unit.denom === denom || unit.denom === denom
+				(unit) => unit.denom === denomUnitBase || unit.denom === denomUnitBase
 			)
 
 			if (denomUnit) {

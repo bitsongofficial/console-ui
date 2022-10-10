@@ -1,13 +1,14 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { AccountData } from "@cosmjs/proto-signing"
-import { tokenToExperimentalSuggestChain } from "@/common"
 import {
 	bitsongChain,
 	bitsongRpcAddresses,
+	btsgAssets,
 	btsgStakingCoin,
 	osmosisChain,
 } from "@/configs"
-import { bitsongClient, setOsmosisClient } from "@/services"
+import { bitsongClient } from "@/services"
+import { chainRegistryChainToKeplr } from "@chain-registry/keplr"
 
 export interface KeplrState {
 	accounts: AccountData[]
@@ -27,16 +28,19 @@ const useKeplr = defineStore("keplr", {
 			try {
 				this.loading = true
 
-				if (window.keplr && bitsongChain && osmosisChain && btsgStakingCoin) {
+				if (
+					window.keplr &&
+					bitsongChain &&
+					osmosisChain &&
+					btsgStakingCoin &&
+					btsgAssets
+				) {
 					const chainIds = [bitsongChain.chain_id, osmosisChain.chain_id]
 
-					const experimentalChain = tokenToExperimentalSuggestChain(
-						bitsongChain,
-						btsgStakingCoin
-					)
+					const suggestChain = chainRegistryChainToKeplr(bitsongChain, [btsgAssets])
 
-					if (experimentalChain) {
-						await window.keplr.experimentalSuggestChain(experimentalChain)
+					if (suggestChain) {
+						await window.keplr.experimentalSuggestChain(suggestChain)
 					}
 
 					await window.keplr.enable(chainIds)

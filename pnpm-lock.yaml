@@ -5,6 +5,7 @@ specifiers:
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
+  '@chain-registry/keplr': ^1.0.0
   '@chain-registry/types': ^0.11.0
   '@chain-registry/utils': ^1.0.0
   '@cosmjs/encoding': ^0.29.0
@@ -44,6 +45,7 @@ dependencies:
   '@bitsongjs/nft': 2.1.0-beta.4
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': 2.1.0
+  '@chain-registry/keplr': 1.0.0
   '@chain-registry/utils': 1.0.0
   '@cosmjs/encoding': 0.29.0
   '@cosmjs/proto-signing': 0.29.0
@@ -193,6 +195,18 @@ packages:
     dependencies:
       crypto-js: 4.1.1
       merkletreejs: 0.2.32
+    dev: false
+
+  /@chain-registry/keplr/1.0.0:
+    resolution: {integrity: sha512-Eja3r5TskhA3/iA0qYPM2lhOIjZd/Ug8ppFP4b88PZqbUmvgjPBcfn2TLoCOIU1FxeYDqQrG5dJ+BqBz1UVHgA==}
+    dependencies:
+      '@babel/runtime': 7.19.0
+      '@chain-registry/types': 0.11.0
+      '@keplr-wallet/cosmos': 0.10.24
+      '@keplr-wallet/crypto': 0.10.24
+      semver: 7.3.8
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@chain-registry/types/0.11.0:

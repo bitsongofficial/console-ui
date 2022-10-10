@@ -1,81 +1,4 @@
-<script setup lang="ts">
-import { reactive, ref } from "vue"
-import {
-	NFTStorageProvider,
-	PinataStorageProvider,
-	StorageProvider,
-} from "@bitsongjs/storage"
-import { NFTUploader } from "@bitsongjs/nft"
-import { useQuasar } from "quasar"
-import { CollectionProvider } from "@/models"
-
-const quasar = useQuasar()
-
-const loading = ref(false)
-
-const providerType = ref(CollectionProvider.NFT_STORAGE)
-
-const nftForm = reactive({
-	images: [],
-	metadata: [],
-	nftStorageToken: "",
-	pinataApiKey: "",
-	pinataSecretApiKey: "",
-	symbol: "",
-	name: "",
-	uri: "",
-	isMutable: false,
-	updateAuthority: "",
-})
-
-const onSubmit = async () => {
-	try {
-		loading.value = true
-
-		let provider: StorageProvider
-
-		switch (providerType.value) {
-			case CollectionProvider.NFT_STORAGE:
-				provider = new NFTStorageProvider({
-					token: nftForm.nftStorageToken,
-				})
-				break
-			case CollectionProvider.PINATA:
-				provider = new PinataStorageProvider(
-					nftForm.pinataApiKey,
-					nftForm.pinataSecretApiKey
-				)
-				break
-		}
-
-		const client = new NFTUploader(provider)
-
-		const cid = await client.upload(nftForm.images, nftForm.metadata)
-
-		console.log(cid)
-
-		quasar.notify({
-			message: `Files uploaded to IPFS: ${cid.uri}`,
-			color: "positive",
-			icon: "warning",
-			closeBtn: true,
-			timeout: 10000,
-		})
-	} catch (error) {
-		console.error(error)
-
-		quasar.notify({
-			message: `Something went wrong: ${(error as Error).message}`,
-			color: "negative",
-			icon: "warning",
-			closeBtn: true,
-			timeout: 10000,
-		})
-	} finally {
-		loading.value = false
-	}
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
 	<q-page class="fit q-pa-md">
@@ -84,6 +7,14 @@ const onSubmit = async () => {
 				<div class="row">
 					<div class="col">
 						<h4 class="q-mb-lg q-mt-none text-bold">Collections</h4>
+					</div>
+					<div class="col-auto">
+						<q-btn
+							color="primary"
+							label="Create Collection"
+							no-caps
+							to="/create-collection"
+						/>
 					</div>
 				</div>
 			</div>

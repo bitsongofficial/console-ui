@@ -6,7 +6,8 @@ export const tokenToExperimentalSuggestChain = (
 	chain: Chain,
 	asset: Asset
 ): ChainInfo | undefined => {
-	const stakeCurrency = tokenToKeplrCoin(chain, asset.base)
+	const stakeCurrency = tokenToKeplrCoin(chain, asset.base, asset.base)
+	const displayCurrency = tokenToKeplrCoin(chain, asset.base, asset.display)
 	const currencies: AppCurrency[] = []
 	const feeCurrencies: AppCurrency[] = []
 
@@ -20,10 +21,13 @@ export const tokenToExperimentalSuggestChain = (
 			? chain.apis.rest.map((rest) => rest.address)
 			: ["https://lcd.explorebitsong.com"]
 
-	if (stakeCurrency) {
-		currencies.push(stakeCurrency)
-		feeCurrencies.push(stakeCurrency)
+	if (displayCurrency) {
+		console.log(displayCurrency)
+		currencies.push(displayCurrency)
+		feeCurrencies.push(displayCurrency)
+	}
 
+	if (stakeCurrency) {
 		return {
 			chainId: chain.chain_id,
 			chainName: chain.pretty_name,
