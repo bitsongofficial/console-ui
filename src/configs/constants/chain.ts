@@ -2,10 +2,13 @@ import { MicroDenom } from "@bitsongjs/client"
 import { AssetList } from "@chain-registry/types"
 import { StdFee } from "@cosmjs/stargate/build"
 import { chains, assets } from "chain-registry"
+import { bitsongTestnetChain } from "./testnet"
 
-export const bitsongChain = chains.find(
-	({ chain_name }) => chain_name === "bitsong"
-)
+const testnet = import.meta.env.VITE_MODE === "testnet"
+
+export const bitsongChain = testnet
+	? bitsongTestnetChain
+	: chains.find(({ chain_name }) => chain_name === "bitsong")
 
 export const osmosisChain = chains.find(
 	({ chain_name }) => chain_name === "osmosis"

@@ -6,7 +6,7 @@ export const tokenToExperimentalSuggestChain = (
 	chain: Chain,
 	asset: Asset
 ): ChainInfo | undefined => {
-	const stakeCurrency = tokenToKeplrCoin(chain, asset.symbol)
+	const stakeCurrency = tokenToKeplrCoin(chain, asset.base)
 	const currencies: AppCurrency[] = []
 	const feeCurrencies: AppCurrency[] = []
 
@@ -21,9 +21,12 @@ export const tokenToExperimentalSuggestChain = (
 			: ["https://lcd.explorebitsong.com"]
 
 	if (stakeCurrency) {
+		currencies.push(stakeCurrency)
+		feeCurrencies.push(stakeCurrency)
+
 		return {
 			chainId: chain.chain_id,
-			chainName: chain.chain_name,
+			chainName: chain.pretty_name,
 			rpc: rpcAddresses[0],
 			rest: lcdAddresses[0],
 			stakeCurrency,

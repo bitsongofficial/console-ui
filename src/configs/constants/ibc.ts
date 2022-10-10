@@ -20,5 +20,3 @@ export const ibcBitsongOsmosis = (function () {
 		}
 	}
 })()
-
-console.log(ibcMap)
