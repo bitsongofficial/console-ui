@@ -22,14 +22,14 @@ const dataForm = reactive<Partial<MsgCreateCollection>>({
 const onSubmit = async () => {
 	console.log(dataForm)
 	try {
-		await nftStore.createCollection({
+		const collectionId = await nftStore.createCollection({
 			...dataForm,
 		})
 
 		onReset()
 
 		quasar.notify({
-			message: "New collection created",
+			message: `New collection created with ID: ${collectionId}`,
 			color: "positive",
 			icon: "warning",
 			closeBtn: true,

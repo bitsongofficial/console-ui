@@ -56,7 +56,13 @@ const useNFT = defineStore("nft", {
 
 							const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
 
-							console.log(parsedLogs, txRes.rawLog)
+							const collectionIdAttr = logs.findAttribute(
+								parsedLogs,
+								"bitsong.nft.v1beta1.EventCollectionCreation",
+								"collection_id"
+							)
+
+							return collectionIdAttr.value.slice(1, -1)
 						}
 					}
 				}
