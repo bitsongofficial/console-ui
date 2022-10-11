@@ -13,14 +13,14 @@ export const bitsongTestnetChain: Chain = {
 	apis: {
 		rpc: [
 			{
-				address: "http://localhost:26657",
-				provider: "selfhost",
+				address: "https://rpc.bwasmnet-1.bitsong.network",
+				provider: "bitsong",
 			},
 		],
 		rest: [
 			{
-				address: "http://localhost:1317",
-				provider: "selfhost",
+				address: "https://api.bwasmnet-1.bitsong.network",
+				provider: "bitsong",
 			},
 		],
 		grpc: [
