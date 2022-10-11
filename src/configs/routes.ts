@@ -37,6 +37,10 @@ export const routes: RouteRecordRaw[] = [
 				path: "create-collection",
 				component: () => import("@/pages/CreateCollection.vue"),
 			},
+			{
+				path: "create-nft",
+				component: () => import("@/pages/CreateNFT.vue"),
+			},
 			// Osmosis routes
 			{
 				path: "osmosis-balances",

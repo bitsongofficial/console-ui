@@ -4,7 +4,6 @@ import { TableColumn } from "@/models"
 import { FanToken } from "@bitsongjs/client/dist/codec/bitsong/fantoken/v1beta1/fantoken"
 import { onMounted } from "vue"
 import { fromBaseToDisplay } from "@/utils"
-import { Coin } from "@bitsongjs/client/dist/codec/cosmos/base/v1beta1/coin"
 import { useVueFuse } from "vue-fuse"
 import { useQuasar } from "quasar"
 import {
