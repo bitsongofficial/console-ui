@@ -204,7 +204,7 @@ const removeCreator = (index: number) => {
 					<div v-for="(_, index) in dataForm.creators" :key="index" class="col-12">
 						<q-card class="q-pa-sm q-col-gutter-xs row" bordered>
 							<q-input
-								class="col-12 col-md-4"
+								class="col-12 col-md-5"
 								label="Address"
 								dense
 								filled
@@ -218,7 +218,7 @@ const removeCreator = (index: number) => {
 								hide-bottom-space
 							/>
 							<q-input
-								class="col-12 col-md-4"
+								class="col-12 col-md-5"
 								label="Share"
 								dense
 								filled
@@ -231,14 +231,7 @@ const removeCreator = (index: number) => {
 								hide-bottom-space
 							/>
 
-							<q-checkbox
-								class="col"
-								left-label
-								v-model="dataForm.creators[index].verified"
-								label="Verified"
-							/>
-
-							<div class="col-auto row">
+							<div class="col-auto row q-ml-auto">
 								<q-btn
 									class="q-my-auto"
 									color="primary"
