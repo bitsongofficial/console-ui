@@ -5,11 +5,14 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
+		"dev:mainnet": "vite --mode mainnet",
 		"build": "vue-tsc --noEmit && vite build",
+		"build:mainnet": "vue-tsc --noEmit && vite build --mode mainnet",
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@bitsongjs/client": "2.4.0-beta.2",
+		"@bitsongjs/client": "2.4.0-beta.4",
+		"@bitsongjs/contracts": "2.1.0-beta.0",
 		"@bitsongjs/nft": "2.1.0-beta.4",
 		"@bitsongjs/storage": "2.1.0-beta.2",
 		"@bitsongjs/utils": "^2.1.0",

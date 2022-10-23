@@ -41,6 +41,20 @@ export const routes: RouteRecordRaw[] = [
 				path: "create-nft",
 				component: () => import("@/pages/CreateNFT.vue"),
 			},
+			// Smart Contracts
+			{
+				path: "contract",
+				children: [
+					{
+						path: "",
+						component: () => import("@/pages/Contract/Contract.vue"),
+					},
+					{
+						path: "upload",
+						component: () => import("@/pages/Contract/ContractUpload.vue"),
+					},
+				],
+			},
 			// Osmosis routes
 			{
 				path: "osmosis-balances",

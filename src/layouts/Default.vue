@@ -134,6 +134,19 @@ const logout = () => {
 
 					<q-item-section>Launchpad</q-item-section>
 				</q-item>
+				<q-item
+					clickable
+					v-ripple
+					:active="link === 'contract'"
+					@click="link = 'contract'"
+					to="/contract"
+				>
+					<q-item-section avatar>
+						<q-icon name="description" />
+					</q-item-section>
+
+					<q-item-section>Contract</q-item-section>
+				</q-item>
 
 				<q-expansion-item
 					:content-inset-level="0.5"
