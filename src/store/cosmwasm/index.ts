@@ -3,18 +3,47 @@ import { bitsongClient } from "@/services"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { InstantiateContract } from "@/models"
 import useAuth from "../auth"
+import { Contract, ContractCodeHistoryEntry } from "@cosmjs/cosmwasm-stargate"
 
 export interface ChainState {
 	uploading: boolean
 	instantiating: boolean
+	loadingContract: boolean
+	contract?: Contract
+	contractHistory: ContractCodeHistoryEntry[]
 }
 
 const useCosmWasm = defineStore("cosmWasm", {
 	state: (): ChainState => ({
 		uploading: false,
 		instantiating: false,
+		loadingContract: false,
+		contract: undefined,
+		contractHistory: []
 	}),
 	actions: {
+		async getContract(address: string) {
+			try {
+				this.loadingContract = true
+
+				const txClient = await lastValueFrom(bitsongClient.txClient)
+
+				const result = await txClient?.signingCosmWasmClient.getContract(address)
+				const resultHistory = await txClient?.signingCosmWasmClient.getContractCodeHistory(address)
+
+				if (!result || !resultHistory) {
+					throw new Error("getContract failed")
+				}
+
+				this.contract = result
+				this.contractHistory = resultHistory as ContractCodeHistoryEntry[]
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.loadingContract = false
+			}
+		},
 		async uploadContract(file: Uint8Array) {
 			const authStore = useAuth()
 

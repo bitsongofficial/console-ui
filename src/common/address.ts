@@ -2,7 +2,8 @@ import { fromBech32 } from "@cosmjs/encoding"
 
 export const isValidAddress = (
 	address: string,
-	requiredPrefix: string
+	requiredPrefix: string,
+	length = 20
 ): boolean => {
 	try {
 		const { prefix, data } = fromBech32(address)
@@ -11,7 +12,7 @@ export const isValidAddress = (
 			return false
 		}
 
-		return data.length === 20
+		return data.length === length
 	} catch {
 		return false
 	}
