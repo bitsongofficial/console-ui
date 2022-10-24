@@ -5,9 +5,10 @@ import { useQuasar } from "quasar"
 import { reactive } from "vue"
 import { InstantiateContract } from "@/models"
 import { isValidAddress, isValidJSON } from "@/common"
-import { bitsongChain } from "@/configs"
+import { bitsongChain, btsgAssets } from "@/configs"
 import useBank from "@/store/bank"
-import { compareBalance, gtnZero } from "@/utils"
+import { compareBalance, fromDisplayToBase, gtnZero } from "@/utils"
+import { compact } from "lodash"
 
 const cosmWasmStore = useCosmWasm()
 const authStore = useAuth()
@@ -26,7 +27,20 @@ const instantiateForm = reactive(initialState)
 
 const submit = async () => {
 	try {
-		const result = await cosmWasmStore.instantiateCode(instantiateForm)
+		const funds = compact(instantiateForm.funds.map((fund) => {
+			let asset = btsgAssets?.assets.find(
+				(el) => el.display === fund.denom
+			)
+
+			if (asset) {
+				return fromDisplayToBase(fund, asset)
+			}
+		}))
+
+		const result = await cosmWasmStore.instantiateCode({
+			...instantiateForm,
+			funds
+		})
 
 		reset()
 
