@@ -26,3 +26,13 @@ export const formatShortAddress = (address: string | undefined, end = 4) => {
 
 	return `${splitted.shift() ?? ""}1...${address.slice(-end)}`
 }
+
+export const isValidJSON = (data: string) => {
+	try {
+		JSON.parse(data)
+
+		return true
+	} catch (error) {
+		return false
+	}
+}

@@ -173,6 +173,13 @@ const useBank = defineStore("bank", {
 				}
 			}
 		},
+		balanceDisplay: function () {
+			return (denom: string) => {
+				const balance = this.balances.find((el) => el.denom === denom)
+
+				return balance
+			}
+		},
 	},
 	persistedState: {
 		persist: false,

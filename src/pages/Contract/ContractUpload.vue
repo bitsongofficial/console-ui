@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import useCosmWasm from "@/store/cosmwasm";
+import useAuth from "@/store/auth";
 import { useQuasar } from "quasar";
 import { ref } from "vue"
 
 const cosmWasmStore = useCosmWasm()
+const authStore = useAuth()
 const quasar = useQuasar()
 const contractWasm = ref<File>()
 
@@ -71,6 +73,7 @@ const reset = () => {
 						type="submit"
 						label="Upload"
 						color="primary"
+						:disable="!authStore.session"
 						:loading="cosmWasmStore.uploading"
 					/>
 				</q-card>
