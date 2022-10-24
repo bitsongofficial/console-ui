@@ -6,7 +6,7 @@ export const bitsongTestnetChain: Chain = {
 	network_type: "testnet",
 	website: "https://bitsong.io/",
 	pretty_name: "BitSong CosmWasm Testnet",
-	chain_id: "bitsong-cosmwasm-testnet",
+	chain_id: "bwasmnet-1",
 	bech32_prefix: "bitsong",
 	slip44: 639,
 	daemon_name: "bitsongd",
