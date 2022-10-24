@@ -1,7 +1,44 @@
 <script setup lang="ts">
+import useCosmWasm from "@/store/cosmwasm";
+import { useQuasar } from "quasar";
 import { ref } from "vue"
 
-const contractWasm = ref()
+const cosmWasmStore = useCosmWasm()
+const quasar = useQuasar()
+const contractWasm = ref<File>()
+
+const submit = async () => {
+	try {
+		if (contractWasm.value) {
+			const arrayBuffer = await contractWasm.value.arrayBuffer()
+			const byteFile = new Uint8Array(arrayBuffer)
+
+			const result = await cosmWasmStore.uploadContract(byteFile)
+
+			reset()
+
+			quasar.notify({
+				message: `New contract uploaded with ID: ${result?.codeId}`,
+				color: "positive",
+				icon: "warning",
+				closeBtn: true,
+				timeout: 10000,
+			})
+		}
+	} catch (error) {
+		quasar.notify({
+			message: `Something went wrong: ${(error as Error).message}`,
+			color: "negative",
+			icon: "warning",
+			closeBtn: true,
+			timeout: 10000,
+		})
+	}
+}
+
+const reset = () => {
+	contractWasm.value = undefined
+}
 </script>
 
 <template>
@@ -15,7 +52,7 @@ const contractWasm = ref()
 				</div>
 			</div>
 
-			<div class="row">
+			<q-form class="row" @submit="submit" @reset="reset">
 				<q-card class="col-12 col-md-6 q-pa-lg q-mb-lg q-mx-auto" bordered>
 					<q-file
 						v-model="contractWasm"
@@ -34,9 +71,10 @@ const contractWasm = ref()
 						type="submit"
 						label="Upload"
 						color="primary"
+						:loading="cosmWasmStore.uploading"
 					/>
 				</q-card>
-			</div>
+			</q-form>
 		</div>
 	</q-page>
 </template>
