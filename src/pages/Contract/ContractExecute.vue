@@ -1,26 +1,37 @@
 <script setup lang="ts">
-import useCosmWasm from "@/store/cosmwasm"
-import useAuth from "@/store/auth"
 import { useQuasar } from "quasar"
-import { reactive } from "vue"
-import { InstantiateContract } from "@/models"
-import { isValidAddress, isValidJSON } from "@/common"
+import { onMounted, reactive } from "vue"
+import { ExecuteContract } from "@/models"
+import { isValidJSON, isValidAddress } from "@/common"
 import { bitsongChain, btsgAssets } from "@/configs"
-import useBank from "@/store/bank"
 import { compareBalance, fromDisplayToBase, gtnZero } from "@/utils"
 import { compact } from "lodash"
+import { useRoute, useRouter } from "vue-router"
+import useBank from "@/store/bank"
+import useCosmWasm from "@/store/cosmwasm"
+import useAuth from "@/store/auth"
 
 const cosmWasmStore = useCosmWasm()
 const authStore = useAuth()
 const bankStore = useBank()
 const quasar = useQuasar()
+const route = useRoute()
+const router = useRouter()
 
-const initialState: InstantiateContract = {
-	codeId: 0,
+const contract = route.params.contract as string
+
+onMounted(async () => {
+	if (
+		!bitsongChain ||
+		!isValidAddress(contract, bitsongChain?.bech32_prefix, 32)
+	) {
+		await router.replace("/contract")
+	}
+})
+
+const initialState: ExecuteContract = {
 	msg: "",
-	label: "",
 	funds: [],
-	admin: "",
 }
 
 const instantiateForm = reactive(initialState)
@@ -37,15 +48,18 @@ const submit = async () => {
 			})
 		)
 
-		const result = await cosmWasmStore.instantiateCode({
-			...instantiateForm,
-			funds,
-		})
+		await cosmWasmStore.executeContract(
+			{
+				...instantiateForm,
+				funds,
+			},
+			contract
+		)
 
 		reset()
 
 		quasar.notify({
-			message: `New smartcontract created: ${result?.contractAddress}`,
+			message: "New smartcontract created",
 			color: "positive",
 			icon: "warning",
 			closeBtn: true,
@@ -84,7 +98,7 @@ const removeFund = (index: number) => {
 			<div class="col-auto">
 				<div class="row">
 					<div class="col">
-						<h4 class="q-mb-lg q-mt-none text-bold">Instantiate a code</h4>
+						<h4 class="q-mb-lg q-mt-none text-bold">Execute</h4>
 					</div>
 				</div>
 			</div>
@@ -93,37 +107,8 @@ const removeFund = (index: number) => {
 				<q-card class="q-pa-lg q-mb-lg" bordered>
 					<div class="q-col-gutter-md row">
 						<q-input
-							class="col-12 col-md-6"
-							label="Admin (optional)"
-							dense
-							filled
-							v-model="instantiateForm.admin"
-							:rules="[
-								(val) =>
-									val.length === 0 ||
-									isValidAddress(val, bitsongChain?.bech32_prefix ?? '') ||
-									'Invalid address',
-							]"
-							placeholder="bitsong1..."
-						/>
-
-						<q-input
-							class="col-12 col-md-6"
-							label="Code ID"
-							dense
-							filled
-							v-model.number="instantiateForm.codeId"
-							:rules="[
-								(val) => !!val || 'Required',
-								(val) => val > 0 || 'Code ID must be greater then zero',
-							]"
-							type="number"
-							placeholder="1"
-						/>
-
-						<q-input
 							class="col-12"
-							label="Init msg"
+							label="Msg"
 							dense
 							filled
 							v-model="instantiateForm.msg"
@@ -133,15 +118,6 @@ const removeFund = (index: number) => {
 							]"
 							type="textarea"
 							rows="10"
-						/>
-
-						<q-input
-							class="col-12"
-							label="Label"
-							dense
-							filled
-							v-model="instantiateForm.label"
-							:rules="[(val) => !!val || 'Required']"
 						/>
 
 						<div class="col-12 row items-center">
@@ -226,10 +202,10 @@ const removeFund = (index: number) => {
 							<q-btn
 								class="q-ml-sm"
 								type="submit"
-								label="Instantiate"
+								label="Execute"
 								color="primary"
 								:disable="!authStore.session"
-								:loading="cosmWasmStore.instantiating"
+								:loading="cosmWasmStore.executing"
 							/>
 						</div>
 					</div>

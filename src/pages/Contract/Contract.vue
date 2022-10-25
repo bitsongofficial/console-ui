@@ -84,6 +84,22 @@ onUnmounted(() => {
 					</q-card-section>
 				</template>
 				<template v-else-if="cosmWasmStore.contract">
+					<q-card-section class="row">
+						<q-btn
+							color="secondary"
+							label="Query"
+							no-caps
+							class="q-ml-auto q-mr-sm"
+						/>
+
+						<q-btn
+							color="secondary"
+							label="Execute"
+							no-caps
+							:to="`/contract/execute/${cosmWasmStore.contract.address}`"
+						/>
+					</q-card-section>
+					<q-separator />
 					<q-card-section>
 						<p class="text-bold">Code ID</p>
 						<p>{{ cosmWasmStore.contract.codeId }}</p>
@@ -94,7 +110,9 @@ onUnmounted(() => {
 					<q-card-section v-if="cosmWasmStore.contractHistory.length > 0">
 						<template v-for="history of cosmWasmStore.contractHistory">
 							<p>{{ history.operation }}Msg</p>
-							<pre class="q-pa-md border-1 border-gray border-solid rounded-borders">{{ history.msg }}</pre>
+							<pre class="q-pa-md border-1 border-gray border-solid rounded-borders">{{
+								history.msg
+							}}</pre>
 						</template>
 					</q-card-section>
 				</template>

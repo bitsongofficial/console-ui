@@ -1,13 +1,14 @@
 import { lastValueFrom } from "rxjs"
 import { bitsongClient } from "@/services"
 import { acceptHMRUpdate, defineStore } from "pinia"
-import { InstantiateContract } from "@/models"
+import { ExecuteContract, InstantiateContract } from "@/models"
 import useAuth from "../auth"
 import { Contract, ContractCodeHistoryEntry } from "@cosmjs/cosmwasm-stargate"
 
 export interface ChainState {
 	uploading: boolean
 	instantiating: boolean
+	executing: boolean
 	loadingContract: boolean
 	contract?: Contract
 	contractHistory: ContractCodeHistoryEntry[]
@@ -17,6 +18,7 @@ const useCosmWasm = defineStore("cosmWasm", {
 	state: (): ChainState => ({
 		uploading: false,
 		instantiating: false,
+		executing: false,
 		loadingContract: false,
 		contract: undefined,
 		contractHistory: []
@@ -104,6 +106,37 @@ const useCosmWasm = defineStore("cosmWasm", {
 				throw error
 			} finally {
 				this.instantiating = false
+			}
+		},
+		async executeContract(payload: ExecuteContract, contractAddress: string) {
+			const authStore = useAuth()
+
+			try {
+				this.executing = true
+
+				if (authStore.bitsongAddress) {
+					const txClient = await lastValueFrom(bitsongClient.txClient)
+
+					const result = await txClient?.signingCosmWasmClient.execute(
+						authStore.bitsongAddress,
+						contractAddress,
+						JSON.parse(payload.msg),
+						"auto",
+						"",
+						payload.funds
+					)
+
+					if (!result) {
+						throw new Error("Execute failed")
+					}
+
+					return result
+				}
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.executing = false
 			}
 		},
 	},

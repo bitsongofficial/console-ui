@@ -1,9 +1,12 @@
 import { Coin } from "@cosmjs/proto-signing"
 
-export interface InstantiateContract {
-	codeId: number
+export interface ExecuteContract {
 	msg: string
-	label: string
 	funds: Coin[]
+}
+
+export interface InstantiateContract extends ExecuteContract {
+	codeId: number
+	label: string
 	admin: string
 }
