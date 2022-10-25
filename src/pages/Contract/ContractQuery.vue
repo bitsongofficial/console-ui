@@ -51,7 +51,7 @@ const reset = () => {
 			<div class="col-auto">
 				<div class="row">
 					<div class="col">
-						<h4 class="q-mb-lg q-mt-none text-bold">Query</h4>
+						<h4 class="q-mb-lg q-mt-none text-bold">Query Contract</h4>
 					</div>
 				</div>
 			</div>
