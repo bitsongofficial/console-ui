@@ -90,6 +90,7 @@ onUnmounted(() => {
 							label="Query"
 							no-caps
 							class="q-ml-auto q-mr-sm"
+							:to="`/contract/query/${cosmWasmStore.contract.address}`"
 						/>
 
 						<q-btn

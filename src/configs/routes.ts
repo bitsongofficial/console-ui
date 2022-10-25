@@ -61,6 +61,10 @@ export const routes: RouteRecordRaw[] = [
 						path: "execute/:contract",
 						component: () => import("@/pages/Contract/ContractExecute.vue"),
 					},
+					{
+						path: "query/:contract",
+						component: () => import("@/pages/Contract/ContractQuery.vue"),
+					},
 				],
 			},
 			// Osmosis routes

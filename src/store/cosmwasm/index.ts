@@ -9,6 +9,7 @@ export interface ChainState {
 	uploading: boolean
 	instantiating: boolean
 	executing: boolean
+	querying: boolean
 	loadingContract: boolean
 	contract?: Contract
 	contractHistory: ContractCodeHistoryEntry[]
@@ -19,11 +20,35 @@ const useCosmWasm = defineStore("cosmWasm", {
 		uploading: false,
 		instantiating: false,
 		executing: false,
+		querying: false,
 		loadingContract: false,
 		contract: undefined,
-		contractHistory: []
+		contractHistory: [],
 	}),
 	actions: {
+		async queryContractSmart(address: string, queryMsg: string) {
+			try {
+				this.querying = true
+
+				const txClient = await lastValueFrom(bitsongClient.txClient)
+
+				const result = await txClient?.signingCosmWasmClient.queryContractSmart(
+					address,
+					JSON.parse(queryMsg)
+				)
+
+				if (!result) {
+					throw new Error("queryContractSmart failed")
+				}
+
+				return result
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.querying = false
+			}
+		},
 		async getContract(address: string) {
 			try {
 				this.loadingContract = true
@@ -31,7 +56,8 @@ const useCosmWasm = defineStore("cosmWasm", {
 				const txClient = await lastValueFrom(bitsongClient.txClient)
 
 				const result = await txClient?.signingCosmWasmClient.getContract(address)
-				const resultHistory = await txClient?.signingCosmWasmClient.getContractCodeHistory(address)
+				const resultHistory =
+					await txClient?.signingCosmWasmClient.getContractCodeHistory(address)
 
 				if (!result || !resultHistory) {
 					throw new Error("getContract failed")
