@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@bitsongjs/client': 2.4.0-beta.4
   '@bitsongjs/contracts': 2.1.0-beta.0
-  '@bitsongjs/nft': 2.1.0-beta.4
+  '@bitsongjs/nft': 2.1.0-beta.7
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': ^2.1.0
   '@chain-registry/keplr': ^1.0.0
@@ -45,7 +45,7 @@ specifiers:
 dependencies:
   '@bitsongjs/client': 2.4.0-beta.4
   '@bitsongjs/contracts': 2.1.0-beta.0
-  '@bitsongjs/nft': 2.1.0-beta.4
+  '@bitsongjs/nft': 2.1.0-beta.7
   '@bitsongjs/storage': 2.1.0-beta.2
   '@bitsongjs/utils': 2.1.0
   '@chain-registry/keplr': 1.0.0
@@ -1408,13 +1408,12 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@bitsongjs/nft/2.1.0-beta.4:
-    resolution: {integrity: sha512-4n+GL6bP1vL9unaKWiKailWOm1Vo9rr5naom2dbq4qJZQAnJDCnAuqry5M+Bc0+15viVyeYHRbf0xf9v2vakRQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/@bitsongjs/nft/-/nft-2.1.0-beta.4.tgz}
+  /@bitsongjs/nft/2.1.0-beta.7:
+    resolution: {integrity: sha512-kBO5g9ozNQLJBMIwuPhm1D2z6laxYmYyJ4E8kBUk36L7qwWYso75EXnqQShCESXQgKs8q1SD4xMZtgB3x/InBw==}
     dependencies:
       '@bitsongjs/storage': 2.1.0-beta.2
       ajv: 8.11.0
       files-from-path: 0.2.6
-      stream: 0.0.2
     transitivePeerDependencies:
       - debug
       - encoding
@@ -2750,7 +2749,7 @@ packages:
     dev: false
 
   /ajv/8.11.0:
-    resolution: {integrity: sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/ajv/-/ajv-8.11.0.tgz}
+    resolution: {integrity: sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==}
     dependencies:
       fast-deep-equal: 3.1.3
       json-schema-traverse: 1.0.0
@@ -3532,10 +3531,6 @@ packages:
       inherits: 2.0.4
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
-
-  /emitter-component/1.1.1:
-    resolution: {integrity: sha512-G+mpdiAySMuB7kesVRLuyvYRqDmshB7ReKEVuyBPkzQlmiDiLrt7hHHIy4Aff552bgknVN7B2/d3lzhGO5dvpQ==}
-    dev: false
 
   /emoji-regex/8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -6123,12 +6118,6 @@ packages:
     resolution: {integrity: sha512-4vEbkSs83OahpmBybNJXlJd7d6/RxzkkSdT3I0mnGt79Xd2Kk+e1JqbvAvsQfCeKj3aKb0QIWkyK3/n0j506vQ==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/stream-to-it/-/stream-to-it-0.2.4.tgz}
     dependencies:
       get-iterator: 1.0.2
-    dev: false
-
-  /stream/0.0.2:
-    resolution: {integrity: sha512-gCq3NDI2P35B2n6t76YJuOp7d6cN/C7Rt0577l91wllh0sY9ZBuw9KaSGqH/b0hzn3CWWJbpbW0W0WvQ1H/Q7g==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.com/stream/-/stream-0.0.2.tgz}
-    dependencies:
-      emitter-component: 1.1.1
     dev: false
 
   /streaming-iterables/6.2.0:

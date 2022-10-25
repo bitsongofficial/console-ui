@@ -13,7 +13,7 @@
 	"dependencies": {
 		"@bitsongjs/client": "2.4.0-beta.4",
 		"@bitsongjs/contracts": "2.1.0-beta.0",
-		"@bitsongjs/nft": "2.1.0-beta.4",
+		"@bitsongjs/nft": "2.1.0-beta.7",
 		"@bitsongjs/storage": "2.1.0-beta.2",
 		"@bitsongjs/utils": "^2.1.0",
 		"@chain-registry/keplr": "^1.0.0",
