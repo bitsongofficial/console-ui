@@ -19,7 +19,7 @@ export interface ChainState {
 	loadingCodes: boolean
 	contract?: Contract
 	contractHistory: ContractCodeHistoryEntry[]
-	contractsAddresses: Map<number, string[]>
+	contractsAddresses: string[]
 	codes: Code[]
 	codeId: number
 }
@@ -35,7 +35,7 @@ const useCosmWasm = defineStore("cosmWasm", {
 		loadingCodes: false,
 		contract: undefined,
 		contractHistory: [],
-		contractsAddresses: new Map(),
+		contractsAddresses: [],
 		codes: [],
 		codeId: -1,
 	}),
@@ -55,7 +55,7 @@ const useCosmWasm = defineStore("cosmWasm", {
 					throw new Error("getContracts failed")
 				}
 
-				this.contractsAddresses.set(codeId, result as string[])
+				this.contractsAddresses = result as string[]
 
 				return result
 			} catch (error) {
@@ -238,14 +238,10 @@ const useCosmWasm = defineStore("cosmWasm", {
 		getCodesByCreator({ codes }) {
 			return (creator: string) => codes.filter((code) => code.creator === creator)
 		},
-		getAddressesByCode: ({ contractsAddresses }) => {
-			return (code: number) => {
-				const addresses = contractsAddresses.get(code) ?? []
-
-				return addresses.map((address) => ({
-					address,
-				}))
-			}
+		contractsAddressesObj: ({ contractsAddresses }) => {
+			return contractsAddresses.map((address) => ({
+				address,
+			}))
 		},
 	},
 	persistedState: {

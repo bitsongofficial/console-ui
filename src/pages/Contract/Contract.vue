@@ -60,7 +60,7 @@ onMounted(async () => {
 						</p>
 						<q-btn
 							color="secondary"
-							label="Interact"
+							label="Interact (Query/Execute)"
 							no-caps
 							class="q-ml-auto"
 							:to="`/contract/${cosmWasmStore.contract.address}/interact`"

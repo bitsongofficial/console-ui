@@ -50,11 +50,19 @@ export const routes: RouteRecordRaw[] = [
 						component: () => import("@/pages/Contract/Contracts.vue"),
 					},
 					{
+						path: "code/:code",
+						component: () => import("@/pages/Contract/ContractCode.vue"),
+					},
+					{
 						path: "upload",
 						component: () => import("@/pages/Contract/ContractUpload.vue"),
 					},
 					{
 						path: "instantiate",
+						component: () => import("@/pages/Contract/ContractInstantiate.vue"),
+					},
+					{
+						path: "instantiate/:code",
 						component: () => import("@/pages/Contract/ContractInstantiate.vue"),
 					},
 				],

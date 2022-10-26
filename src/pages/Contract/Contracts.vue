@@ -52,27 +52,19 @@ const columns: TableColumn[] = [
 		field: "creator",
 		sortable: true,
 	},
+	{
+		name: "actions",
+		required: true,
+		label: "",
+		align: "right",
+		field: "actions",
+	},
 ]
 
 const pagination = {
 	sortBy: "id",
-	descending: false,
+	descending: true,
 	rowsPerPage: 15,
-}
-
-const columnsContracts: TableColumn[] = [
-	{
-		name: "address",
-		required: true,
-		label: "Contract Address",
-		align: "left",
-		field: "address",
-		sortable: true,
-	},
-]
-
-const paginationContracts = {
-	rowsPerPage: -1,
 }
 </script>
 
@@ -91,13 +83,6 @@ const paginationContracts = {
 							no-caps
 							class="q-mr-sm"
 							to="/contracts/upload"
-						/>
-
-						<q-btn
-							color="primary"
-							label="Instantiate"
-							no-caps
-							to="/contracts/instantiate"
 						/>
 					</div>
 				</div>
@@ -137,54 +122,24 @@ const paginationContracts = {
 				:loading="cosmWasmStore.loadingCodes"
 				:pagination="pagination"
 			>
-				<template v-slot:header="props">
-					<q-tr :props="props">
-						<q-th auto-width />
-						<q-th v-for="col in props.cols" :key="col.name" :props="props">
-							{{ col.label }}
-						</q-th>
-					</q-tr>
+				<template v-slot:body-cell-id="props">
+					<q-td :props="props">
+						<router-link class="text-primary" :to="`/contracts/code/${props.row.id}`">
+							{{ props.row.id }}
+						</router-link>
+					</q-td>
 				</template>
-
-				<template v-slot:body="props">
-					<q-tr :props="props">
-						<q-td auto-width>
-							<q-btn
-								size="sm"
-								color="primary"
-								round
-								dense
-								@click="expandRow(props, props.row.id)"
-								:icon="props.expand ? 'remove' : 'add'"
-							/>
-						</q-td>
-						<q-td v-for="col in props.cols" :key="col.name" :props="props">
-							{{ col.value }}
-						</q-td>
-					</q-tr>
-					<q-tr v-show="props.expand" :props="props">
-						<q-td colspan="100%">
-							<q-table
-								:columns="columnsContracts"
-								:pagination="paginationContracts"
-								:rows="cosmWasmStore.getAddressesByCode(props.row.id)"
-								:loading="
-									props.row.id === cosmWasmStore.codeId && cosmWasmStore.loadingContracts
-								"
-							>
-								<template v-slot:body-cell-address="props">
-									<q-td :props="props">
-										<router-link
-											class="text-primary"
-											:to="`/contract/${props.row.address}`"
-										>
-											{{ props.row.address }}
-										</router-link>
-									</q-td>
-								</template>
-							</q-table>
-						</q-td>
-					</q-tr>
+				<template v-slot:body-cell-actions="props">
+					<q-td :props="props">
+						<q-btn
+							size="sm"
+							color="primary"
+							round
+							dense
+							icon="chevron_right"
+							:to="`/contracts/code/${props.row.id}`"
+						/>
+					</q-td>
 				</template>
 			</q-table>
 		</div>

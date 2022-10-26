@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import useCosmWasm from "@/store/cosmwasm"
-import useAuth from "@/store/auth"
-import { useQuasar } from "quasar"
-import { reactive } from "vue"
-import { InstantiateContract } from "@/models"
-import { isValidAddress, isValidJSON } from "@/common"
 import { bitsongChain, btsgAssets } from "@/configs"
-import useBank from "@/store/bank"
+import { InstantiateContract, TableColumn } from "@/models"
 import { compareBalance, fromDisplayToBase, gtnZero } from "@/utils"
 import { compact } from "lodash"
+import { useQuasar } from "quasar"
+import { onMounted, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import useCosmWasm from "@/store/cosmwasm"
+import { isValidAddress, isValidJSON } from "@/common"
+import useAuth from "@/store/auth"
+import useBank from "@/store/bank"
 
+const quasar = useQuasar()
 const cosmWasmStore = useCosmWasm()
 const authStore = useAuth()
 const bankStore = useBank()
-const quasar = useQuasar()
-const route = useRoute()
 const router = useRouter()
+const route = useRoute()
 
 const code = parseInt(route.params.code as string, 10)
 
@@ -29,6 +29,14 @@ const initialState: InstantiateContract = {
 }
 
 const instantiateForm = reactive(initialState)
+
+onMounted(async () => {
+	if (!code) {
+		await router.replace("/contracts")
+	} else {
+		cosmWasmStore.getContracts(code)
+	}
+})
 
 const submit = async () => {
 	try {
@@ -81,6 +89,21 @@ const addFund = () => {
 const removeFund = (index: number) => {
 	instantiateForm.funds.splice(index, 1)
 }
+
+const columnsContracts: TableColumn[] = [
+	{
+		name: "address",
+		required: true,
+		label: "Contract Address",
+		align: "left",
+		field: "address",
+		sortable: true,
+	},
+]
+
+const paginationContracts = {
+	rowsPerPage: 5,
+}
 </script>
 
 <template>
@@ -100,10 +123,26 @@ const removeFund = (index: number) => {
 				/>
 				<div class="row">
 					<div class="col">
-						<h4 class="q-mb-lg q-mt-none text-bold">Instantiate a code</h4>
+						<h4 class="q-mb-lg q-mt-none text-bold">Code {{ code }}</h4>
 					</div>
 				</div>
 			</div>
+
+			<q-table
+				:columns="columnsContracts"
+				:pagination="paginationContracts"
+				:rows="cosmWasmStore.contractsAddressesObj"
+				:loading="cosmWasmStore.loadingContracts"
+				class="q-mb-md"
+			>
+				<template v-slot:body-cell-address="props">
+					<q-td :props="props">
+						<router-link class="text-primary" :to="`/contract/${props.row.address}`">
+							{{ props.row.address }}
+						</router-link>
+					</q-td>
+				</template>
+			</q-table>
 
 			<q-form @submit="submit" @reset="reset">
 				<q-card class="q-pa-lg q-mb-lg" bordered>
