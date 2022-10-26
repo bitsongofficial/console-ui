@@ -125,6 +125,9 @@ const paginationContracts = {
 					<div class="col">
 						<h4 class="q-mb-lg q-mt-none text-bold">Code {{ code }}</h4>
 					</div>
+					<div class="col-auto">
+						<q-btn color="primary" label="Instantiate" no-caps href="#instantiate" />
+					</div>
 				</div>
 			</div>
 
@@ -144,7 +147,7 @@ const paginationContracts = {
 				</template>
 			</q-table>
 
-			<q-form @submit="submit" @reset="reset">
+			<q-form @submit="submit" @reset="reset" id="instantiate">
 				<q-card class="q-pa-lg q-mb-lg" bordered>
 					<div class="q-col-gutter-md row">
 						<q-input
