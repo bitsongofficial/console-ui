@@ -56,6 +56,8 @@ const submit = async () => {
 			closeBtn: true,
 			timeout: 10000,
 		})
+
+		await router.push(`/contract/${result?.contractAddress}`)
 	} catch (error) {
 		quasar.notify({
 			message: `Something went wrong: ${(error as Error).message}`,

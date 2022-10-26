@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import useCosmWasm from "@/store/cosmwasm";
-import useAuth from "@/store/auth";
-import { useQuasar } from "quasar";
+import useCosmWasm from "@/store/cosmwasm"
+import useAuth from "@/store/auth"
+import { useQuasar } from "quasar"
 import { ref } from "vue"
+import { useRouter } from "vue-router"
 
 const cosmWasmStore = useCosmWasm()
 const authStore = useAuth()
 const quasar = useQuasar()
+const router = useRouter()
 const contractWasm = ref<File>()
 
 const submit = async () => {
@@ -26,6 +28,8 @@ const submit = async () => {
 				closeBtn: true,
 				timeout: 10000,
 			})
+
+			await router.push(`/contracts/code/${result?.codeId}`)
 		}
 	} catch (error) {
 		quasar.notify({
