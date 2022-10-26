@@ -45,9 +45,11 @@ const useCosmWasm = defineStore("cosmWasm", {
 				this.codeId = codeId
 				this.loadingContracts = true
 
-				const txClient = await lastValueFrom(bitsongClient.txClient)
+				const cosmWasmQueryClient = await lastValueFrom(
+					bitsongClient.cosmWasmQueryClient
+				)
 
-				const result = await txClient?.signingCosmWasmClient.getContracts(codeId)
+				const result = await cosmWasmQueryClient.getContracts(codeId)
 
 				if (!result) {
 					throw new Error("getContracts failed")
@@ -67,9 +69,11 @@ const useCosmWasm = defineStore("cosmWasm", {
 			try {
 				this.loadingCodes = true
 
-				const txClient = await lastValueFrom(bitsongClient.txClient)
+				const cosmWasmQueryClient = await lastValueFrom(
+					bitsongClient.cosmWasmQueryClient
+				)
 
-				const result = await txClient?.signingCosmWasmClient.getCodes()
+				const result = await cosmWasmQueryClient.getCodes()
 
 				if (!result) {
 					throw new Error("getCodes failed")
@@ -89,9 +93,11 @@ const useCosmWasm = defineStore("cosmWasm", {
 			try {
 				this.querying = true
 
-				const txClient = await lastValueFrom(bitsongClient.txClient)
+				const cosmWasmQueryClient = await lastValueFrom(
+					bitsongClient.cosmWasmQueryClient
+				)
 
-				const result = await txClient?.signingCosmWasmClient.queryContractSmart(
+				const result = await cosmWasmQueryClient.queryContractSmart(
 					address,
 					JSON.parse(queryMsg)
 				)
@@ -112,11 +118,14 @@ const useCosmWasm = defineStore("cosmWasm", {
 			try {
 				this.loadingContract = true
 
-				const txClient = await lastValueFrom(bitsongClient.txClient)
+				const cosmWasmQueryClient = await lastValueFrom(
+					bitsongClient.cosmWasmQueryClient
+				)
 
-				const result = await txClient?.signingCosmWasmClient.getContract(address)
-				const resultHistory =
-					await txClient?.signingCosmWasmClient.getContractCodeHistory(address)
+				const result = await cosmWasmQueryClient.getContract(address)
+				const resultHistory = await cosmWasmQueryClient.getContractCodeHistory(
+					address
+				)
 
 				if (!result || !resultHistory) {
 					throw new Error("getContract failed")
