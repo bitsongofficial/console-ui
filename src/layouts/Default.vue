@@ -137,15 +137,15 @@ const logout = () => {
 				<q-item
 					clickable
 					v-ripple
-					:active="link === 'contract'"
-					@click="link = 'contract'"
-					to="/contract"
+					:active="link === 'contracts'"
+					@click="link = 'contracts'"
+					to="/contracts"
 				>
 					<q-item-section avatar>
 						<q-icon name="description" />
 					</q-item-section>
 
-					<q-item-section>Contract</q-item-section>
+					<q-item-section>Contracts</q-item-section>
 				</q-item>
 
 				<q-expansion-item

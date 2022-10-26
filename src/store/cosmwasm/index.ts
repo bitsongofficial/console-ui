@@ -3,7 +3,11 @@ import { bitsongClient } from "@/services"
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { ExecuteContract, InstantiateContract } from "@/models"
 import useAuth from "../auth"
-import { Contract, ContractCodeHistoryEntry } from "@cosmjs/cosmwasm-stargate"
+import {
+	Contract,
+	Code,
+	ContractCodeHistoryEntry,
+} from "@cosmjs/cosmwasm-stargate"
 
 export interface ChainState {
 	uploading: boolean
@@ -11,8 +15,13 @@ export interface ChainState {
 	executing: boolean
 	querying: boolean
 	loadingContract: boolean
+	loadingContracts: boolean
+	loadingCodes: boolean
 	contract?: Contract
 	contractHistory: ContractCodeHistoryEntry[]
+	contractsAddresses: Map<number, string[]>
+	codes: Code[]
+	codeId: number
 }
 
 const useCosmWasm = defineStore("cosmWasm", {
@@ -22,10 +31,60 @@ const useCosmWasm = defineStore("cosmWasm", {
 		executing: false,
 		querying: false,
 		loadingContract: false,
+		loadingContracts: false,
+		loadingCodes: false,
 		contract: undefined,
 		contractHistory: [],
+		contractsAddresses: new Map(),
+		codes: [],
+		codeId: -1,
 	}),
 	actions: {
+		async getContracts(codeId: number) {
+			try {
+				this.codeId = codeId
+				this.loadingContracts = true
+
+				const txClient = await lastValueFrom(bitsongClient.txClient)
+
+				const result = await txClient?.signingCosmWasmClient.getContracts(codeId)
+
+				if (!result) {
+					throw new Error("getContracts failed")
+				}
+
+				this.contractsAddresses.set(codeId, result as string[])
+
+				return result
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.loadingContracts = false
+			}
+		},
+		async getCodes() {
+			try {
+				this.loadingCodes = true
+
+				const txClient = await lastValueFrom(bitsongClient.txClient)
+
+				const result = await txClient?.signingCosmWasmClient.getCodes()
+
+				if (!result) {
+					throw new Error("getCodes failed")
+				}
+
+				this.codes = result as Code[]
+
+				return result
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.loadingCodes = false
+			}
+		},
 		async queryContractSmart(address: string, queryMsg: string) {
 			try {
 				this.querying = true
@@ -163,6 +222,20 @@ const useCosmWasm = defineStore("cosmWasm", {
 				throw error
 			} finally {
 				this.executing = false
+			}
+		},
+	},
+	getters: {
+		getCodesByCreator({ codes }) {
+			return (creator: string) => codes.filter((code) => code.creator === creator)
+		},
+		getAddressesByCode: ({ contractsAddresses }) => {
+			return (code: number) => {
+				const addresses = contractsAddresses.get(code) ?? []
+
+				return addresses.map((address) => ({
+					address,
+				}))
 			}
 		},
 	},

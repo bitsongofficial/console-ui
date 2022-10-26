@@ -18,7 +18,7 @@ onMounted(async () => {
 		!bitsongChain ||
 		!isValidAddress(contract, bitsongChain?.bech32_prefix, 32)
 	) {
-		await router.replace("/contract")
+		await router.replace("/contracts")
 	}
 })
 

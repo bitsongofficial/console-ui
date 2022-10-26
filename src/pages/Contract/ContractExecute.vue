@@ -25,7 +25,7 @@ onMounted(async () => {
 		!bitsongChain ||
 		!isValidAddress(contract, bitsongChain?.bech32_prefix, 32)
 	) {
-		await router.replace("/contract")
+		await router.replace("/contracts")
 	}
 })
 
@@ -59,7 +59,7 @@ const submit = async () => {
 		reset()
 
 		quasar.notify({
-			message: "New smartcontract created",
+			message: "New message executed",
 			color: "positive",
 			icon: "warning",
 			closeBtn: true,

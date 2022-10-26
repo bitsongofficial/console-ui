@@ -38,14 +38,14 @@ onUnmounted(() => {
 							label="Upload"
 							no-caps
 							class="q-mr-sm"
-							to="/contract/upload"
+							to="/contracts/upload"
 						/>
 
 						<q-btn
 							color="primary"
 							label="Instantiate"
 							no-caps
-							to="/contract/instantiate"
+							to="/contracts/instantiate"
 						/>
 					</div>
 				</div>

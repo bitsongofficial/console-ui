@@ -43,11 +43,11 @@ export const routes: RouteRecordRaw[] = [
 			},
 			// Smart Contracts
 			{
-				path: "contract",
+				path: "contracts",
 				children: [
 					{
 						path: "",
-						component: () => import("@/pages/Contract/Contract.vue"),
+						component: () => import("@/pages/Contract/Contracts.vue"),
 					},
 					{
 						path: "upload",
@@ -57,12 +57,21 @@ export const routes: RouteRecordRaw[] = [
 						path: "instantiate",
 						component: () => import("@/pages/Contract/ContractInstantiate.vue"),
 					},
+				],
+			},
+			{
+				path: "contract/:contract",
+				children: [
 					{
-						path: "execute/:contract",
+						path: "",
+						component: () => import("@/pages/Contract/Contract.vue"),
+					},
+					{
+						path: "execute",
 						component: () => import("@/pages/Contract/ContractExecute.vue"),
 					},
 					{
-						path: "query/:contract",
+						path: "query",
 						component: () => import("@/pages/Contract/ContractQuery.vue"),
 					},
 				],
