@@ -67,12 +67,8 @@ export const routes: RouteRecordRaw[] = [
 						component: () => import("@/pages/Contract/Contract.vue"),
 					},
 					{
-						path: "execute",
-						component: () => import("@/pages/Contract/ContractExecute.vue"),
-					},
-					{
-						path: "query",
-						component: () => import("@/pages/Contract/ContractQuery.vue"),
+						path: "interact",
+						component: () => import("@/pages/Contract/ContractInteract.vue"),
 					},
 				],
 			},

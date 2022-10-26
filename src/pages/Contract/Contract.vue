@@ -3,24 +3,25 @@ import { isValidAddress } from "@/common"
 import { bitsongChain } from "@/configs"
 import useAuth from "@/store/auth"
 import useCosmWasm from "@/store/cosmwasm"
-import { onUnmounted, ref, watch } from "vue"
+import { onMounted, onUnmounted, ref, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const authStore = useAuth()
 const cosmWasmStore = useCosmWasm()
+const router = useRouter()
+const route = useRoute()
 
-const contractAddress = ref("")
+const contract = route.params.contract as string
 
-const contractAddressWatcher = watch(
-	() => contractAddress.value,
-	(value) => {
-		if (bitsongChain && isValidAddress(value, bitsongChain.bech32_prefix, 32)) {
-			cosmWasmStore.getContract(contractAddress.value)
-		}
+onMounted(async () => {
+	if (
+		!bitsongChain ||
+		!isValidAddress(contract, bitsongChain?.bech32_prefix, 32)
+	) {
+		await router.replace("/contracts")
+	} else {
+		cosmWasmStore.getContract(contract)
 	}
-)
-
-onUnmounted(() => {
-	contractAddressWatcher()
 })
 </script>
 
@@ -28,76 +29,41 @@ onUnmounted(() => {
 	<q-page class="fit q-pa-md">
 		<div class="max-w-xl container">
 			<div class="col-auto">
+				<q-btn
+					icon="arrow_back"
+					size="md"
+					class="q-mb-md"
+					color="primary"
+					label="Back"
+					no-caps
+					@click="router.back()"
+					unelevated
+					flat
+				/>
 				<div class="row">
 					<div class="col">
 						<h4 class="q-mb-lg q-mt-none text-bold">Contract</h4>
 					</div>
-					<div class="col-auto">
-						<q-btn
-							color="primary"
-							label="Upload"
-							no-caps
-							class="q-mr-sm"
-							to="/contracts/upload"
-						/>
-
-						<q-btn
-							color="primary"
-							label="Instantiate"
-							no-caps
-							to="/contracts/instantiate"
-						/>
-					</div>
 				</div>
 			</div>
-
-			<q-input
-				class="col-12 q-mb-lg"
-				dense
-				outlined
-				v-model="contractAddress"
-				:rules="[
-					(val) => !!val || 'Required',
-					(val) =>
-						isValidAddress(val, bitsongChain?.bech32_prefix ?? '', 32) ||
-						'Invalid address',
-				]"
-				debounce="500"
-				:loading="cosmWasmStore.loadingContract"
-				:disable="!authStore.session"
-			>
-				<template v-slot:append>
-					<q-icon
-						v-if="contractAddress !== ''"
-						name="close"
-						@click="contractAddress = ''"
-						class="cursor-pointer"
-					/>
-					<q-icon name="search" v-else />
-				</template>
-			</q-input>
 
 			<q-card class="q-mb-lg" bordered>
 				<template v-if="!cosmWasmStore.loadingContract && !cosmWasmStore.contract">
 					<q-card-section>
-						<pre>Search by contract address</pre>
+						<pre>Please use a valid address</pre>
 					</q-card-section>
 				</template>
 				<template v-else-if="cosmWasmStore.contract">
 					<q-card-section class="row">
+						<p class="q-mb-none flex items-center">
+							{{ cosmWasmStore.contract.address }}
+						</p>
 						<q-btn
 							color="secondary"
-							label="Query"
+							label="Interact"
 							no-caps
-							class="q-ml-auto q-mr-sm"
-							:to="`/contract/query/${cosmWasmStore.contract.address}`"
-						/>
-
-						<q-btn
-							color="secondary"
-							label="Execute"
-							no-caps
-							:to="`/contract/execute/${cosmWasmStore.contract.address}`"
+							class="q-ml-auto"
+							:to="`/contract/${cosmWasmStore.contract.address}/interact`"
 						/>
 					</q-card-section>
 					<q-separator />
