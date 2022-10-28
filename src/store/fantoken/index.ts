@@ -125,9 +125,14 @@ const useFantoken = defineStore("fantoken", {
 						minter: payload.minter,
 					})
 
+					console.log(msg)
+
 					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					console.log(txClient)
+					console.log(
+						txClient?.signingClient.registry.lookupType("/bitsong.fantoken.MsgIssue"),
+						txClient?.signingClient.registry
+					)
 
 					if (txClient) {
 						const signedTxBytes = await txClient.sign(
