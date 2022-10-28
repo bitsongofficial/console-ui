@@ -111,32 +111,6 @@ const logout = () => {
 				<q-item
 					clickable
 					v-ripple
-					:active="link === 'collections'"
-					@click="link = 'collections'"
-					to="/collections"
-				>
-					<q-item-section avatar>
-						<q-icon name="collections" />
-					</q-item-section>
-
-					<q-item-section>Collections</q-item-section>
-				</q-item>
-				<q-item
-					clickable
-					v-ripple
-					:active="link === 'launchpad'"
-					@click="link = 'launchpad'"
-					to="/launchpad"
-				>
-					<q-item-section avatar>
-						<q-icon name="grain" />
-					</q-item-section>
-
-					<q-item-section>Launchpad</q-item-section>
-				</q-item>
-				<q-item
-					clickable
-					v-ripple
 					:active="link === 'contracts'"
 					@click="link = 'contracts'"
 					to="/contracts"
