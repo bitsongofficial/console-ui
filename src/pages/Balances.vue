@@ -3,7 +3,7 @@ import { TableColumn } from "@/models"
 import { Coin } from "@cosmjs/proto-signing"
 import { useQuasar } from "quasar"
 import useBank from "@/store/bank"
-import { TransferToOsmosis } from "@/components"
+import { TransferToOsmosis, SendFantoken } from "@/components"
 import useOsmosis from "@/store/osmosis"
 
 const quasar = useQuasar()
@@ -57,6 +57,19 @@ const openTransferDialog = (coin: Coin) => {
 			osmosisStore.loadBalances()
 		})
 }
+
+const openSendDialog = (coin: Coin) => {
+	quasar
+		.dialog({
+			component: SendFantoken,
+			componentProps: {
+				balance: coin,
+			},
+		})
+		.onOk(() => {
+			bankStore.loadBalance()
+		})
+}
 </script>
 
 <template>
@@ -84,6 +97,13 @@ const openTransferDialog = (coin: Coin) => {
 
 							<q-menu>
 								<q-list style="min-width: 140px">
+									<q-item
+										clickable
+										v-close-popup
+										@click="openSendDialog(actionsProps.row)"
+									>
+										<q-item-section>Send</q-item-section>
+									</q-item>
 									<q-item
 										clickable
 										v-close-popup
