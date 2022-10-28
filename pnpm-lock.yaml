@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@bitsongjs/client': 2.4.0-beta.7
+  '@bitsongjs/client': 2.4.0-beta.8
   '@bitsongjs/contracts': 2.1.0-beta.0
   '@bitsongjs/nft': 2.1.0-beta.7
   '@bitsongjs/storage': 2.1.0-beta.2
@@ -43,7 +43,7 @@ specifiers:
   vue-tsc: ^0.40.4
 
 dependencies:
-  '@bitsongjs/client': 2.4.0-beta.7
+  '@bitsongjs/client': 2.4.0-beta.8
   '@bitsongjs/contracts': 2.1.0-beta.0
   '@bitsongjs/nft': 2.1.0-beta.7
   '@bitsongjs/storage': 2.1.0-beta.2
@@ -1379,8 +1379,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: false
 
-  /@bitsongjs/client/2.4.0-beta.7:
-    resolution: {integrity: sha512-WID6rjtX2/1Tw/ODwgPyTd7kZ3JkAKTQOt9RK6QL19sp7D8zuwxUWHZ7rEZRnMQ91lp3ZRzaITq2DG50wOivkg==}
+  /@bitsongjs/client/2.4.0-beta.8:
+    resolution: {integrity: sha512-0c29ERzi28qO/ESzAucLLNga8AALZsmF0QG2Coo4tILxXEL4nkeEJk/FUH/KzVr2QrOzSuDhZQd20cv66FwJlw==}
     dependencies:
       '@bitsongjs/contracts': 2.1.0-beta.0
       '@bitsongjs/utils': 2.1.0
