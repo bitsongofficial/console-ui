@@ -54,6 +54,7 @@ const logout = () => {
 
 		<q-drawer v-model="leftDrawerOpen" side="left" bordered>
 			<q-list padding class="rounded-borders text-primary">
+				<q-item-label class="q-pb-sm" header>BitSong Testnet</q-item-label>
 				<q-item
 					clickable
 					v-ripple
@@ -122,39 +123,33 @@ const logout = () => {
 					<q-item-section>Contracts</q-item-section>
 				</q-item>
 
-				<q-expansion-item
-					:content-inset-level="0.5"
-					expand-separator
-					icon="science"
-					label="Osmosis"
+				<q-item-label class="q-pb-sm q-mt-md" header>Osmosis Testnet</q-item-label>
+				<q-item
+					clickable
+					v-ripple
+					:active="link === 'osmosis-balances'"
+					@click="link = 'osmosis-balances'"
+					to="/osmosis-balances"
 				>
-					<q-item
-						clickable
-						v-ripple
-						:active="link === 'osmosis-balances'"
-						@click="link = 'osmosis-balances'"
-						to="/osmosis-balances"
-					>
-						<q-item-section avatar>
-							<q-icon name="savings" />
-						</q-item-section>
+					<q-item-section avatar>
+						<q-icon name="savings" />
+					</q-item-section>
 
-						<q-item-section>Balances</q-item-section>
-					</q-item>
-					<q-item
-						clickable
-						v-ripple
-						:active="link === 'osmosis-gauges'"
-						@click="link = 'osmosis-gauges'"
-						to="/osmosis-gauges"
-					>
-						<q-item-section avatar>
-							<q-icon name="data_saver_on" />
-						</q-item-section>
+					<q-item-section>Balances</q-item-section>
+				</q-item>
+				<q-item
+					clickable
+					v-ripple
+					:active="link === 'osmosis-gauges'"
+					@click="link = 'osmosis-gauges'"
+					to="/osmosis-gauges"
+				>
+					<q-item-section avatar>
+						<q-icon name="data_saver_on" />
+					</q-item-section>
 
-						<q-item-section>Gauges</q-item-section>
-					</q-item>
-				</q-expansion-item>
+					<q-item-section>Gauges</q-item-section>
+				</q-item>
 			</q-list>
 		</q-drawer>
 
