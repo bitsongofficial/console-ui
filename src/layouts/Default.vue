@@ -158,11 +158,11 @@ const logout = () => {
 					<q-item-label class="q-pb-sm q-mt-md" header>Address List</q-item-label>
 					<div class="row justify-between items-end full-width footer no-wrap">
 						<q-item-label class="q-pb-xs q-mt-md" header>{{ formatShortAddress(authStore.bitsongAddress, 6) }}</q-item-label>
-						<q-btn @click="onCopy(authStore.bitsongAddress)" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
+						<q-btn @click="onCopy(authStore.bitsongAddress ? authStore.bitsongAddress : '')" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
 					</div>
 					<div class="row justify-between items-end full-width footer no-wrap">
 						<q-item-label class="q-pb-xs q-mt-md" header>{{ formatShortAddress(authStore.osmosisAddress, 6) }}</q-item-label>
-						<q-btn @click="onCopy(authStore.osmosisAddress)" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
+						<q-btn @click="onCopy(authStore.osmosisAddress ? authStore.osmosisAddress : '')" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
 					</div>
 				</div>
 			</q-list>
