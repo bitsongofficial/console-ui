@@ -147,15 +147,18 @@ const useFantoken = defineStore("fantoken", {
 						if (signedTxBytes) {
 							txRes = await txClient.broadcast(signedTxBytes)
 
-							const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
+							try {
+								const parsedLogs = logs.parseLogs(logs.parseRawLog(txRes.rawLog))
 
-							const denomAttr = logs.findAttribute(
-								parsedLogs,
-								"bitsong.fantoken.v1beta1.EventIssue",
-								"denom"
-							)
-
-							return denomAttr.value.slice(1, -1)
+								const denomAttr = logs.findAttribute(
+									parsedLogs,
+									"bitsong.fantoken.v1beta1.EventIssue",
+									"denom"
+								)
+								return denomAttr.value.slice(1, -1)	
+							} catch (error) {
+								throw new Error(txRes.rawLog)
+							}
 						}
 					}
 				} catch (error) {

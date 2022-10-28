@@ -6,8 +6,9 @@ import {
 	compareBalance,
 	isNegative,
 	toMicroUnit,
+  fromDisplayToBase,
 } from "@/utils"
-import { bitsongChain } from "@/configs"
+import { bitsongChain, btsgAssets } from "@/configs"
 import { MintFantoken } from "@/models"
 import { QBtn, QCard, QCardActions, QCardSection, QDialog, QForm, QInput, useDialogPluginComponent, useQuasar } from "quasar"
 import { computed, onMounted, reactive } from "vue"
@@ -43,8 +44,27 @@ onMounted(() => {
 
 const onSubmit = async () => {
 	try {
-        const amount = coin(toMicroUnit(dataForm.amount), props.balance.denom)
-        await bankStore.sendCoin(dataForm.recipient, amount)
+		let asset = btsgAssets?.assets.find(
+			(el) => el.display === props.balance.denom
+		)
+
+		let amountToTransfer: Coin | undefined = undefined
+
+		console.log(asset)
+
+		if (asset) {
+			amountToTransfer = fromDisplayToBase(
+				{
+					...props.balance,
+					amount: dataForm.amount.toString(),
+				},
+				asset
+			)
+		} else {
+			amountToTransfer = coin(toMicroUnit(dataForm.amount), props.balance.denom)
+		}
+		
+        await bankStore.sendCoin(dataForm.recipient, amountToTransfer)
 
 		onDialogOK()
 
@@ -56,8 +76,6 @@ const onSubmit = async () => {
 			timeout: 10000,
 		})
 	} catch (error) {
-		console.error(error)
-
 		quasar.notify({
 			message: `Something went wrong: ${(error as Error).message}`,
 			color: "negative",
@@ -80,34 +98,36 @@ const onSubmit = async () => {
                         <q-input
 							class="col-12"
 							label="From Address"
-							dense
 							filled
 							v-model="authStore.bitsongAddress"
-							hint="From address"
-                            disable
+                            readonly
 						/>
+
 						<q-input
 							class="col-12"
 							label="Recipient"
-							dense
 							filled
 							v-model="dataForm.recipient"
-							hint="Recipient address"
 							:rules="[
 								(val) => !!val || 'Recipient field is required',
 								(val) =>
 									isValidAddress(val, bitsongChain?.bech32_prefix ?? '') ||
 									'Invalid address',
 							]"
+							hide-bottom-space
+						/>
+						<q-input
+							class="col-12"
+							label="Coin"
+							filled
+							:model-value="balance.denom.toUpperCase()"
+                            readonly
 						/>
                         <q-input
 							class="col-12"
 							label="Amount"
-							dense
 							filled
 							v-model.number="dataForm.amount"
-							:suffix="balance.denom.toUpperCase()"
-							type="number"
 							:rules="[
 								(val) => !!val || 'Required field',
 								(val) => !isNaN(val) || 'Amount must be a decimal value',
@@ -115,6 +135,7 @@ const onSubmit = async () => {
 								(val) => !isNegative(val) || 'Amount must be greater then zero',
 							]"
 							placeholder="0"
+							hide-bottom-space
 						/>
 
 					</div>

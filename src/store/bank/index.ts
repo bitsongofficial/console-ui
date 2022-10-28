@@ -17,6 +17,7 @@ import { MessageTimestamp } from "@/models"
 import Long from "long"
 import { DeliverTxResponse } from "@cosmjs/stargate"
 import { MsgSend } from "@bitsongjs/client/dist/codec/cosmos/bank/v1beta1/tx"
+import { aminoTypesRegistry } from "@bitsongjs/client/dist"
 
 export interface BankState {
 	loading: boolean
@@ -39,11 +40,19 @@ const useBank = defineStore("bank", {
 					this.transfering = true
 					const txClient = await lastValueFrom(bitsongClient.txClient)
 
-					const msg = MsgSend.fromPartial({
+					const msg = MsgSend.fromJSON({
 						fromAddress: authStore.bitsongAddress,
 						toAddress: recipient,
 						amount: [coin]
 					})
+
+					// Workaround fix conversion
+					for (let amt of msg.amount) {
+						// @ts-ignore
+						delete amt.$type
+					}
+
+					console.log(recipient, coin)
 
 					if (txClient) {
 						const signedTxBytes = await txClient.sign(
@@ -62,6 +71,7 @@ const useBank = defineStore("bank", {
 				}	
 			} catch (error) {
 				console.error(error)
+				throw error
 			} finally {
 				this.transfering = false
 			}
@@ -117,6 +127,7 @@ const useBank = defineStore("bank", {
 				}
 			} catch (error) {
 				console.error(error)
+				throw error
 			} finally {
 				this.transfering = false
 			}

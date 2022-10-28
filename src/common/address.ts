@@ -12,7 +12,7 @@ export const isValidAddress = (
 			return false
 		}
 
-		return data.length === length
+		return data.length === length || data.length === 32
 	} catch {
 		return false
 	}

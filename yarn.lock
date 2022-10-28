@@ -1028,10 +1028,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@bitsongjs/client@2.4.0-beta.7":
-  version "2.4.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@bitsongjs/client/-/client-2.4.0-beta.7.tgz#48919b91f44d883f435c13682d6661d7480c6759"
-  integrity sha512-WID6rjtX2/1Tw/ODwgPyTd7kZ3JkAKTQOt9RK6QL19sp7D8zuwxUWHZ7rEZRnMQ91lp3ZRzaITq2DG50wOivkg==
+"@bitsongjs/client@2.4.0-beta.8":
+  version "2.4.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@bitsongjs/client/-/client-2.4.0-beta.8.tgz#81f0a606989b38f55f414413341606119009eebf"
+  integrity sha512-0c29ERzi28qO/ESzAucLLNga8AALZsmF0QG2Coo4tILxXEL4nkeEJk/FUH/KzVr2QrOzSuDhZQd20cv66FwJlw==
   dependencies:
     "@bitsongjs/contracts" "^2.1.0-beta.0"
     "@bitsongjs/utils" "*"
