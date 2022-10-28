@@ -16,6 +16,8 @@ import { MsgTransfer } from "@bitsongjs/client/dist/codec/ibc/applications/trans
 import { MessageTimestamp } from "@/models"
 import Long from "long"
 import { DeliverTxResponse } from "@cosmjs/stargate"
+import { MsgSend } from "@bitsongjs/client/dist/codec/cosmos/bank/v1beta1/tx"
+import { aminoTypesRegistry } from "@bitsongjs/client/dist"
 
 export interface BankState {
 	loading: boolean
@@ -30,6 +32,50 @@ const useBank = defineStore("bank", {
 		balancesRaw: [],
 	}),
 	actions: {
+		async sendCoin(recipient: string, coin: Coin) {
+			try {
+				const authStore = useAuth()
+
+				if (authStore.bitsongAddress) {
+					this.transfering = true
+					const txClient = await lastValueFrom(bitsongClient.txClient)
+
+					const msg = MsgSend.fromJSON({
+						fromAddress: authStore.bitsongAddress,
+						toAddress: recipient,
+						amount: [coin]
+					})
+
+					// Workaround fix conversion
+					for (let amt of msg.amount) {
+						// @ts-ignore
+						delete amt.$type
+					}
+
+					console.log(recipient, coin)
+
+					if (txClient) {
+						const signedTxBytes = await txClient.sign(
+							authStore.bitsongAddress,
+							[msg],
+							bitsongStdFee,
+							""
+						)
+
+						let txRes: DeliverTxResponse | undefined
+
+						if (signedTxBytes) {
+							txRes = await txClient.broadcast(signedTxBytes)
+						}
+					}
+				}	
+			} catch (error) {
+				console.error(error)
+				throw error
+			} finally {
+				this.transfering = false
+			}
+		},
 		async sendIbcTokensToOsmosis(transferAmount: Coin) {
 			try {
 				const authStore = useAuth()
@@ -81,6 +127,7 @@ const useBank = defineStore("bank", {
 				}
 			} catch (error) {
 				console.error(error)
+				throw error
 			} finally {
 				this.transfering = false
 			}

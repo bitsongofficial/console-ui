@@ -2,7 +2,7 @@ import { MicroDenom } from "@bitsongjs/client"
 import { AssetList } from "@chain-registry/types"
 import { StdFee } from "@cosmjs/stargate/build"
 import { chains, assets } from "chain-registry"
-import { bitsongTestnetChain } from "./testnet"
+import { bitsongTestnetChain, osmosisTestnetChain } from "./testnet"
 
 const testnet = import.meta.env.VITE_MODE === "testnet"
 
@@ -10,9 +10,9 @@ export const bitsongChain = testnet
 	? bitsongTestnetChain
 	: chains.find(({ chain_name }) => chain_name === "bitsong")
 
-export const osmosisChain = chains.find(
-	({ chain_name }) => chain_name === "osmosis"
-)
+export const osmosisChain = testnet
+	? osmosisTestnetChain
+	: chains.find(({ chain_name }) => chain_name === "osmosis")
 
 const defaultOsmosisRpcAddress = "https://rpc.osmo-test.bitsong.network"
 
