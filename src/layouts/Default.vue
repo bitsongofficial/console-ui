@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { formatShortAddress } from "@/common"
 import useAuth from "@/store/auth"
 import { ref } from "vue"
+import { useClipboard } from '@/hooks';
 
 const authStore = useAuth()
 const leftDrawerOpen = ref(true)
 const link = ref("homepage")
+const { onCopy } = useClipboard()
 
 const logout = () => {
 	authStore.$reset()
@@ -150,6 +153,18 @@ const logout = () => {
 
 					<q-item-section>Gauges</q-item-section>
 				</q-item>
+
+				<div v-if="authStore.bitsongAddress && authStore.osmosisAddress">
+					<q-item-label class="q-pb-sm q-mt-md" header>Address List</q-item-label>
+					<div class="row justify-between items-end full-width footer no-wrap">
+						<q-item-label class="q-pb-xs q-mt-md" header>{{ formatShortAddress(authStore.bitsongAddress, 6) }}</q-item-label>
+						<q-btn @click="onCopy(authStore.bitsongAddress)" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
+					</div>
+					<div class="row justify-between items-end full-width footer no-wrap">
+						<q-item-label class="q-pb-xs q-mt-md" header>{{ formatShortAddress(authStore.osmosisAddress, 6) }}</q-item-label>
+						<q-btn @click="onCopy(authStore.osmosisAddress)" icon="content_copy" class="q-mr-sm" size="sm" flat round></q-btn>
+					</div>
+				</div>
 			</q-list>
 		</q-drawer>
 
