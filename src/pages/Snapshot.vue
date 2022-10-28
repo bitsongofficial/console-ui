@@ -182,6 +182,8 @@ const exportJsonTable = () => {
 				:columns="columns"
 				:pagination="pagination"
 				row-key="address"
+				flat
+				bordered
 			>
 				<template v-slot:top-right>
 					<q-btn

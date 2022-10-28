@@ -55,6 +55,8 @@ const pagination = {
 				:columns="columns"
 				:pagination="pagination"
 				row-key="denom"
+				flat
+				bordered
 			/>
 		</div>
 	</q-page>

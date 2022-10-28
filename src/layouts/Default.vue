@@ -55,7 +55,7 @@ const logout = () => {
 			</q-toolbar>
 		</q-header>
 
-		<q-drawer v-model="leftDrawerOpen" side="left" bordered>
+		<q-drawer v-model="leftDrawerOpen" side="left">
 			<q-list padding class="rounded-borders text-primary">
 				<q-item-label class="q-pb-sm" header>BitSong Testnet</q-item-label>
 				<q-item
@@ -168,7 +168,7 @@ const logout = () => {
 			</q-list>
 		</q-drawer>
 
-		<q-page-container>
+		<q-page-container class="bg-secondary">
 			<router-view />
 		</q-page-container>
 	</q-layout>

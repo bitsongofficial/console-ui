@@ -139,6 +139,8 @@ const paginationContracts = {
 				:rows="cosmWasmStore.contractsAddressesObj"
 				:loading="cosmWasmStore.loadingContracts"
 				class="q-mb-md"
+				flat
+				bordered
 			>
 				<template v-slot:body-cell-address="props">
 					<q-td :props="props">

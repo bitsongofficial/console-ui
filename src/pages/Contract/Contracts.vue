@@ -121,6 +121,8 @@ const pagination = {
 				:rows="cosmWasmStore.codes"
 				:loading="cosmWasmStore.loadingCodes"
 				:pagination="pagination"
+				flat
+				bordered
 			>
 				<template v-slot:body-cell-id="props">
 					<q-td :props="props">

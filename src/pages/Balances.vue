@@ -89,6 +89,8 @@ const openSendDialog = (coin: Coin) => {
 				:columns="columns"
 				:pagination="pagination"
 				row-key="denom"
+				flat
+				bordered
 			>
 				<template v-slot:body-cell-actions="actionsProps">
 					<q-td :props="actionsProps">

@@ -1,12 +1,14 @@
 $primary : #FF005C;
 $primary-complementary: #9C589C;
-$secondary : #3A294F;
+$secondary: #14142E;
 $accent : #220D32;
 
-$dark : #1d1d1d;
+$dark : $secondary;
 
 $gray: #7F7288;
 
 $negative : #C10015;
 $info : #31CCEC;
 $warning : #F2C037;
+
+$typography-font-family: Circular Std, 'Roboto', '-apple-system', 'Helvetica Neue', Helvetica, Arial, sans-serif !default
