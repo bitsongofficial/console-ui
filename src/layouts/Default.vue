@@ -120,7 +120,7 @@ const logout = () => {
 						<q-icon name="description" />
 					</q-item-section>
 
-					<q-item-section>Contracts</q-item-section>
+					<q-item-section>Smart Contracts</q-item-section>
 				</q-item>
 
 				<q-item-label class="q-pb-sm q-mt-md" header>Osmosis Testnet</q-item-label>
