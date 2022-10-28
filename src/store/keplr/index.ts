@@ -5,6 +5,7 @@ import {
 	bitsongRpcAddresses,
 	btsgAssets,
 	btsgStakingCoin,
+	osmosisAssets,
 	osmosisChain,
 } from "@/configs"
 import { bitsongClient } from "@/services"
@@ -33,14 +34,20 @@ const useKeplr = defineStore("keplr", {
 					bitsongChain &&
 					osmosisChain &&
 					btsgStakingCoin &&
-					btsgAssets
+					btsgAssets &&
+					osmosisAssets
 				) {
 					const chainIds = [bitsongChain.chain_id, osmosisChain.chain_id]
 
-					const suggestChain = chainRegistryChainToKeplr(bitsongChain, [btsgAssets])
+					const suggestChains = [
+						chainRegistryChainToKeplr(bitsongChain, [btsgAssets]),
+						chainRegistryChainToKeplr(osmosisChain, [osmosisAssets]),
+					]
 
-					if (suggestChain) {
-						await window.keplr.experimentalSuggestChain(suggestChain)
+					if (suggestChains.length > 0) {
+						for (const suggestChain of suggestChains) {
+							await window.keplr.experimentalSuggestChain(suggestChain)
+						}
 					}
 
 					await window.keplr.enable(chainIds)
